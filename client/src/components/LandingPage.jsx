@@ -39,7 +39,7 @@ function LandingPage() {
       <Text fontSize={"10px"} color={"#2a3a8a"}>Lorem ipsum dolor sit amet consectetur adipisicing elit.
          Tenetur iusto maxime dolor minima eligendi exercitationem 
          possimus, praesentium animi ut ducimus quasi dicta 
-         veritatis nostrum assumenda ipsam.</Text>
+         veritatis nostrum assumenda ipsam</Text>
       <Button marginTop={"30px"} color={"white"} bg={"#2a3a8a"}>
    Apply for free
    </Button>
