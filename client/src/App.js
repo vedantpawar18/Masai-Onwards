@@ -1,14 +1,19 @@
 
 import './App.css';
-import LandingPage from './components/LandingPage';
-import Navbar from './components/Navbar';
+import Model2 from './components/Model2';
 
+import SignUp from './components/SignUp';
 
 function App() {
   return (
     <div className="App">
-    <Navbar/>
-      <LandingPage/>
+    {/* <Navbar/>
+      <LandingPage/> */}
+      <SignUp/>
+      {/* <LandingSignUp/> */}
+      {/* <Model2/> */}
+      {/* <SignIn/> */}
+      {/* <LandingPage/> */}
     </div>
   );
 }

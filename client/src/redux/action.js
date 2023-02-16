@@ -1,48 +1,49 @@
 import axios from "axios";
 
-export const GET_DATA_REQUEST = "GET_DATA_REQUEST";
-export const GET_DATA_SUCCESS = "GET_DATA_SUCCESS";
-export const GET_DATA_FAILURE = "GET_DATA_FAILURE";
+export const GET_AUTH_REQUEST = "GET_AUTH_REQUEST";
+export const GET_AUTH_SUCCESS = "GET_AUTH_SUCCESS";
+export const GET_AUTH_FAILURE = "GET_AUTH_FAILURE";
 
-export const POST_DATA_REQUEST = "POST_DATA_REQUEST";
-export const POST_DATA_SUCCESS = "POST_DATA_SUCCESS";
-export const POST_DATA_FAILURE = "POST_DATA_FAILURE";
+export const POST_AUTH_REQUEST = "POST_AUTH_REQUEST";
+export const POST_AUTH_SUCCESS = "POST_AUTH_SUCCESS";
+export const POST_AUTH_FAILURE = "POST_AUTH_FAILURE";
 
-export const getDataRequest = ()=>{
+export const getAuthRequest = ()=>{
     return({
-        type:GET_DATA_REQUEST
+        type:GET_AUTH_REQUEST
     })
 }
 
 
 
-export const getDataSuccess = (data)=>{
+export const getAuthSuccess = (auth)=>{
     return({
-        type:GET_DATA_SUCCESS,
-        payload:data
+        type:GET_AUTH_SUCCESS,
+        payload:auth
     })
 }
 
 
 
-export const getDataFailure = ()=>{
+export const getAuthFailure = ()=>{
     return({
-        type:GET_DATA_FAILURE
+        type:GET_AUTH_FAILURE
     })
 }
 
 
 export const postDataRequest = ()=>{
     return({
-        type:POST_DATA_REQUEST
+        type:POST_AUTH_REQUEST
     })
 }
 
 
 
-export const postDataSuccess = ()=>{
+export const postDataSuccess = (auth)=>{
     return({
-        type:POST_DATA_SUCCESS
+        type:POST_AUTH_SUCCESS,
+        payload:auth
     })
 }
 
@@ -50,26 +51,26 @@ export const postDataSuccess = ()=>{
 
 export const postDataFailure = ()=>{
     return({
-        type:POST_DATA_FAILURE
+        type:POST_AUTH_FAILURE
     })
 }
 
 
 
-export const getData = ()=>(dispatch)=>{
+export const getAuth = ()=>(dispatch)=>{
 
-    dispatch(getDataRequest())
+    dispatch(getAuthRequest())
     return axios({
         method:"GET",
         url:""
     })
 
     .then((res)=>{
-        dispatch(getDataSuccess(res.data))
+        dispatch(getAuthSuccess(res.data))
     })
 
     .then((error)=>{
-        dispatch(getDataFailure())
+        dispatch(getAuthFailure())
     })
 }
 
@@ -86,7 +87,7 @@ export const postData = (data)=>(dispatch)=>{
     })
 
     .then((res)=>{
-        dispatch(postDataSuccess())
+        dispatch(postDataSuccess(res.data))
     })
 
     .then((error)=>{
