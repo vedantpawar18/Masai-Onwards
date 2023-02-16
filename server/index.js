@@ -9,6 +9,8 @@ const Connection=require("./Config/db")
 app.use(express.json());
 app.use(cors());
 
+var signupRouter=require("./Routes/SignUp.route");
+
 app.get("/", (req,res)=>{
     res.send("Welcome to homepage");
 });
