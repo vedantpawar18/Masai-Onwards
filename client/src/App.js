@@ -1,7 +1,7 @@
 
 import './App.css';
 import Model2 from './components/Model2';
-
+import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 
 function App() {
@@ -9,10 +9,10 @@ function App() {
     <div className="App">
     {/* <Navbar/>
       <LandingPage/> */}
-      <SignUp/>
+      {/* <SignUp/> */}
       {/* <LandingSignUp/> */}
       {/* <Model2/> */}
-      {/* <SignIn/> */}
+      <SignIn/>
       {/* <LandingPage/> */}
     </div>
   );
