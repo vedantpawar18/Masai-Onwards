@@ -1,46 +1,77 @@
+import { CheckCircleIcon, ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 
 import {
-  Box,
-  Flex,
-  HStack,
-  IconButton,
-  Button,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  useDisclosure,
-  useColorModeValue,
-  Stack,
-  Select,
-  Text,
-  Image,
-  Grid,
-  GridItem,
+    Button,
+    Flex,
+    FormControl,
+    FormLabel,
+    Heading,
+    Input,
+    Link,
+    Stack,
+    Text,
+    InputRightElement,
+    InputGroup,
+    Box,
+    HStack,
+    List,
+    ListItem,
+    ListIcon,
+    useMediaQuery,
+  } from '@chakra-ui/react';
+  import validator from 'validator';
+import { useState } from 'react';
   
-} from '@chakra-ui/react';
-import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
+  export default function SignUp() {
+    const [showPassword, setShowPassword] = useState(false);
+    const [isLargerThan800] = useMediaQuery('(min-width: 800px)')
+    const [emailError, setEmailError] = useState('')
+    const [errorMessage, setErrorMessage] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [name, setName] = useState('')
+    const [nameError, setNameError] = useState('')
 
-const Links = ['Dashboard', 'Projects', 'Team'];
+const handleClick = ()=>{
+     
+    if (validator.isEmail(email)) {
+      setEmailError('')
+    } else {
+      setEmailError('Enter valid Email!')
+    }
+    if (validator.isStrongPassword(password, {
+        minLength: 8, minLowercase: 1,
+        minUppercase: 1, minNumbers: 1, minSymbols: 1
+      })) {
+        setErrorMessage('')
+      } else {
+        setErrorMessage('Weak Password')
+      }
+
+      if (validator.isStrongPassword(name, {
+        minLength: 3, minLowercase: 1,
+        minUppercase: 1, minNumbers: 0, minSymbols: 0
+      })) {
+        setNameError('')
+      } else {
+        setNameError('Enter valid name')
+      }
+
+}
 
 
-export default function Navbar() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
-  return (
-    <>
-    
-      <Box bg={useColorModeValue('white.100', 'gray.900')} px={4}   height="88px">
-        <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
-          <IconButton
-            size={'md'}
-            icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-            aria-label={'Open Menu'}
-            display={{ md: 'none' }}
-            onClick={isOpen ? onClose : onOpen}
-          />
-          <HStack spacing={8} alignItems={'center'}>
-            <Box>
+
+
+
+
+    return (
+        <>
+      {isLargerThan800?<Stack minH={'100vh'} direction={{ base: 'row', md: 'row' }}>
+       
+         <Flex flex={1} p={8}  bg={('gray.50')} >
+
+         <Box>
 <svg width="140" height="47" viewBox="0 0 140 47" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M51.4518 14.7329H49.3637V21.4836H45.1755V3.56424H51.5358C55.34 3.56424 58.3162 4.97799 58.3162 9.08966C58.3402 13.2249 55.088 14.7329 51.4518 14.7329ZM51.2118 7.03972H49.3877V11.2692H51.1518C52.7119 11.2692 54.164 10.7862 54.164 9.08966C54.14 7.38137 52.7119 7.03972 51.2118 7.03972Z" fill="black"/>
 <path d="M67.1966 12.2706C66.8245 12.1763 66.4885 12.1292 66.1645 12.1292C64.0044 12.1292 63.2964 13.9435 63.2964 14.9921V21.4718H59.2642V8.8658H63.1403V10.6801H63.1884C63.8004 9.40774 64.9884 8.50058 66.4885 8.50058C66.8005 8.50058 67.1486 8.52414 67.3526 8.59483L67.1966 12.2706Z" fill="black"/>
@@ -75,103 +106,194 @@ export default function Navbar() {
 </defs>
 </svg>
 
-            </Box>
-            <HStack
-              as={'nav'}
-              spacing={4}
-              display={{ base: 'none', md: 'flex' }}>
-           
-<Select marginLeft={"200px"} placeholder='COURSES' border="transparent" w={"120px"}>
-  <option value='option1'>Option 1</option>
-  <option value='option2'>Option 2</option>
-  <option value='option3'>Option 3</option>
-</Select>
 
-          
-<Select placeholder='ABOUT US' border="transparent" w={"130px"}>
-  <option value='option1'>Option 1</option>
-  <option value='option2'>Option 2</option>
-  <option value='option3'>Option 3</option>
-</Select>
+<Box >
+<Heading fontSize={"30px"} paddingTop={"100px"} textAlign={"left"}>
+         Get access to a one-stop solution for securing your dream internship
+         </Heading>
+         <Box paddingTop={"30px"}>
+         <List spacing={3} textAlign={"start"}>
+         
+  <ListItem>
+  <ListIcon as={CheckCircleIcon} color='blue.500'/>
+    Earn a stipend of up to ₹60,000 by enrolling in India's first 
+    outcome-based internship program or get ALL of your money back.
+  </ListItem>
+  <ListItem>
+    <ListIcon as={CheckCircleIcon} color='blue.500'/>
+    Start learning with certified industry-relevant course videos 
+    and 1000+ practise questions to make you unstoppable.
+  </ListItem>
+  <ListItem>
+    <ListIcon as={CheckCircleIcon} color='blue.500'/>
+    Attempt live tests and assignments along with personalised 
+    recommendations to help you navigate to success.
+  </ListItem>
+</List>
 
-          
-<Select placeholder='RESOURCES' border="transparent" w={"135px"}>
-  <option value='option1'>Option 1</option>
-  <option value='option2'>Option 2</option>
-  <option value='option3'>Option 3</option>
-</Select>
+         </Box>
+    
+</Box>
+         </Box>
 
-          
-<Select placeholder='FAQ' border="transparent" w={"80px"}>
-
-</Select>
-
-
-
-
-
-            </HStack>
-          </HStack>
-          <Flex alignItems={'center'}>
-            <Menu>
-              <MenuButton
-                as={Button}
-                rounded={'full'}
-                variant={'link'}
-                cursor={'pointer'}
-                minW={0}>
-              <Button bg="blue.50" color={"blue.400"}>
-                LOGIN
-              </Button>
-              </MenuButton>
-              <MenuList>
-                <MenuItem width={"300px"} h={"300px"}>
-                  
-                 <Stack>
-                   
-                   <Grid gridTemplateColumns={"repeat(2, 1fr)"}>
-                    <GridItem marginRight="100px" >
-                    <Image src={"https://pixlok.com/wp-content/uploads/2021/04/Google-Icon-PNG.jpg"} border={"1px solid"} w="30px" h="30px" borderRadius="50%" alt="icon" />
-                    </GridItem>
-                    
-                    <GridItem marginLeft={"-100px"} > 
-                    <Text fontSize={"14px"}>Sign-in to prepleaf with google</Text>
-                    </GridItem>
-                   </Grid>
-                   <Grid gridTemplateColumns={"repeat(2, 1fr)"}>
-                    <GridItem marginRight="100px" >
-                    <Image src={"https://www.pngitem.com/pimgs/m/78-786293_1240-x-1240-0-avatar-profile-icon-png.png"} border={"1px solid"} w="30px" h="30px" borderRadius="50%" alt="icon" />
-                    </GridItem>
-                    
-                    <GridItem marginLeft={"-100px"} > 
-                    <Text fontWeight="bold">Sonu suharshan</Text>
-                    <Text fontSize={"12px"}>sonu@masaischool.com</Text>
-                    </GridItem>
-                   </Grid>
-                  
-               
-                  <Button bg="blue.400">Continue as Sonu</Button>
-                    <Text fontSize={"16px"}>To create your account, google will share your name, 
-                        email address and profile picture with coding Ninjas, 
-                        see coding Ninja's privecy policy and terms and service </Text>
-                        </Stack>
-                    </MenuItem>
-          
-                
-              </MenuList>
-            </Menu>
-          </Flex>
+         
         </Flex>
-
-        {isOpen ? (
-          <Box pb={4} display={{ md: 'none' }}>
-            <Stack as={'nav'} spacing={4}>
+        <Flex p={6} flex={1} align={'center'} justify={'center'}>
+        <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
+      
+        <Box
+          rounded={'lg'}
+          bg={('white')}
+          boxShadow={'lg'}
+          p={8}>
+              <Heading fontSize={'3xl'} textAlign={'center'}>
+            Sign up
+          </Heading>
+          <Stack spacing={4}>
+            <HStack>
+              <Box>
+                <FormControl id="name" >
+                  <FormLabel>Name</FormLabel>
+                  <Input type="text" width={"400px"} onChange={(e)=>setName(e.target.value)} placeholder={"Enter your name"} />
+                  <Text color={"red"} fontSize={"10px"} textAlign={"left"}>{nameError}</Text>
+                </FormControl>
+              </Box>
+              {/* <Box>
+                <FormControl id="lastName">
+                  <FormLabel>Last Name</FormLabel>
+                  <Input type="text" />
+                </FormControl>
+              </Box> */}
+            </HStack>
+            <FormControl id="email" >
+              <FormLabel>Email address</FormLabel>
+              <Input type="email" placeholder='name@mail.com' onChange={(e)=>setEmail(e.target.value)}/>
+              <Text color={"red"} fontSize={"10px"} textAlign={"left"}>{emailError}</Text>
+            </FormControl>
+            <FormControl id="password" >
+              <FormLabel>Password</FormLabel>
+              <InputGroup>
+                <Input placeholder='To keep your profile safe' onChange={(e)=>setPassword(e.target.value)} type={showPassword ? 'text' : 'password'} />
+              
+                <InputRightElement h={'full'}>
+                
+                  <Button
+                    variant={'ghost'}
+                    onClick={() =>
+                      setShowPassword((showPassword) => !showPassword)
+                    }>
+                    {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                  </Button>
+                 
             
+                </InputRightElement>
+              </InputGroup>
+              <Stack direction={{ base: 'column', sm: 'row' }}
+                align={'start'}
+                justify={'space-between'}>
+            <FormLabel fontWeight={'light'}>Minimum 8 characters</FormLabel>
+            <FormLabel color={'red'} fontSize={"10px"} fontWeight={'light'}>{errorMessage}</FormLabel>
             </Stack>
-          </Box>
-        ) : null}
+            </FormControl>
+            <Stack spacing={10} pt={2}>
+                <Text>By signing up, I accept the Prepleaf <Link color={'blue.400'}>Terms of Service</Link>and acknowledge the  <Link color={'blue.400'}>Privacy Policy.</Link></Text>
+              <Button
+                loadingText="Submitting"
+                size="lg"
+                bg={'blue.400'}
+                color={'white'}
+                _hover={{
+                  bg: 'blue.500',
+                }} onClick={handleClick}>
+                Sign up
+              </Button>
+            </Stack>
+            <Stack pt={6}>
+              <Text align={'center'}>
+                Already have an account? <Link color={'blue.400'}>Sign in</Link>
+              </Text>
+            </Stack>
+          </Stack>
+        </Box>
+      </Stack>
+        </Flex>
+       
+      </Stack>:<Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
+      
+      <Box
+        rounded={'lg'}
+        bg={('white')}
+        boxShadow={'lg'}
+        p={8}>
+            <Heading fontSize={'3xl'} textAlign={'center'}>
+          Sign up
+        </Heading>
+        <Stack spacing={4}>
+          <HStack>
+            <Box>
+              <FormControl id="name" >
+                <FormLabel>Name</FormLabel>
+                <Input type="text" width={"280px"} placeholder={"Enter your name"} />
+              </FormControl>
+            </Box>
+            {/* <Box>
+              <FormControl id="lastName">
+                <FormLabel>Last Name</FormLabel>
+                <Input type="text" />
+              </FormControl>
+            </Box> */}
+          </HStack>
+          <FormControl id="email" >
+            <FormLabel>Email address</FormLabel>
+            <Input type="email" placeholder='name@mail.com'/>
+          </FormControl>
+          <FormControl id="password" >
+            <FormLabel>Password</FormLabel>
+            <InputGroup>
+              <Input placeholder='To keep your profile safe' type={showPassword ? 'text' : 'password'} />
+          
+              <InputRightElement h={'full'}>
+              
+                <Button
+                  variant={'ghost'}
+                  onClick={() =>
+                    setShowPassword((showPassword) => !showPassword)
+                  }>
+                  {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                </Button>
+               
+          
+              </InputRightElement>
+            </InputGroup>
+            <Stack direction={{ base: 'column', sm: 'row' }}
+                align={'start'}
+                justify={'space-between'}>
+            <FormLabel fontWeight={'light'}>Minimum 8 characters</FormLabel>
+            <FormLabel color={'red'} fontSize={"10px"} fontWeight={'light'}>{errorMessage}</FormLabel>
+            </Stack>
+          </FormControl>
+          <Stack spacing={10} pt={2}>
+              <Text>By signing up, I accept the Prepleaf <Link color={'blue.400'}>Terms of Service</Link>and acknowledge the  <Link color={'blue.400'}>Privacy Policy.</Link></Text>
+            <Button
+              loadingText="Submitting"
+              size="lg"
+              bg={'blue.400'}
+              color={'white'}
+              _hover={{
+                bg: 'blue.500',
+              }}>
+              Sign up
+            </Button>
+          </Stack>
+          <Stack pt={6}>
+            <Text align={'center'}>
+              Already have an account? <Link color={'blue.400'}>Sign in</Link>
+            </Text>
+          </Stack>
+        </Stack>
       </Box>
+    </Stack>}
 
-    </>
-  );
-}
+      </>
+    );
+  }

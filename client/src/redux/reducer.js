@@ -1,54 +1,54 @@
-import { GET_DATA_FAILURE, GET_DATA_REQUEST, GET_DATA_SUCCESS, POST_DATA_FAILURE, POST_DATA_REQUEST, POST_DATA_SUCCESS } from "./action"
+import { GET_AUTH_FAILURE, GET_AUTH_REQUEST, GET_AUTH_SUCCESS, POST_AUTH_FAILURE, POST_AUTH_REQUEST, POST_AUTH_SUCCESS } from "./action"
 
 
 const initState = {
     isLoding: false,
     isError: false,
-    data: []
+    auth: []
 }
 
-export const reducer = (state = initState, action) => {
+export const authReducer = (state = initState, action) => {
 
     switch (action.type) {
 
-        case GET_DATA_REQUEST:
+        case GET_AUTH_REQUEST:
             return ({
                 ...state,
                 isLoading: true,
                 isError: false
             })
 
-        case GET_DATA_SUCCESS:
+        case GET_AUTH_SUCCESS:
             return ({
                 ...state,
                 isLoading: false,
                 isError: false,
-                data:action.payload
+                auth:action.payload
             })
 
-        case GET_DATA_FAILURE:
+        case GET_AUTH_FAILURE:
             return ({
                 ...state,
                 isLoading: false,
                 isError: true
             })
 
-            case POST_DATA_REQUEST:
+            case POST_AUTH_REQUEST:
                 return ({
                     ...state,
                     isLoading: true,
                     isError: false
                 })
     
-            case POST_DATA_SUCCESS:
+            case POST_AUTH_SUCCESS:
                 return ({
                     ...state,
                     isLoading: false,
                     isError: false,
-              
+                    auth:action.payload
                 })
     
-            case POST_DATA_FAILURE:
+            case POST_AUTH_FAILURE:
                 return ({
                     ...state,
                     isLoading: false,
