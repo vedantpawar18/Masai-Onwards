@@ -1,14 +1,15 @@
-import { EmailIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons"
+import {  ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { Box, Center } from "@chakra-ui/layout"
 import { Button, FormControl, FormLabel, HStack, Image, Input, InputGroup, InputRightElement, Link, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, Text, useDisclosure } from "@chakra-ui/react"
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { FcGoogle } from "react-icons/fc"
 import popup_image from "../images/popup_image.jpg";
 import validator from 'validator';
 export default function Model2() {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [showPassword, setShowPassword] = useState(false);
- 
+    const initialRef = useRef(null)
+    const finalRef = useRef(null)
     const [emailError, setEmailError] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
     const [email, setEmail] = useState('')
@@ -44,30 +45,39 @@ const handleClick = ()=>{
 }
     return (
       <>
-        <Button onClick={onOpen}>Open Modal</Button>
+        <Button 
+        onClick={onOpen}>Open Modal</Button>
   
-        <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
+        <Modal 
+        closeOnOverlayClick={false} 
+        isOpen={isOpen} 
+        onClose={onClose}
+        initialFocusRef={initialRef}
+        finalFocusRef={finalRef}
+     
+        >
           <ModalOverlay />
           <ModalContent>
+          <ModalCloseButton />
             {/* <ModalHeader>Create your account</ModalHeader> */}
             
-            {/* <ModalBody pb={6}>
+             {/* <ModalBody pb={6}>
               qwertyuigavjxjczxqwertyuitrewertyuqwertrewqwe
               qwerewqwerewqwerewqwerewwew
               qwerdsasdfvcxzxcbbvc
               sdffdse
-            </ModalBody>
-  
+            </ModalBody> */}
+{/*   
             <ModalFooter>
               <Button colorScheme='blue' mr={3}>
                 Save
               </Button>
               <Button onClick={onClose}>Cancel</Button>
-            </ModalFooter> */}
+            </ModalFooter> */} 
             
 <Box  color="white"  >
-{/* <Image src={popup_image} alt="popup"  /> */}
-<svg  viewBox="0 0 480 136" fill="none" xmlns="http://www.w3.org/2000/svg">
+<Image src={popup_image} alt="popup"  />
+{/* <svg  viewBox="0 0 480 136" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0_916_27637)">
 <rect width="480" height="136" fill="#7261DF"/>
 <path d="M540.351 30.0712L540.345 30.0753L540.339 30.0795C538.219 31.5608 535.849 31.5072 533.307 30.9023C531.315 30.4187 529.307 29.4647 527.189 28.3156C526.448 27.9136 525.684 27.4826 524.906 27.0428C523.507 26.2528 522.058 25.4346 520.599 24.7065C518.438 23.5785 516.308 22.9404 514.288 22.6427L514.275 22.6408L514.262 22.6393C511.781 22.3408 509.486 22.814 507.262 23.5285C506.153 23.8848 505.044 24.3071 503.939 24.729L503.881 24.7511C502.788 25.1684 501.695 25.5858 500.562 25.9605C493.089 28.3992 486.426 24.0265 482.908 16.2929C481.727 13.4673 480.691 10.6849 480.249 7.95737L480.249 7.95735L480.246 7.94469C479.574 4.10468 479.015 -0.547655 479.339 -4.77015C479.666 -9.02377 480.868 -12.5928 483.469 -14.5866C483.826 -14.8462 484.447 -14.9936 485.425 -14.9648C486.383 -14.9366 487.494 -14.749 488.694 -14.5296C488.82 -14.5065 488.946 -14.4832 489.074 -14.4597C490.131 -14.2649 491.241 -14.0603 492.255 -13.9725C493.367 -13.8763 494.554 -13.8982 495.518 -14.3648L495.518 -14.3648L495.528 -14.3697C497.211 -15.208 498.835 -16.0932 500.401 -16.947C501.226 -17.3967 502.035 -17.8377 502.829 -18.2586C505.155 -19.4923 507.399 -20.5836 509.73 -21.3558C513.796 -22.6774 517.13 -25.4955 520.266 -28.2033C520.374 -28.297 520.483 -28.3905 520.591 -28.4839C523.665 -31.1408 526.567 -33.6492 529.972 -34.9726L529.977 -34.9746C530.507 -35.1841 531.202 -35.2056 532.097 -35.0343C532.986 -34.864 533.968 -34.5249 535.026 -34.1205C535.332 -34.0034 535.647 -33.8798 535.966 -33.7544C536.718 -33.4594 537.494 -33.1549 538.235 -32.9041C539.292 -32.5463 540.392 -32.2558 541.431 -32.2355C542.15 -32.2105 542.939 -32.3064 543.671 -32.741L543.703 -32.7601L543.734 -32.7816C548.292 -35.9674 553.84 -35.7461 558.952 -33.3887C560.444 -32.6742 561.865 -31.7415 563.23 -29.9999L563.662 -29.448L563.666 -29.4495C565.245 -27.0553 566.028 -23.9097 566.122 -20.8879C566.222 -17.663 565.534 -14.8082 564.431 -13.2805L564.423 -13.2698L564.416 -13.2588C563.399 -11.7712 562.095 -10.8596 560.607 -9.99128C560.308 -9.81705 559.997 -9.64233 559.678 -9.4632C558.452 -8.77414 557.11 -8.0199 555.909 -6.97807L555.9 -6.9701L555.891 -6.96191C555.21 -6.34127 554.426 -5.54547 553.787 -4.65405C550.869 -0.648471 549.501 4.83412 548.312 9.60028C548.182 10.1236 548.053 10.6383 547.925 11.1415L547.923 11.1489C547.656 12.232 547.405 13.3951 547.144 14.6027C546.643 16.9206 546.106 19.4027 545.355 21.7988C544.214 25.4371 542.677 28.495 540.351 30.0712Z" stroke="url(#paint0_linear_916_27637)" stroke-opacity="0.1" stroke-width="2" stroke-miterlimit="10"/>
@@ -195,7 +205,7 @@ const handleClick = ()=>{
 <rect width="480" height="136" fill="white"/>
 </clipPath>
 </defs>
-</svg>
+</svg> */}
 
       </Box>
       <Stack margin={"30px"} spacing={4}>
@@ -205,6 +215,7 @@ const handleClick = ()=>{
                   <FormLabel>Name</FormLabel>
                   <Input type="text" width={"400px"} onChange={(e)=>setName(e.target.value)} placeholder={"Enter your name"} />
                   <Text color={"red"} fontSize={"10px"} textAlign={"left"}>{nameError}</Text>
+                 
                 </FormControl>
               </Box>
               {/* <Box>
@@ -215,11 +226,15 @@ const handleClick = ()=>{
               </Box> */}
             </HStack>
             <FormControl id="email" >
-              <FormLabel>Email address</FormLabel>
-              <Input type="email" placeholder='name@mail.com' onChange={(e)=>setEmail(e.target.value)}/>
+              <FormLabel>Phone number or email address</FormLabel>
+              <Input type="email" placeholder='Enter your number or email address' onChange={(e)=>setEmail(e.target.value)}/>
               <Text color={"red"} fontSize={"10px"} textAlign={"left"}>{emailError}</Text>
             </FormControl>
-            <FormControl id="password" >
+            <Stack>
+            <Text marginBottom={"5px"} textAlign={"center"}>By signing up, I accept the Prepleaf <Link color={'blue.400'}>Terms of Service </Link> and acknowledge the  <Link color={'blue.400'}>Privacy Policy.</Link></Text>
+            </Stack>
+          {/* ------check--------- */}
+            {/* <FormControl id="password" >
               <FormLabel>Password</FormLabel>
               <InputGroup>
                 <Input placeholder='To keep your profile safe' onChange={(e)=>setPassword(e.target.value)} type={showPassword ? 'text' : 'password'} />
@@ -243,9 +258,10 @@ const handleClick = ()=>{
             <FormLabel fontWeight={'light'}>Minimum 8 characters</FormLabel>
             <FormLabel color={'red'} fontSize={"10px"} fontWeight={'light'}>{errorMessage}</FormLabel>
             </Stack>
-            </FormControl>
+            </FormControl> */}
            
         <Center p={2}>
+        
       <Button
         marginTop={"-20px"}
         marginBottom={"-10px"}
@@ -257,7 +273,7 @@ const handleClick = ()=>{
         onClick={handleClick}
        >
         <Center>
-          <Text>CONTINUE</Text>
+          <Text color={"white"}>CONTINUE</Text>
         </Center>
       </Button>
     </Center>
