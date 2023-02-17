@@ -1,6 +1,6 @@
 
 import './App.css';
-
+import Model2 from './components/Model2';
 import SignIn from './components/SignIn';
 import LandingPage from './components/LandingPage';
 import SignUp from './components/SignUp';
@@ -10,11 +10,11 @@ function App() {
     <div className="App">
     {/* <Navbar/>
       <LandingPage/> */}
-      <SignUp/>
-      <LandingSignUp/>
-      {/* <Model2/> */}
-      <SignIn/>
-      <LandingPage/>
+      {/* <SignUp/>
+      <LandingSignUp/> */}
+      <Model2/>
+      {/* <SignIn/>
+      <LandingPage/> */}
     </div>
   );
 }
