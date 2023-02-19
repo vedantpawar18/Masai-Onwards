@@ -1,40 +1,43 @@
-import React, { useEffect, useState } from "react";
-import styles from "../styles/forget.module.css";
-import { Box, Button, Flex, Input, Text } from "@chakra-ui/react";
-import { AiFillCheckCircle } from "react-icons/ai";
+import React, { useState, useEffect } from "react";
+import styles from "../styles/reset.module.css";
+import { Box, Button, Checkbox, Flex, Input, Text } from "@chakra-ui/react";
+import { AiFillCheckCircle, AiOutlineEyeInvisible } from "react-icons/ai";
 import validator from "validator";
-import isEmail from "validator/lib/isEmail";
 
-const ForgetPass = () => {
+const ResetPass = () => {
   const [isDisable, setDis] = useState(true);
-  const [emailErr, setErr] = useState(false);
-  const [email, setMail] = useState("");
+  const [passErr, setErr] = useState(false);
+  const [showPass, setShow] = useState(false);
+  const [password, setPass] = useState("")
+  const [confirmPass, setConfirmPass] = useState("")
 
-  const handleChange = (e) => {
-    setMail(e.target.value);
-  };
 
   const handleReset = () => {
     let div1 = document.querySelector("#div1");
     let div2 = document.querySelector("#div2");
 
-    if (validator.isEmail(email)) {
+    if (validator.isStrongPassword(password) && password === confirmPass) {
       /// move further and fetch forget password API
+      setErr(null)
       div1.style.display = "none";
       div2.style.display = "block";
-    } else {
-      //show alert
-      setErr("enter valid email");
+    }else if(password?.length < 8){
+        setErr("password length must be 8")
+    }else if(password !== confirmPass){
+        setErr("password not matched")
+    }else{
+        setErr("password must be alphanumeric")
     }
   };
 
+
   useEffect(() => {
-    if (email) {
+    if (password && confirmPass) {
       setDis(false);
     } else {
       setDis(true);
     }
-  }, [email]);
+  }, [password, confirmPass]);
 
   return (
     <Box className={styles.container}>
@@ -80,23 +83,38 @@ const ForgetPass = () => {
         <Box className={styles.box2}>
           <Box className={styles.form}>
             <Text fontSize={"24px"} fontWeight={600}>
-              Forget Password
+              Reset Password
             </Text>
             <Box id="div1" className={styles.afterDiv1}>
               <Text textAlign={"center"}>
-                enter your registerd email to reset the passowrd
+                your new password must be different from previously used
+                password
               </Text>
               <Box className={styles.btns}>
-                <Text textAlign={"start"}>Email</Text>
+                <Text textAlign={"start"}>New password</Text>
                 <Input
-                  onChange={handleChange}
-                  placeholder="enter registered email"
+                  type = {showPass ? "text" : "password" }
+                  onChange={(e) => setPass(e.target.value)}
+                  placeholder="Create a new password"
                 />
-                {emailErr ? (
-                  <Text textAlign={"start"} color="red">
-                    enter valid email
-                  </Text>
-                ) : null}
+                <Text mt={4} textAlign={"start"}>
+                  Confirm password
+                </Text>
+                <Input
+                  type = {showPass ? "text" : "password" }
+                  onChange={(e) => setConfirmPass(e.target.value)}
+                  placeholder="Confirm passowrd"
+                />
+                <Box className={styles.msgTxt}>
+                  <Checkbox onChange={(e) => setShow(e.target.checked)}>
+                    show password
+                  </Checkbox>
+                </Box>
+                <Box mt={3}>
+                  {passErr ? (
+                    <Text fontWeight={600} textAlign={"start"} color="red">{passErr}</Text>
+                  ) : null}
+                </Box>
                 <Button
                   isDisabled={isDisable}
                   bg={"#4358F6"}
@@ -114,19 +132,12 @@ const ForgetPass = () => {
             <Box id="div2" className={styles.afterDiv2}>
               <Box m="auto">
                 <Text>
-                  if there is an account associated with this email you will
-                  receive a LINK to reset the email
+                  Your password is successfully reset. Click below to sign in your account. 
                 </Text>
               </Box>
-              <Button m="20px" bg={"#4358F6"} color="white">
-                GO BACK TO SIGN IN
+              <Button w='50%' fontWeight={400} m="20px" bg={"#4358F6"} color="white">
+                SIGN IN
               </Button>
-              <Text>
-                Didn't receive the mail ?{" "}
-                <span>
-                  <a href="/user/forget">click to resend</a>
-                </span>{" "}
-              </Text>
             </Box>
           </Box>
         </Box>
@@ -135,4 +146,4 @@ const ForgetPass = () => {
   );
 };
 
-export default ForgetPass;
+export default ResetPass;
