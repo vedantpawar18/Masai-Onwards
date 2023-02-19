@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "../styles/reset.module.css";
 import { Box, Button, Checkbox, Flex, Input, Text } from "@chakra-ui/react";
-import { AiFillCheckCircle, AiOutlineEyeInvisible } from "react-icons/ai";
+import { AiFillCheckCircle } from "react-icons/ai";
 import validator from "validator";
 
 const ResetPass = () => {
