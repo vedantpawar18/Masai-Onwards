@@ -8,6 +8,7 @@ import LandingSignUp from './components/LandingSignUp';
 import FailAlertBar from './components/FailAlertBar';
 import PassAlertBar from './components/PassAlertBar';
 import Cards from './components/Cards';
+import SideBar from './components/SideBar';
 function App() {
   return (
     <div className="App">
@@ -16,6 +17,7 @@ function App() {
       {/* <SignUp/>
       <LandingSignUp/> */}
       {/* <Model2/> */}
+      <SideBar/>
     <Cards/>
       < FailAlertBar/>
       <PassAlertBar/>
