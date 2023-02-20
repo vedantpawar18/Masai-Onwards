@@ -78,7 +78,7 @@ import {
                           fontWeight={600}
                           fontSize={"14px"}
                           display={"flex"}
-                              gap="12px"
+                              gap={"12px"}
                           alignItems={"start"}
                           variant="ghost"
                       >
