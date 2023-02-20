@@ -108,7 +108,8 @@ import { useState } from 'react';
         rounded={'md'}
         overflow={'hidden'}>
             <Box width={"250px"} color="white" margin={"auto"} justifyContent={"center"}>
-       <Text fontSize={"25px"} fontWeight={"bold"} textAlign={"center"}>India's first 100% internship guarantee program
+       <Text fontSize={"25px"} fontWeight={"bold"} textAlign={"center"}>
+        India's first 100% internship guarantee program
       </Text>
       </Box>
         <Box bg={('gray.50')} px={6} py={10}>
@@ -150,7 +151,8 @@ import { useState } from 'react';
       rounded={'md'}
       overflow={'hidden'}>
           <Box width={"250px"} color="white" margin={"auto"} justifyContent={"center"}>
-     <Text fontSize={"25px"} fontWeight={"bold"} textAlign={"center"}>India's first 100% internship guarantee program
+     <Text fontSize={"25px"} fontWeight={"bold"} textAlign={"center"}>
+      India's first 100% internship guarantee program
     </Text>
     </Box>
       <Box bg={('gray.50')} px={6} py={10}>

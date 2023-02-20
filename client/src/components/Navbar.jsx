@@ -20,12 +20,15 @@ import {
   
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
+import Model3 from './Model3';
+import { useNavigate } from 'react-router-dom';
 
 const Links = ['Dashboard', 'Projects', 'Team'];
 
 
 export default function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate()
 
   return (
     <>
@@ -125,10 +128,9 @@ export default function Navbar() {
               </Button>
               </MenuButton>
               <MenuList>
-                <MenuItem width={"300px"} h={"300px"}>
+                <MenuItem width={"300px"} h={"440px"}>
                   
                  <Stack>
-                   
                    <Grid gridTemplateColumns={"repeat(2, 1fr)"}>
                     <GridItem marginRight="100px" >
                     <Image src={"https://pixlok.com/wp-content/uploads/2021/04/Google-Icon-PNG.jpg"} border={"1px solid"} w="30px" h="30px" borderRadius="50%" alt="icon" />
@@ -138,6 +140,66 @@ export default function Navbar() {
                     <Text fontSize={"14px"}>Sign-in to prepleaf with google</Text>
                     </GridItem>
                    </Grid>
+
+                   <Grid gridTemplateColumns={"repeat(2, 1fr)"}>
+                    <GridItem marginRight="100px" >
+                    <Image src={"https://pixlok.com/wp-content/uploads/2021/04/Google-Icon-PNG.jpg"} border={"1px solid"} w="30px" h="30px" borderRadius="50%" alt="icon" />
+                    </GridItem>
+                    
+                    <GridItem marginLeft={"-100px"} > 
+                    <Text fontSize={"14px"}>Sign-up to prepleaf with google</Text>
+                    </GridItem>
+                   </Grid>
+
+
+                   <Grid gridTemplateColumns={"repeat(2, 1fr)"}>
+                    <GridItem marginRight="100px" >
+                    <Image src={"https://cdn3.iconfinder.com/data/icons/mobile-1-1/512/Mobile-22-512.png"} border={"1px solid"} w="30px" h="30px" borderRadius="50%" alt="icon" />
+                    </GridItem>
+                    
+                    <GridItem marginLeft={"-100px"} > 
+                   <Model3/>
+                    </GridItem>
+                   </Grid>
+
+
+
+                   <Grid gridTemplateColumns={"repeat(2, 1fr)"}>
+                    <GridItem marginRight="100px" >
+                    <Image src={"https://cdn3.iconfinder.com/data/icons/mobile-1-1/512/Mobile-22-512.png"} border={"1px solid"} w="30px" h="30px" borderRadius="50%" alt="icon" />
+                    </GridItem>
+                    
+                    <GridItem marginLeft={"-100px"} > 
+                    <Text fontSize={"14px"}>Sign-up with phone number</Text>
+                    </GridItem>
+                   </Grid>
+
+
+
+                   <Grid gridTemplateColumns={"repeat(2, 1fr)"} onClick={()=>navigate("/signin")} >
+                    <GridItem marginRight="100px" >
+                    <Image src={"https://th.bing.com/th/id/OIP.VaZzSOy5s7T4WZUyoqm_OQHaHg?pid=ImgDet&rs=1"} border={"1px solid"} w="30px" h="30px" borderRadius="50%" alt="icon" />
+                    </GridItem>
+                    
+                    <GridItem marginLeft={"-100px"} > 
+                    <Text fontSize={"14px"}>Sign-in with e-mail </Text>
+                    </GridItem>
+                   </Grid>
+                   
+
+                   <Grid gridTemplateColumns={"repeat(2, 1fr)"} onClick={()=>navigate("/signup")}>
+                    <GridItem marginRight="100px" >
+                    <Image src={"https://th.bing.com/th/id/R.6679ea02f6eb57917c64366253ae07ce?rik=TBUo3pSlO8KMZA&riu=http%3a%2f%2fcdn.onlinewebfonts.com%2fsvg%2fdownload_328477.png&ehk=0ZSeNFTGZ4pTz59zPQ1%2bshRtORE3xASxnCi5mNU6xAM%3d&risl=&pid=ImgRaw&r=0"} border={"1px solid"} w="30px" h="30px" borderRadius="50%" alt="icon" />
+                    </GridItem>
+                    
+                    <GridItem marginLeft={"-100px"} > 
+                    <Text fontSize={"14px"}>Sign-up with e-mail</Text>
+                    </GridItem>
+                   </Grid>
+
+
+
+
                    <Grid gridTemplateColumns={"repeat(2, 1fr)"}>
                     <GridItem marginRight="100px" >
                     <Image src={"https://www.pngitem.com/pimgs/m/78-786293_1240-x-1240-0-avatar-profile-icon-png.png"} border={"1px solid"} w="30px" h="30px" borderRadius="50%" alt="icon" />

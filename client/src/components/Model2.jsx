@@ -46,7 +46,7 @@ const handleClick = ()=>{
     return (
       <>
         <Button 
-        onClick={onOpen}>Open Modal</Button>
+         onClick={onOpen}>Open Modal</Button>
   
         <Modal 
         closeOnOverlayClick={false} 
@@ -59,22 +59,7 @@ const handleClick = ()=>{
           <ModalOverlay />
           <ModalContent>
           <ModalCloseButton />
-            {/* <ModalHeader>Create your account</ModalHeader> */}
-            
-             {/* <ModalBody pb={6}>
-              qwertyuigavjxjczxqwertyuitrewertyuqwertrewqwe
-              qwerewqwerewqwerewqwerewwew
-              qwerdsasdfvcxzxcbbvc
-              sdffdse
-            </ModalBody> */}
-{/*   
-            <ModalFooter>
-              <Button colorScheme='blue' mr={3}>
-                Save
-              </Button>
-              <Button onClick={onClose}>Cancel</Button>
-            </ModalFooter> */} 
-            
+           
 <Box  color="white"  >
 <Image src={popup_image} alt="popup"  />
 {/* <svg  viewBox="0 0 480 136" fill="none" xmlns="http://www.w3.org/2000/svg">
