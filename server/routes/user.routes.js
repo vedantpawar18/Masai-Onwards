@@ -113,7 +113,7 @@ userController.post("/verify", async(req,res)=>{
            })
            try{
                await user.save()
-               const token = jwt.sign({ emailId:email }, process.env.JWT_SECRET);
+               const token = jwt.sign({ emailId:email , userName:full_name, mobNumb:null}, process.env.JWT_SECRET);
                res.json({msg : "Signup successfull at email password",token})
            }
            catch(err){
@@ -136,7 +136,10 @@ userController.post("/verify", async(req,res)=>{
     else if(mob_numb.length!==10){
       return res.status(401).send("Invalid mobile number at end !");
     }
-   else {
+    if (password.length<8){
+      return res.status(401).send("password length should not be less than 8");
+  }
+  else {
       bcrypt.hash(password, 5, async function(err, hash) {
         if(err){
           console.log(err)
@@ -169,7 +172,11 @@ userController.post("/signup", async(req, res) => {
     const {email, password, full_name,mob_numb} = req.body;
 
       //  <----------------------If user is signed up with email address--------------------------------------------------> //
-  if(email && !password){
+  
+    if (password.length<8){
+        return res.status(401).send("password length should not be less than 8");
+    }
+    else if(email && !password){
    
       const user = new UserModel({
           email,
@@ -184,7 +191,11 @@ userController.post("/signup", async(req, res) => {
          //  <----------------------If user is signed up with mobile number--------------------------------------------------> //
 
   if (mob_numb && !password){
-
+    
+   if(password.length<8){
+    return res.status(401).send("password length should not be less than 8");
+   }
+   else{
     const user = new UserModel({
       email,
       mob_numb
@@ -192,6 +203,7 @@ userController.post("/signup", async(req, res) => {
   await user.save()
   const token = jwt.sign({ mobNumb:mob_numb }, process.env.JWT_SECRET);
   res.json({msg : "Signup successfull",token})
+   }
   }
          
 })
