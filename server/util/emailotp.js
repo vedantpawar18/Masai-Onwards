@@ -10,6 +10,7 @@ const emailvalidation = (email) => {
     else return false;
   };
   
+  
 //   function to send mail using nodemailer
 
 const sendmail=async(email)=>
