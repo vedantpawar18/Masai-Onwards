@@ -5,8 +5,21 @@ const bcrypt = require("bcrypt");
 const { UserModel } = require("../models/User.model");
 const {sendmail,generateToken,emailvalidation}=require("../util/emailotp");
 const OTPModel = require("../models/Otp.model");
+const rateLimit = require('express-rate-limit')
 
 
+
+const apiLimiter = rateLimit({
+	windowMs: 36 * 60 * 1000, //1 hour
+	max: 10, // Limit each IP to 10 requests per `window` (here, per 60 minutes)
+  message:
+		'You exceeded the limit',
+	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+})
+
+
+authRouter.use("/signin",apiLimiter);
 
 // APT for sign in
 authRouter.post("/signin", async (req, res) => {
