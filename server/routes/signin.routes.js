@@ -10,11 +10,10 @@ const rateLimit = require('express-rate-limit')
 
 
 const apiLimiter = rateLimit({
-	windowMs: 36 * 60 * 1000, //1 hour
+	windowMs: 60 * 6 * 60 * 1000, //1 hour
 	max: 10, // Limit each IP to 10 requests per `window` (here, per 60 minutes)
-  message:
-		'You exceeded the limit',
-	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  message:"Too many requests. Try again after some time.",
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
 	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 })
 
@@ -29,7 +28,6 @@ authRouter.post("/signin", async (req, res) => {
   const user = await UserModel.findOne({ email });
     if (user && password) {
       const hash = user.password;
-      console.log(user);
       if (user && password) {
         const verification = await bcrypt.compare(password, hash);
       if (verification) {
