@@ -31,7 +31,7 @@ import {
             borderRadius={"15px"}
            >
            <Box  h="20px" w="50px"> </Box>
-           <Box marginLeft="10px" bg="white" borderRadius={"8px"} h="20px" w="80px">
+           <Box marginLeft="10px" bg="white" borderRadius={"7.5px"} h="20px" w="80px">
            <Text  color={"green"} fontWeight="bold" fontSize="12px">Full Time</Text>
            </Box>
            <Text textAlign={"left"} paddingLeft="10px" paddingTop={"70px"} fontSize={"30px"} fontWeight="bold"
@@ -78,7 +78,7 @@ import {
                           fontWeight={600}
                           fontSize={"14px"}
                           display={"flex"}
-                              gap="12px"
+                              gap={"12px"}
                           alignItems={"start"}
                           variant="ghost"
                       >

@@ -220,7 +220,7 @@ console.log("emailError",emailError)
             </Stack>
             <Stack pt={6}>
               <Text align={'center'}>
-                Already have an account? <Link color={'blue.400'}>Sign in</Link>
+              Don't have an account? <Link color={'blue.400'}>Sign up</Link>
               </Text>
             </Stack>
           </Stack>
@@ -314,7 +314,7 @@ console.log("emailError",emailError)
           </Stack>
           <Stack pt={6}>
             <Text align={'center'}>
-              Already have an account? <Link color={'blue.400'}>Sign in</Link>
+             Don't have an account? <Link color={'blue.400'}>Sign up</Link>
             </Text>
           </Stack>
         </Stack>
