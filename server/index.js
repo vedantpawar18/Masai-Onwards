@@ -1,6 +1,8 @@
 const express = require("express")
 const cors = require('cors')
 const {userController}= require("./routes/user.routes")
+const {dashboardController}= require("./routes/dashboard.routes")
+const authRouter=require("./routes/signin.routes")
 const authRouter=require("./routes/signin.routes")
 
 const app = express();
@@ -12,7 +14,8 @@ app.use(express.json());
 app.use(cors());
 app.use("/auth",authRouter)
 
-app.use("/user", userController)
+app.use("/user", userController);
+app.use("/dashboard", dashboardController);
 
 app.get("/", (req,res)=>{
     res.send("Welcome to homepage");
