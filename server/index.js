@@ -3,7 +3,6 @@ const cors = require('cors')
 const {userController}= require("./routes/user.routes")
 const {dashboardController}= require("./routes/dashboard.routes")
 const authRouter=require("./routes/signin.routes")
-const authRouter=require("./routes/signin.routes")
 
 const app = express();
 const PORT = process.env.PORT || 8080;
