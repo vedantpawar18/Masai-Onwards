@@ -22,6 +22,8 @@ import {
   } from '@chakra-ui/react';
 import { useState } from 'react';
 import validator from 'validator';
+import { useDispatch } from 'react-redux';
+import { signInAuth } from '../redux/action';
 
   export default function SignIn() {
     const [showPassword, setShowPassword] = useState(false);
@@ -30,14 +32,16 @@ import validator from 'validator';
     const [errorMessage, setErrorMessage] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-
+    const dispatch = useDispatch()
 
 const handleClick = ()=>{
      
-
+   let emailFlag = false;
+   let passFlag = false;
   
     if (validator.isEmail(email)) {
       setEmailError('')
+      emailFlag = true;
     } else {
       setEmailError('Enter valid Email!')
     }
@@ -45,10 +49,23 @@ const handleClick = ()=>{
         minLength: 8, minLowercase: 1,
         minUppercase: 1, minNumbers: 1, minSymbols: 1
       })) {
-        setErrorMessage('')
+        setErrorMessage('');
+        passFlag = true;
       } else {
         setErrorMessage('Weak Password')
       }
+
+    if(emailFlag&&passFlag){
+
+      let data = {
+        email,
+        password
+      }
+           dispatch(signInAuth(data))
+           
+     }
+
+
 
 }
 
