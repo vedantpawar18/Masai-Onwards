@@ -4,6 +4,8 @@ import {Routes, Route} from "react-router-dom"
 import LandingPage from "../components/LandingPage";
 import LandingSignUp from "../components/LandingSignUp";
 import Navbar from "../components/Navbar";
+import ScoreDashboard from "../components/ScoreDashboard";
+import SideBar from "../components/SideBar";
 import SignIn from "../components/SignIn";
 import SignUp from "../components/SignUp";
 
@@ -17,14 +19,17 @@ const AllRoutes = () => {
     <Navbar/>
     <Routes>
 
-     <Route path="/" element={<LandingPage/>} />
+     {/* <Route path="/" element={<LandingPage/>} />
      <Route path="/landingSignup" element={<LandingSignUp/>}/>
      <Route path="/signin" element={<SignIn/>}/>
      <Route path="/signup" element={<SignUp/>}/>
 
 
      <Route path="/user/forget" element={<ForgetPass />} />
-     <Route path="/user/reset" element={<ResetPass />} />
+     <Route path="/user/reset" element={<ResetPass />} /> */}
+
+<Route path="/" element={<SideBar/>} />
+     <Route path="/score" element={<ScoreDashboard/>} />
 
     </Routes>
     </>
