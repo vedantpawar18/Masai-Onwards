@@ -2,14 +2,22 @@ const nodemailer = require("nodemailer");
 const OTPModel = require("../models/Otp.model");
 const jwt = require("jsonwebtoken");
 
-
 // function to check if email is validate or not.
 const emailvalidation = (email) => {
     const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if (email.match(mailformat)) return true;
     else return false;
   };
-  
+
+  function validateUserName(username){
+    if(username.length>=3){
+      var usernameRegex = /^[a-zA-Z ]+$/;
+    return usernameRegex.test(username);
+    }
+    else{
+      return false
+    }
+  }
   
 //   function to send mail using nodemailer
 
@@ -19,7 +27,7 @@ const sendmail=async(email)=>
   const user = await OTPModel.findOne({ email });
       if (user) await OTPModel.deleteOne({ email: email });
 
-      const mail =await  nodemailer.createTransport({
+      const mail =  nodemailer.createTransport({
         service: "gmail",
         secure: false,
         host: "smtp.gmail.com",
@@ -39,8 +47,7 @@ const sendmail=async(email)=>
         html: `<p>Otp for sign in with masai portal is ${otp}</p>`,
       });
       const newotp = new OTPModel({ email: email, otp: otp });
-      console.log(newotp)
-      newotp.save();
+      await newotp.save();
      
 }
 
@@ -64,8 +71,16 @@ const generateToken = ({ email = null, full_name = null, mobile = null }) => {
     return {
       message: "Signed in successfully",
       Primarytoken,
-      Refreshtoken,
+      Refreshtoken,email:email,
+      full_name:full_name,
+      mobile:mobile
     };
   };
 
-  module.exports={sendmail,generateToken,emailvalidation};
+  const decryptToken =(token) =>{
+    const tokenDecodablePart = token.split('.')[1];
+    const decoded = JSON.parse(Buffer.from(tokenDecodablePart, 'base64').toString());
+    return(decoded)
+  }
+
+  module.exports={sendmail,generateToken,emailvalidation, validateUserName, decryptToken};
