@@ -2,7 +2,7 @@
 
 
 import {initializeApp} from "firebase/app";
-import {getAuth} from "firebase/auth";
+import {getAuth, GoogleAuthProvider} from "firebase/auth";
 const firebaseConfig = {
   apiKey: "AIzaSyBFaIudnhY_Hp1dWT8_Sh36UbnLWrvToBo",
   authDomain: "prepleaf-masai.firebaseapp.com",
@@ -16,5 +16,6 @@ const firebaseConfig = {
 
 
   const app = initializeApp(firebaseConfig);
-  export const auth = getAuth(app);
-  export default app
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider()
+  export {auth, provider};

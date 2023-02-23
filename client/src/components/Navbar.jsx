@@ -22,6 +22,9 @@ import {
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import Model3 from './Model3';
 import { useNavigate } from 'react-router-dom';
+import { signInWithPopup } from 'firebase/auth';
+import { useEffect, useState } from 'react';
+import { auth, provider } from '../firebase';
 
 const Links = ['Dashboard', 'Projects', 'Team'];
 
@@ -29,7 +32,23 @@ const Links = ['Dashboard', 'Projects', 'Team'];
 export default function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate()
-
+  const [value, setValue] = useState("");
+  const [name, setName] = useState("")
+  const handleClick = ()=>{
+      signInWithPopup(auth,provider).then((data)=>{
+          setValue(data.user.email)
+        
+          console.log("data",data.user.displayName)
+          localStorage.setItem("displayName",data.user.displayName)
+          localStorage.setItem("email",data.user.email)
+      }) 
+  }
+  
+  useEffect(()=>{
+  setValue(localStorage.getItem("email"))
+  setName(localStorage.getItem("displayName"))
+  })
+  console.log("name",name)
   return (
     <>
     
@@ -131,7 +150,7 @@ export default function Navbar() {
                 <MenuItem width={"300px"} h={"440px"}>
                   
                  <Stack>
-                   <Grid gridTemplateColumns={"repeat(2, 1fr)"}>
+                   {/* <Grid gridTemplateColumns={"repeat(2, 1fr)"}>
                     <GridItem marginRight="100px" >
                     <Image src={"https://pixlok.com/wp-content/uploads/2021/04/Google-Icon-PNG.jpg"} border={"1px solid"} w="30px" h="30px" borderRadius="50%" alt="icon" />
                     </GridItem>
@@ -139,9 +158,9 @@ export default function Navbar() {
                     <GridItem marginLeft={"-100px"} > 
                     <Text fontSize={"14px"}>Sign-in to prepleaf with google</Text>
                     </GridItem>
-                   </Grid>
+                   </Grid> */}
 
-                   <Grid gridTemplateColumns={"repeat(2, 1fr)"}>
+                   <Grid gridTemplateColumns={"repeat(2, 1fr)"} onClick={handleClick}>
                     <GridItem marginRight="100px" >
                     <Image src={"https://pixlok.com/wp-content/uploads/2021/04/Google-Icon-PNG.jpg"} border={"1px solid"} w="30px" h="30px" borderRadius="50%" alt="icon" />
                     </GridItem>
@@ -206,13 +225,13 @@ export default function Navbar() {
                     </GridItem>
                     
                     <GridItem marginLeft={"-100px"} > 
-                    <Text fontWeight="bold">Sonu suharshan</Text>
-                    <Text fontSize={"12px"}>sonu@masaischool.com</Text>
+                    <Text fontWeight="bold">{name}</Text>
+                    <Text fontSize={"12px"}>{value}</Text>
                     </GridItem>
                    </Grid>
                   
                
-                  <Button bg="blue.400">Continue as Sonu</Button>
+                  <Button bg="blue.400">Continue as {name}</Button>
                     <Text fontSize={"16px"}>To create your account, google will share your name, 
                         email address and profile picture with coding Ninjas, 
                         see coding Ninja's privecy policy and terms and service </Text>

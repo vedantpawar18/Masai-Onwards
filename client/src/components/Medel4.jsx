@@ -1,12 +1,11 @@
 import {  ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { Box, Center } from "@chakra-ui/layout"
 import { Button, FormControl, FormLabel, HStack, Image, Input, InputGroup, InputRightElement, Link, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, Text, useDisclosure } from "@chakra-ui/react"
-
 import { useRef, useState } from "react";
 import { FcGoogle } from "react-icons/fc"
 import popup_image from "../images/popup_image.jpg";
 import validator from 'validator';
-export default function Model2() {
+export default function Model4() {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [showPassword, setShowPassword] = useState(false);
     const initialRef = useRef(null)
@@ -67,22 +66,8 @@ const handleClick = ()=>{
 
       </Box>
       <Stack margin={"30px"} spacing={4}>
-            <HStack>
-              <Box>
-                <FormControl id="name" >
-                  <FormLabel>Name</FormLabel>
-                  <Input type="text" width={"400px"} onChange={(e)=>setName(e.target.value)} placeholder={"Enter your name"} />
-                  <Text color={"red"} fontSize={"10px"} textAlign={"left"}>{nameError}</Text>
-                 
-                </FormControl>
-              </Box>
            
-            </HStack>
-            <FormControl id="email" >
-              <FormLabel>Phone number or email address</FormLabel>
-              <Input type="email" placeholder='Enter your number or email address' onChange={(e)=>setEmail(e.target.value)}/>
-              <Text color={"red"} fontSize={"10px"} textAlign={"left"}>{emailError}</Text>
-            </FormControl>
+          
             <Stack>
             <Text marginBottom={"5px"} textAlign={"center"}>By signing up, I accept the Prepleaf <Link color={'blue.400'}>Terms of Service </Link> and acknowledge the  <Link color={'blue.400'}>Privacy Policy.</Link></Text>
             </Stack>

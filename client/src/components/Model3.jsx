@@ -1,6 +1,6 @@
 import { EmailIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons"
 import { Box, Center } from "@chakra-ui/layout"
-import { Button, FormControl, FormLabel, HStack, Image, Input, InputGroup, InputRightElement, Link, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, Text, useDisclosure } from "@chakra-ui/react"
+import { Button, Flex, FormControl, FormLabel, Heading, HStack, Image, Input, InputGroup, InputRightElement, Link, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, PinInput, PinInputField, Stack, Text, useDisclosure } from "@chakra-ui/react"
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc"
 import popup_image from "../images/popup_image.jpg";
@@ -27,20 +27,22 @@ export default function Model3() {
     console.log(phoneNumber)
     const genarateRecaptcha = ()=>{
       window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {
-        // 'size': 'invisible',
+     
         'callback': (response) => {
-          // reCAPTCHA solved, allow signInWithPhoneNumber.
+       
         }
       }, auth)
     }
     
     
     const requestOtp = ()=>{
-      if(phoneNumber.length>=12){
+      let num = `+91${phoneNumber}`;
+      localStorage.setItem('num', num);
+      if(num.length>=12){
          
           genarateRecaptcha();
           let appVerifier = window.recaptchaVerifier;
-          signInWithPhoneNumber(auth,phoneNumber,appVerifier)
+          signInWithPhoneNumber(auth,num,appVerifier)
           .then(confirmationResult=>{
                window.confirmationResult = confirmationResult;
                console.log(confirmationResult.verificationId)
@@ -52,11 +54,24 @@ export default function Model3() {
       }
     }
     
+    const resendOtp = ()=>{
+      let num = localStorage.getItem('num');
+    
+       let appVerifier = window.recaptchaVerifier;
+       signInWithPhoneNumber(auth,num,appVerifier)
+       .then(confirmationResult=>{
+            window.confirmationResult = confirmationResult;
+       }).catch((error)=>{
+          console.log(error)
+       })
+     }
+
+
     
     const verifyOtp = (e)=>{
       let otp = e.target.value;
     setGetOtp(otp);
-    
+    console.log(getOtp)
     if(otp.length===6){
       let confirmationResult = window.confirmationResult;
       confirmationResult.confirm(otp).then((result)=>{
@@ -222,42 +237,59 @@ if(token){
 </svg>
 
 </Box>
-<Stack margin={"30px"} spacing={4}>
-      <HStack>
+<Flex
       
-      
-      </HStack>
-     
-    
-     
-  <Center p={2}>
-
-</Center>
-
-
-<Input  value={getOtp} onChange={verifyOtp} placeholder="enter otp here" />
-   <Text textAlign={"center"}>OR</Text>
-   <Center p={2}>
-<Button
- marginTop={"-15px"}
- w={'600px'}
-
-  variant={'outline'}
-  leftIcon={<FcGoogle />}>
-  <Center>
-    <Text>Continue with Google</Text>
-  </Center>
-</Button>
-</Center>
-
- 
-
-      <Stack pt={6}>
-        <Text align={'center'} marginTop={"-40px"}>
-          Already have an account? <Link color={'blue.400'}>Sign in</Link>
-        </Text>
+      align={'center'}
+      justify={'center'}
+      bg={('gray.50')}>
+      <Stack
+        spacing={4}
+        w={'full'}
+        maxW={'sm'}
+        bg={('white')}
+        rounded={'xl'}
+        boxShadow={'lg'}
+        p={6}
+        my={10}>
+        <Center>
+          <Heading lineHeight={1.1} fontSize={{ base: '2xl', md: '3xl' }}>
+            Verify your OTP
+          </Heading>
+        </Center>
+        <Center
+          fontSize={{ base: 'sm', sm: 'md' }}
+          color={('gray.800')}>
+          We have sent code to your mobile number
+        </Center>
+        <Center
+          fontSize={{ base: 'sm', sm: 'md' }}
+          fontWeight="bold"
+          color={('gray.800')}>
+          {}
+        </Center>
+        <FormControl >
+          <Center>
+            <HStack>
+           
+              <Input placeholder="Enter your otp here" value={getOtp} onChange={verifyOtp}/>
+            </HStack>
+          </Center>
+        </FormControl>
+        <Button onClick={resendOtp}>
+          Resend
+        </Button>
+        <Stack spacing={6}>
+          <Button
+            bg={'blue.400'}
+            color={'white'}
+            _hover={{
+              bg: 'blue.500',
+            }}>
+            Verify
+          </Button>
+        </Stack>
       </Stack>
-    </Stack>
+    </Flex>
  
     </ModalContent>
   </Modal>
@@ -411,8 +443,8 @@ if(token){
       
       </HStack>
       <FormControl id="email" >
-        <FormLabel>Email address or Phone Number</FormLabel>
-        <Input  placeholder='email or mobile number' onChange={(e)=>setPhoneNumber(e.target.value)}/>
+        <FormLabel>Phone Number</FormLabel>
+        <Input  placeholder='Enter your mobile number' onChange={(e)=>setPhoneNumber(e.target.value)}/>
         <Text color={"red"} fontSize={"10px"} textAlign={"left"}>{emailError}</Text>
         <Box id="recaptcha-container">
 
@@ -432,7 +464,7 @@ if(token){
   onClick={requestOtp}
  >
   <Center>
-    <Text>CONTINUE</Text>
+    <Text>Send OTP</Text>
   </Center>
 </Button>
 </Center>
