@@ -9,7 +9,16 @@ const emailvalidation = (email) => {
     if (email.match(mailformat)) return true;
     else return false;
   };
-  
+
+  function validateUserName(username){
+    if(username.length>=3){
+      var usernameRegex = /^[a-zA-Z ]+$/;
+    return usernameRegex.test(username);
+    }
+    else{
+      return false
+    }
+  }
   
 //   function to send mail using nodemailer
 
@@ -68,4 +77,10 @@ const generateToken = ({ email = null, full_name = null, mobile = null }) => {
     };
   };
 
-  module.exports={sendmail,generateToken,emailvalidation};
+  const decryptToken =(token) =>{
+    const tokenDecodablePart = token.split('.')[1];
+    const decoded = JSON.parse(Buffer.from(tokenDecodablePart, 'base64').toString());
+    return(decoded)
+  }
+
+  module.exports={sendmail,generateToken,emailvalidation, validateUserName, decryptToken};
