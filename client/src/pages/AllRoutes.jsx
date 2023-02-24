@@ -1,9 +1,13 @@
 import React from "react";
 import {Routes, Route} from "react-router-dom"
+import DetailPage from "../components/DetailPage";
 import Home from "../components/Home";
 import LandingPage from "../components/LandingPage";
 import LandingSignUp from "../components/LandingSignUp";
 import Navbar from "../components/Navbar";
+import PrivateRoute from "../components/PrivateRoute";
+import ScoreDashboard from "../components/ScoreDashboard";
+import SideBar from "../components/SideBar";
 
 import SignIn from "../components/SignIn";
 import SignUp from "../components/SignUp";
@@ -16,7 +20,9 @@ const AllRoutes = () => {
     <Routes>
 
       <Route element={<PrivateRoute/>}>
-      <Route path="/home" element={<Home/>} />
+      <Route path="/dashboard" element={<SideBar/>} />
+<Route path="/dashboard/:id" element={<DetailPage/>}/>
+     <Route path="/score" element={<ScoreDashboard/>} />
       </Route>
      <Route path="/" element={<LandingPage/>} />
      <Route path="/landingSignup" element={<LandingSignUp/>}/>
