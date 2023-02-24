@@ -245,7 +245,7 @@ export default function DetailPage() {
 					<hr/>
 					<Box textAlign={"right"} marginRight={"40px"} >
 						
-					<Button bg={"blue.400"} color={"white"}>Apply</Button>
+					<Button bg={"blue.400"} color={"white"}>Apply Now</Button>
 					</Box>
 					
 				</>
