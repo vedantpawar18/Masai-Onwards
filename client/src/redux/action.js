@@ -1,33 +1,49 @@
 import axios from "axios";
 
-export const GET_AUTH_REQUEST = "GET_AUTH_REQUEST";
-export const GET_AUTH_SUCCESS = "GET_AUTH_SUCCESS";
-export const GET_AUTH_FAILURE = "GET_AUTH_FAILURE";
+export const SIGNIN_AUTH_REQUEST = "SIGNIN_AUTH_REQUEST";
+export const SIGNIN_AUTH_SUCCESS = "SIGNIN_AUTH_SUCCESS";
+export const SIGNIN_AUTH_FAILURE = "SIGNIN_AUTH_FAILURE";
 
 export const POST_AUTH_REQUEST = "POST_AUTH_REQUEST";
 export const POST_AUTH_SUCCESS = "POST_AUTH_SUCCESS";
 export const POST_AUTH_FAILURE = "POST_AUTH_FAILURE";
 
+
+export const GET_DATA_REQUEST = "GET_DATA_REQUEST";
+export const GET_DATA_SUCCESS = "GET_DATA_SUCCESS";
+export const GET_DATA_FAILURE = "GET_DATA_FAILURE";
+
 export const getAuthRequest = ()=>{
+
+export const GOOGLE_AUTH_REQUEST = "GOOGLE_AUTH_REQUEST";
+export const GOOGLE_AUTH_SUCCESS = "GOOGLE_AUTH_SUCCESS";
+export const GOOGLE_AUTH_FAILURE = "GOOGLE_AUTH_FAILURE";
+
+export const PHONE_AUTH_REQUEST = "PHONE_AUTH_REQUEST";
+export const PHONE_AUTH_SUCCESS = "PHONE_AUTH_SUCCESS";
+export const PHONE_AUTH_FAILURE = "PHONE_AUTH_FAILURE";
+
+export const signInAuthRequest = ()=>{
+
     return({
-        type:GET_AUTH_REQUEST
+        type:SIGNIN_AUTH_REQUEST
     })
 }
 
 
 
-export const getAuthSuccess = (auth)=>{
+export const signInAuthSuccess = (auth)=>{
     return({
-        type:GET_AUTH_SUCCESS,
+        type:SIGNIN_AUTH_SUCCESS,
         payload:auth
     })
 }
 
 
 
-export const getAuthFailure = ()=>{
+export const signInAuthFailure = ()=>{
     return({
-        type:GET_AUTH_FAILURE
+        type:SIGNIN_AUTH_FAILURE
     })
 }
 
@@ -56,21 +72,73 @@ export const postDataFailure = ()=>{
 }
 
 
+export const googleDataRequest = ()=>{
+    return({
+        type:GOOGLE_AUTH_REQUEST
+    })
+}
 
-export const getAuth = ()=>(dispatch)=>{
 
-    dispatch(getAuthRequest())
+
+export const googleDataSuccess = (auth)=>{
+    return({
+        type:GOOGLE_AUTH_SUCCESS,
+        payload:auth
+    })
+}
+
+
+
+export const googleDataFailure = ()=>{
+    return({
+        type:GOOGLE_AUTH_FAILURE
+    })
+}
+
+
+export const phoneDataRequest = ()=>{
+    return({
+        type:PHONE_AUTH_REQUEST
+    })
+}
+
+
+
+export const phoneDataSuccess = (auth)=>{
+    return({
+        type:PHONE_AUTH_SUCCESS,
+        payload:auth
+    })
+}
+
+
+
+export const phoneDataFailure = ()=>{
+    return({
+        type:PHONE_AUTH_FAILURE
+    })
+}
+
+
+
+
+
+
+export const signInAuth = (data)=>(dispatch)=>{
+
+    dispatch(signInAuthRequest())
     return axios({
-        method:"GET",
-        url:""
+        method:"POST",
+        url:"",
+        data
     })
 
     .then((res)=>{
-        dispatch(getAuthSuccess(res.data))
+        dispatch(signInAuthSuccess(res.data))
     })
 
     .then((error)=>{
-        dispatch(getAuthFailure())
+        dispatch(signInAuthFailure())
     })
 }
 
@@ -95,3 +163,63 @@ export const postData = (data)=>(dispatch)=>{
     })
 }
 
+
+
+
+export const getDataRequest = ()=>{
+    return({
+        type:GET_DATA_REQUEST
+    })
+}
+
+
+
+export const getDataSuccess = (data)=>{
+    return({
+        type:GET_DATA_SUCCESS,
+        payload:data
+    })
+}
+
+
+
+export const getDataFailure = ()=>{
+    return({
+        type:GET_DATA_FAILURE
+    })
+}
+
+export const getData = ()=>(dispatch)=>{
+
+    dispatch(getDataRequest())
+    return axios({
+        method:"GET",
+        url:"http://localhost:8080/dashboard/course-details"
+    })
+
+    .then((res)=>{
+        dispatch(getDataSuccess(res.data))
+    })
+
+    .then((error)=>{
+        dispatch(getDataFailure())
+    })
+
+export const googleAuth = (auth)=>(dispatch)=>{
+dispatch(googleDataRequest())
+try{
+    dispatch(googleDataSuccess(auth))
+}catch(error){
+    dispatch(googleDataFailure(error))
+}
+}
+
+export const phoneAuth = (auth)=>(dispatch)=>{
+    dispatch(phoneDataRequest())
+try{
+    dispatch(phoneDataSuccess(auth))
+}catch(error){
+    dispatch(phoneDataFailure(error))
+}
+
+}

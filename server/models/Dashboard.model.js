@@ -19,6 +19,8 @@ const courseSchema = new mongoose.Schema({
 
 const formSchema = new mongoose.Schema({
     form_id : {type : Number},
+    userId : {type : Object},
+    courseId : {type : Object},
     mob_numb : {type : Number},
     date_of_birth : {type : String},
     twelth_diploma_completion : {type : String},

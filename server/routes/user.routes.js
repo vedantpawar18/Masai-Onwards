@@ -3,7 +3,11 @@ const {UserModel} = require("../models/User.model")
 const userController = Router();
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken");
+const OTPModel = require("../models/Otp.model");
 require("dotenv").config();
+const {emailvalidation,generateToken, validateUserName, sendmail, decryptToken }= require("../util/emailotp")
+const customEmailMessage = "sign in with masai portal.";
+
 
 // email, username and mobile number verification for the first page of signup
 
@@ -12,37 +16,11 @@ userController.post("/verify", async(req,res)=>{
   //  <----------------------If user is signed up with email id --------------------------------------------------> //
   const {email, password, full_name,mob_numb} = req.body;
 
-   //  function to validate email id.
-   function validateemail(mail)  
-   {  
-   var x=mail;  
-   var atposition=x.indexOf("@");  
-   var dotposition=x.lastIndexOf(".");  
-   if (atposition<1 || dotposition<atposition+2 || dotposition+2>=x.length){  
-     return false;  
-     } 
-     else{
-       return true;
-     } 
-   } 
-
-    // function to validate username.
-
-    function validateUserName(username){
-      if(username.length>=3){
-        var usernameRegex = /^[a-zA-Z ]+$/;
-      return usernameRegex.test(username);
-      }
-      else{
-        return false
-      }
-    }
-
   //  <----------------------If user is signed up with email id --------------------------------------------------> //
     if (email && !password)
     {
         const alreadyUser = await UserModel.find({ email });
-        const valideMail= validateemail(email);
+        const valideMail= emailvalidation(email);
         const validName= validateUserName(full_name)
 
         if(valideMail==false){
@@ -55,6 +33,7 @@ userController.post("/verify", async(req,res)=>{
             return res.status(403).send("User already exists");
         }
         else{
+           await sendmail(email, customEmailMessage, full_name)
            return res.status(200).send("Otp sent to your email address")   
         }
     }
@@ -86,7 +65,7 @@ userController.post("/verify", async(req,res)=>{
     if(password && email){
 
       const alreadyUser = await UserModel.find({ email });
-       const valideMail= validateemail(email);
+       const valideMail= emailvalidation(email);
        const validName= validateUserName(full_name)
 
        if(valideMail==false){
@@ -113,8 +92,13 @@ userController.post("/verify", async(req,res)=>{
            })
            try{
                await user.save()
-               const token = jwt.sign({ emailId:email , userName:full_name, mobNumb:null}, process.env.JWT_SECRET);
-               res.json({msg : "Signup successfull at email password",token})
+               const token = generateToken({
+                email: user.email,
+                full_name: user.full_name,
+                mobile: user.mob_numb,
+              })
+              decryptToken(token.Primarytoken)
+               res.json({msg : "Signup successfull at email password",token, email:email, mobNumb:mob_numb, userName:full_name})
            }
            catch(err){
                console.log(err)
@@ -152,8 +136,13 @@ userController.post("/verify", async(req,res)=>{
         })
         try{
             await user.save()
-            const token = jwt.sign({ mobile:mob_numb }, process.env.JWT_SECRET);
-            res.json({msg : "Signup successfull at mob password",token})
+            const token = generateToken({
+              email: user.email,
+              full_name: user.full_name,
+              mobile: user.mob_numb,
+            })
+            decryptToken(token.Primarytoken)
+            res.json({msg : "Signup successfull at email password",token, email:email, mobNumb:mob_numb, userName:full_name})
         }
         catch(err){
             console.log(err)
@@ -169,22 +158,28 @@ userController.post("/verify", async(req,res)=>{
 // email, username and mobile number stored to db after otp verification
 
 userController.post("/signup", async(req, res) => {
-    const {email, password, full_name,mob_numb} = req.body;
+    const {email, password, full_name, mob_numb, otp} = req.body;
 
       //  <----------------------If user is signed up with email address--------------------------------------------------> //
   
-    if (password.length<8){
-        return res.status(401).send("password length should not be less than 8");
-    }
-    else if(email && !password){
-   
-      const user = new UserModel({
+    if(email && !password){
+      const user_exists = await OTPModel.findOne({ email });
+
+      if(user_exists && user_exists.otp==otp){
+        
+        const user = new UserModel({
           email,
           full_name
       })
-      await user.save()
-      const token = jwt.sign({ emailId:email }, process.env.JWT_SECRET);
-      res.json({msg : "Signup successfull",token})
+      await user.save();
+      const token= generateToken({
+        email: user.email,
+        full_name: user.full_name,
+        mobile: user.mob_numb,
+      })
+      res.json({msg : "Signup successfull ",token, email:email, mobNumb:mob_numb, userName:full_name})
+      } else res.status(401).send({ msg: "Please enter a valid 6 digit OTP." });
+     
   
   }
 
@@ -192,17 +187,18 @@ userController.post("/signup", async(req, res) => {
 
   if (mob_numb && !password){
     
-   if(password.length<8){
-    return res.status(401).send("password length should not be less than 8");
-   }
-   else{
+   {
     const user = new UserModel({
-      email,
+      full_name,
       mob_numb
   })
   await user.save()
-  const token = jwt.sign({ mobNumb:mob_numb }, process.env.JWT_SECRET);
-  res.json({msg : "Signup successfull",token})
+  const token = generateToken({
+    email: user.email,
+    full_name: user.full_name,
+    mobile: user.mob_numb,
+  });
+  res.json({msg : "Signup successfull ",token, email:email, mobNumb:mob_numb, userName:full_name})
    }
   }
          

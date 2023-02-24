@@ -11,6 +11,17 @@ const {
 const OTPModel = require("../models/Otp.model");
 const customEmailMessage = "sign in with masai portal.";
 const customEmailMessage2 = "reset your old password";
+const rateLimit = require("express-rate-limit");
+
+const apiLimiter = rateLimit({
+  windowMs: 360 * 60 * 1000, //1 hour
+  max: 10, // Limit each IP to 10 requests per `window` (here, per 60 minutes)
+  message: "Too many requests. Try again after some time.",
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+});
+
+authRouter.use("/signin", apiLimiter);
 
 // APT for sign in
 authRouter.post("/signin", async (req, res) => {
@@ -20,7 +31,6 @@ authRouter.post("/signin", async (req, res) => {
     const user = await UserModel.findOne({ email });
     if (user && password) {
       const hash = user.password;
-      console.log(user);
       if (user && password) {
         const verification = await bcrypt.compare(password, hash);
         if (verification) {
@@ -74,8 +84,8 @@ authRouter.post("/forget", async (req, res) => {
       console.log(err);
       res.status(401).send("something went wrong! try again");
     }
-  }else{
-    res.status(404).send({msg : "user not found"})
+  } else {
+    res.status(404).send({ msg: "user not found" });
   }
 });
 

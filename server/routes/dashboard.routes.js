@@ -2,9 +2,10 @@ const {Router} = require("express")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
-
+const {decryptToken}=require("../util/emailotp")
 const {CourseModel} = require("../models/Dashboard.model");
 const {FormModel} = require("../models/Dashboard.model");
+const {UserModel} = require("../models/User.model")
 
 const dashboardController = Router();
 
@@ -12,7 +13,8 @@ const dashboardController = Router();
 
 dashboardController.get("/course-details", async (req, res) => {
     const courses = await CourseModel.find({})
-    res.send(courses)
+    console.log(courses[0]._id)
+    return res.status(200).send(courses)
 });
 
  //  <----------------------Course creation- static data--------------------------------------------------> //
@@ -63,9 +65,22 @@ dashboardController.post("/user-data-collection", async (req, res) => {
         year_of_graduation ,
         referral_code ,
         ready_to_work ,
-        distance_learning } = req.body;
+        distance_learning,token, courseId} = req.body;
+
+        const userToken=decryptToken(token);
+
+        const email= userToken.email || "email"
+        const mobNumb=userToken.mobile || "mob"
+
+        const user = await UserModel.find({ $or: [{ email:email }, { mob_numb: mobNumb }] });
+
+        const userId =((user[0]._id))
+
+        await UserModel.findOneAndUpdate({ _id: userId },{ $push: { courses_applied: courseId } });
         
-    const userform = new FormModel({
+        const userform = new FormModel({
+        userId,
+        courseId,
         mob_numb ,
         date_of_birth ,
         twelth_diploma_completion ,
@@ -73,7 +88,7 @@ dashboardController.post("/user-data-collection", async (req, res) => {
         year_of_graduation ,
         referral_code ,
         ready_to_work ,
-        distance_learning , token
+        distance_learning 
          })
     try{
         await userform.save()

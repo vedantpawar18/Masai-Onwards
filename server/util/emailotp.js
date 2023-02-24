@@ -32,12 +32,13 @@ const sendmail = async (email, customEmailMessage, username) => {
     from: "Team8masai@gmail.com",
     to: email,
     subject: "Masai School",
-    html: `<h4>Hello ${username},</h4>
-           <p>Greetings from Masai School,</p>
-           <p>We got a request to ${customEmailMessage}. Here is the OTP ${otp}.</p>
-           <p>Thank You😊.</p>
-           <p>Team Masai</p>     
-    `,
+    html: `<h1>Hi ${username},</h1>
+              <p>Greetings from Masai School</p>
+              <p>We got a request to ${customEmailMessage} </p>  
+              <p>Here is the OTP ${otp}</p>      
+              <p>Thank You😊.</p>
+              <p>Team Masai</p>                
+        `,
   });
   const newotp = new OTPModel({ email: email, otp: otp });
   console.log(newotp);
