@@ -23,6 +23,7 @@ import {
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { postData } from '../redux/action';
+import Navbar from './Navbar';
   
   export default function SignUp() {
     const [showPassword, setShowPassword] = useState(false);
@@ -90,6 +91,7 @@ const handleClick = ()=>{
 
     return (
         <>
+          <Navbar/>
       {isLargerThan800?<Stack minH={'100vh'} direction={{ base: 'row', md: 'row' }}>
        
          <Flex flex={1} p={8}  bg={('gray.50')} >
