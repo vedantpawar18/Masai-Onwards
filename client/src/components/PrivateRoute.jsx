@@ -7,7 +7,7 @@ function PrivateRoute() {
 
     // const auth = useSelector((store)=>store.auth.auth);
     // console.log("auth",auth);
-let auth = false
+let auth = true
   return (
         auth ? <Outlet/>: <Navigate to="/" />
   )

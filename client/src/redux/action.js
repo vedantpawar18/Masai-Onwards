@@ -146,3 +146,8 @@ export const phoneAuth = (auth) => (dispatch) => {
     dispatch(phoneDataFailure(error));
   }
 };
+
+
+
+
+

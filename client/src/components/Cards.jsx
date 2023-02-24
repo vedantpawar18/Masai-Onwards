@@ -1,5 +1,6 @@
 import {
   Box,
+  Center,
   Text,
   Stack,
   Button,
@@ -16,10 +17,10 @@ import card_image from "../images/card_image.jpg";
 import { GridItem } from "@chakra-ui/layout";
 import { useEffect, useState } from "react";
 import ScoreScreen from "./ScoreScreen";
-import { useNavigate } from "react-router-dom";
 import ApplyModel from "./ApplyModel";
 import { getData } from "../redux/data/action";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function Cards() {
   const [isLargerThan800] = useMediaQuery("(max-width: 800px)");
@@ -143,7 +144,7 @@ export default function Cards() {
                   </HStack>
                   <HStack>
                     <Button w="200px" color={"#3470E4"} bg="transparent">
-                      View Details
+                      <Link to={`/${item.id}`}> View Details</Link>
                     </Button>
                     <ApplyModel />
                   </HStack>
@@ -260,7 +261,7 @@ export default function Cards() {
                   </HStack>
                   <HStack>
                     <Button w="200px" color={"#3470E4"} bg="transparent">
-                      View Details
+                      <Link to={`/dashboard/${item._id}`}> View Details</Link>
                     </Button>
                     <ApplyModel />
                   </HStack>
