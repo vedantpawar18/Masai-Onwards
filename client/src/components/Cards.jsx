@@ -154,7 +154,9 @@ console.log(data)
                 </HStack>
                 <HStack>
                     <Button w="200px" color={"#3470E4"} bg="transparent">
-                        <Link to={`/${item.id}`}> View Details</Link>
+
+                        <Link to={`/dashboard/${item.id}`}> View Details</Link>
+
                       
                     </Button>
                     <ApplyModel/>

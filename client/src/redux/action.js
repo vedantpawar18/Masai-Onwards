@@ -10,11 +10,6 @@ export const POST_AUTH_FAILURE = "POST_AUTH_FAILURE";
 
 
 
-export const GET_DATA_REQUEST = "GET_DATA_REQUEST";
-export const GET_DATA_SUCCESS = "GET_DATA_SUCCESS";
-export const GET_DATA_FAILURE = "GET_DATA_FAILURE";
-
-
 
 export const GOOGLE_AUTH_REQUEST = "GOOGLE_AUTH_REQUEST";
 export const GOOGLE_AUTH_SUCCESS = "GOOGLE_AUTH_SUCCESS";
@@ -166,8 +161,6 @@ export const postData = (data)=>(dispatch)=>{
 
 
 
-
- 
 
 export const googleAuth = (auth)=>(dispatch)=>{
 dispatch(googleDataRequest())
