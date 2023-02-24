@@ -4,7 +4,7 @@ import Home from "../components/Home";
 import LandingPage from "../components/LandingPage";
 import LandingSignUp from "../components/LandingSignUp";
 import Navbar from "../components/Navbar";
-import PrivateRoute from "../components/PrivateRoute";
+
 import SignIn from "../components/SignIn";
 import SignUp from "../components/SignUp";
 
@@ -14,6 +14,7 @@ const AllRoutes = () => {
     <Navbar/>
     
     <Routes>
+
       <Route element={<PrivateRoute/>}>
       <Route path="/home" element={<Home/>} />
       </Route>
@@ -21,6 +22,7 @@ const AllRoutes = () => {
      <Route path="/landingSignup" element={<LandingSignUp/>}/>
      <Route path="/signin" element={<SignIn/>}/>
      <Route path="/signup" element={<SignUp/>}/>
+
     </Routes>
     </>
   )
