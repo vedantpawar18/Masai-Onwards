@@ -3,25 +3,52 @@ import styles from "../styles/forget.module.css";
 import { Box, Button, Flex, Input, Text } from "@chakra-ui/react";
 import { AiFillCheckCircle } from "react-icons/ai";
 import validator from "validator";
-import isEmail from "validator/lib/isEmail";
+import axios from "axios";
+import { useToast } from "@chakra-ui/react";
+import { useNavigate } from 'react-router-dom';
 
 const ForgetPass = () => {
   const [isDisable, setDis] = useState(true);
   const [emailErr, setErr] = useState(false);
   const [email, setMail] = useState("");
+  const toast = useToast();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setMail(e.target.value);
   };
 
   const handleReset = () => {
-    let div1 = document.querySelector("#div1");
-    let div2 = document.querySelector("#div2");
+
 
     if (validator.isEmail(email)) {
       /// move further and fetch forget password API
-      div1.style.display = "none";
-      div2.style.display = "block";
+
+      axios
+        .post("http://localhost:8080/auth/forget", { email: email })
+        .then((res) => {
+          if (res.status === 200) {
+            toast({
+              title: 'OTP Sended Successfully.',
+              description: "We've sended you a otp in mail.",
+              status: 'success',
+              duration: 9000,
+              isClosable: true,
+            })
+            navigate("/user/reset")
+          }
+        })
+        .catch((err) => {
+          if (err.response.status === 404) {
+            toast({
+              title: 'User not found.',
+              description: "No any account assosiated with that email.",
+              status: 'warning',
+              duration: 3000,
+              isClosable: true,
+            })
+          }
+        });
     } else {
       //show alert
       setErr("enter valid email");
@@ -110,23 +137,6 @@ const ForgetPass = () => {
                 </Button>
                 <Button mt="20px">CANCEL</Button>
               </Box>
-            </Box>
-            <Box id="div2" className={styles.afterDiv2}>
-              <Box m="auto">
-                <Text>
-                  if there is an account associated with this email you will
-                  receive a LINK to reset the email
-                </Text>
-              </Box>
-              <Button m="20px" bg={"#4358F6"} color="white">
-                GO BACK TO SIGN IN
-              </Button>
-              <Text>
-                Didn't receive the mail ?{" "}
-                <span>
-                  <a href="/user/forget">click to resend</a>
-                </span>{" "}
-              </Text>
             </Box>
           </Box>
         </Box>

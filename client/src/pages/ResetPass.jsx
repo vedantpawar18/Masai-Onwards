@@ -1,16 +1,30 @@
 import React, { useState, useEffect } from "react";
 import styles from "../styles/reset.module.css";
-import { Box, Button, Checkbox, Flex, Input, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Checkbox,
+  Flex,
+  HStack,
+  Input,
+  PinInput,
+  PinInputField,
+  Text,
+  useToast,
+} from "@chakra-ui/react";
 import { AiFillCheckCircle } from "react-icons/ai";
 import validator from "validator";
+import axios from "axios";
 
 const ResetPass = () => {
   const [isDisable, setDis] = useState(true);
   const [passErr, setErr] = useState(false);
   const [showPass, setShow] = useState(false);
-  const [password, setPass] = useState("")
-  const [confirmPass, setConfirmPass] = useState("")
-
+  const [password, setPass] = useState("");
+  const [otp, setOtp] = useState();
+  const [confirmPass, setConfirmPass] = useState("");
+  const [invalidOtp, setInvalid] = useState(false);
+  const toast = useToast();
 
   const handleReset = () => {
     let div1 = document.querySelector("#div1");
@@ -18,18 +32,40 @@ const ResetPass = () => {
 
     if (validator.isStrongPassword(password) && password === confirmPass) {
       /// move further and fetch forget password API
-      setErr(null)
-      div1.style.display = "none";
-      div2.style.display = "block";
-    }else if(password?.length < 8){
-        setErr("password length must be 8")
-    }else if(password !== confirmPass){
-        setErr("password not matched")
-    }else{
-        setErr("password must be alphanumeric")
+      setErr(null);
+      // axios.post("http://localhost:8080/auth/reset")
+      if (otp && password) {
+        const payload = {
+          otp: otp,
+          password: password,
+        };
+        axios.post("http://localhost:8080/auth/reset", payload).then((res) => {
+          if (res.status === 200) {
+            setInvalid(false)
+            div1.style.display = "none";
+            div2.style.display = "block";
+            toast({
+              title: "Password Reset Success.",
+              description: "you've changed your password.",
+              status: "success",
+              duration: 3000,
+              isClosable: true,
+            });
+          }
+        }).catch((err) => {
+          if(err.response.status === 401){
+            setInvalid(true)
+          }
+        })
+      }
+    } else if (password?.length < 8) {
+      setErr("password length must be 8");
+    } else if (password !== confirmPass) {
+      setErr("password not matched");
+    } else {
+      setErr("password must be alphanumeric");
     }
   };
-
 
   useEffect(() => {
     if (password && confirmPass) {
@@ -91,9 +127,23 @@ const ResetPass = () => {
                 password
               </Text>
               <Box className={styles.btns}>
+                <Text textAlign={"start"}>Enter Otp</Text>
+                <HStack>
+                  <PinInput onChange={(e) => setOtp(e)}>
+                    <PinInputField />
+                    <PinInputField />
+                    <PinInputField />
+                    <PinInputField />
+                    <PinInputField />
+                    <PinInputField />
+                  </PinInput>
+                </HStack>
+                <Box className={styles.errorTxt}>
+                  {invalidOtp ? <Text>Invalid OTP</Text> : null}
+                </Box>
                 <Text textAlign={"start"}>New password</Text>
                 <Input
-                  type = {showPass ? "text" : "password" }
+                  type={showPass ? "text" : "password"}
                   onChange={(e) => setPass(e.target.value)}
                   placeholder="Create a new password"
                 />
@@ -101,7 +151,7 @@ const ResetPass = () => {
                   Confirm password
                 </Text>
                 <Input
-                  type = {showPass ? "text" : "password" }
+                  type={showPass ? "text" : "password"}
                   onChange={(e) => setConfirmPass(e.target.value)}
                   placeholder="Confirm passowrd"
                 />
@@ -112,7 +162,9 @@ const ResetPass = () => {
                 </Box>
                 <Box mt={3}>
                   {passErr ? (
-                    <Text fontWeight={600} textAlign={"start"} color="red">{passErr}</Text>
+                    <Text fontWeight={600} textAlign={"start"} color="red">
+                      {passErr}
+                    </Text>
                   ) : null}
                 </Box>
                 <Button
@@ -132,10 +184,17 @@ const ResetPass = () => {
             <Box id="div2" className={styles.afterDiv2}>
               <Box m="auto">
                 <Text>
-                  Your password is successfully reset. Click below to sign in your account. 
+                  Your password is successfully reset. Click below to sign in
+                  your account.
                 </Text>
               </Box>
-              <Button w='50%' fontWeight={400} m="20px" bg={"#4358F6"} color="white">
+              <Button
+                w="50%"
+                fontWeight={400}
+                m="20px"
+                bg={"#4358F6"}
+                color="white"
+              >
                 SIGN IN
               </Button>
             </Box>
