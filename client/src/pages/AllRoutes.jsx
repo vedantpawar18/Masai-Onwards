@@ -4,6 +4,7 @@ import Home from "../components/Home";
 import LandingPage from "../components/LandingPage";
 import LandingSignUp from "../components/LandingSignUp";
 import Navbar from "../components/Navbar";
+import PrivateRoute from "../components/PrivateRoute";
 
 import SignIn from "../components/SignIn";
 import SignUp from "../components/SignUp";

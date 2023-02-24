@@ -7,6 +7,7 @@ import {
 	HStack,
 	Grid,
     useMediaQuery,
+   
 } from "@chakra-ui/react";
 
 import { TbCalendarTime } from "react-icons/tb";
@@ -17,10 +18,11 @@ import card_image from "../images/card_image.jpg";
 import { GridItem } from "@chakra-ui/layout";
 import { useEffect, useState } from "react";
 import ScoreScreen from "./ScoreScreen";
-import { useNavigate} from "react-router-dom";
+import { useNavigate,Link} from "react-router-dom";
 import ApplyModel from "./ApplyModel";
-import { getData } from "../redux/action";
+
 import { useSelector ,useDispatch} from 'react-redux';
+import { getData } from "../redux/data/action";
 
 
 export default function Cards() {
@@ -152,7 +154,8 @@ console.log(data)
                 </HStack>
                 <HStack>
                     <Button w="200px" color={"#3470E4"} bg="transparent">
-                        View Details
+                        <Link to={`/${item.id}`}> View Details</Link>
+                      
                     </Button>
                     <ApplyModel/>
                 </HStack>
@@ -278,7 +281,7 @@ console.log(data)
                 </HStack>
                 <HStack>
                     <Button w="200px" color={"#3470E4"} bg="transparent">
-                        View Details
+                    <Link to={`/${item._id}`}> View Details</Link>
                     </Button>
                     <ApplyModel/>
                 </HStack>
