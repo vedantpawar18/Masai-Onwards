@@ -161,6 +161,7 @@ export const postData = (data)=>(dispatch)=>{
 
 
 
+
 export const googleAuth = (auth)=>(dispatch)=>{
 dispatch(googleDataRequest())
 try{
@@ -179,3 +180,4 @@ try{
 }
 
 }
+

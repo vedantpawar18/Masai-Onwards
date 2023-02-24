@@ -1,11 +1,8 @@
 
 import "./App.css";
 
+
 import AllRoutes from "./pages/AllRoutes";
-
-
-import './App.css';
-
 
 
 

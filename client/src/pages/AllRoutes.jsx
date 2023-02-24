@@ -21,8 +21,11 @@ const AllRoutes = () => {
 
       <Route element={<PrivateRoute/>}>
       <Route path="/dashboard" element={<SideBar/>} />
+
       <Route path="/dashboard/:id" element={<DetailPage/>} />
       <Route path="/score" element={<ScoreDashboard/>} />
+
+
       </Route>
       
      <Route path="/" element={<LandingPage/>} />

@@ -5,15 +5,11 @@ import { Navigate, Outlet } from 'react-router-dom';
 
 function PrivateRoute() {
 
-//  let flag = false
+
  let token = localStorage.getItem("accessToken")
-  // const token = useSelector((store)=>store.auth.auth);
-  //  if(token!==""){
-  //   flag = true
-  //  }else{
-  //   flag = false
-  //  }
-  //   console.log("flag",flag)
+ 
+ 
+
   return (
     token ? <Outlet/>: <Navigate to="/" />
   )

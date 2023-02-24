@@ -1,17 +1,22 @@
 
-import {  POST_AUTH_FAILURE, POST_AUTH_REQUEST, POST_AUTH_SUCCESS } from "./action"
+
 
 import {
     SIGNIN_AUTH_FAILURE,
     SIGNIN_AUTH_REQUEST,
     SIGNIN_AUTH_SUCCESS,
-  
+
+    POST_AUTH_REQUEST,
+    POST_AUTH_SUCCESS,
+    POST_AUTH_FAILURE
+
     GOOGLE_AUTH_REQUEST,
     GOOGLE_AUTH_SUCCESS,
     GOOGLE_AUTH_FAILURE,
     PHONE_AUTH_REQUEST,
     PHONE_AUTH_SUCCESS,
-    PHONE_AUTH_FAILURE
+    PHONE_AUTH_FAILURE,
+    
 } from "./action"
 
 
@@ -125,8 +130,6 @@ export const authReducer = (state = initState, action) => {
                 ...state
             })
     }
-
-
 
 }
 
