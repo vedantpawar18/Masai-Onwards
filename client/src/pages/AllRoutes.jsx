@@ -1,12 +1,12 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import LandingPage from "../components/LandingPage";
 import Home from "../components/Home";
 import LandingPage from "../components/LandingPage";
 import LandingSignUp from "../components/LandingSignUp";
 import Navbar from "../components/Navbar";
 import SignIn from "../components/SignIn";
 import SignUp from "../components/SignUp";
+import PrivateRoute from './../components/PrivateRoute';
 
 const AllRoutes = () => {
   return (
