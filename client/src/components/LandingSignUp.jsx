@@ -22,12 +22,14 @@ import {
     useColorModeValue,
   } from '@chakra-ui/react';
 import { useState } from 'react';
+import Navbar from './Navbar';
   
   export default function LandingSignUp() {
     const [showPassword, setShowPassword] = useState(false);
     const [isLargerThan800] = useMediaQuery('(min-width: 800px)')
     return (
         <>
+          <Navbar/>
       {isLargerThan800?<Stack minH={'100vh'} direction={{ base: 'row', md: 'row' }}>
        
          <Flex flex={1} p={8}  bg={('gray.50')} >

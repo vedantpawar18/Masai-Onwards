@@ -25,6 +25,9 @@ import { useNavigate } from 'react-router-dom';
 import { signInWithPopup } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { auth, provider } from '../firebase';
+import PrivateRoute from './PrivateRoute';
+import { useDispatch, useSelector } from 'react-redux';
+import { googleAuth } from '../redux/action';
 
 const Links = ['Dashboard', 'Projects', 'Team'];
 
@@ -34,12 +37,22 @@ export default function Navbar() {
   const navigate = useNavigate()
   const [value, setValue] = useState("");
   const [name, setName] = useState("")
+  const [token, setToken] = useState("")
+  const dispatch = useDispatch()
+  const token2 = useSelector((store)=>store.auth.auth);
+
+// console.log("token",token2)
+  
   const handleClick = ()=>{
       signInWithPopup(auth,provider).then((data)=>{
           setValue(data.user.email)
         
-          console.log("data",data.user.displayName)
+          console.log("data",data.user.accessToken);
+          setToken(data.user.accessToken)
+          localStorage.setItem("accessToken",data.user.accessToken)
+             dispatch(googleAuth(data.user.accessToken))
           localStorage.setItem("displayName",data.user.displayName)
+
           localStorage.setItem("email",data.user.email)
       }) 
   }
@@ -47,11 +60,16 @@ export default function Navbar() {
   useEffect(()=>{
   setValue(localStorage.getItem("email"))
   setName(localStorage.getItem("displayName"))
-  })
-  console.log("name",name)
+  },[])
+
+  // console.log("name",name)
+
+
   return (
     <>
-    
+
+   {/* <PrivateRoute token={token} />  */}
+
       <Box bg={useColorModeValue('white.100', 'gray.900')} px={4}   height="88px">
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <IconButton
@@ -231,7 +249,7 @@ export default function Navbar() {
                    </Grid>
                   
                
-                  <Button bg="blue.400">Continue as {name}</Button>
+                  <Button bg="blue.400" onClick={()=>navigate("/dashboard")}>Continue as {name}</Button>
                     <Text fontSize={"16px"}>To create your account, google will share your name, 
                         email address and profile picture with coding Ninjas, 
                         see coding Ninja's privecy policy and terms and service </Text>

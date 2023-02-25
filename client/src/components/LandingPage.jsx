@@ -1,14 +1,15 @@
 import { Box, Button, Heading, Image, Text, useMediaQuery } from '@chakra-ui/react';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import landingImage from "../images/landing_page.jpg";
 import "./landingPage.css"
+import Navbar from './Navbar';
 function LandingPage() {
     const [isLargerThan800] = useMediaQuery('(min-width: 800px)')
-
+    const navigate = useNavigate();
   return (
     <>
-  
-
+    <Navbar/>
     {isLargerThan800?
        <Box id="landingContainer" 
        backgroundPosition="center"
@@ -27,7 +28,7 @@ function LandingPage() {
    </Text>
    
    
-      <Button id="applyNow">
+   <Button id="applyNow" onClick={()=>navigate("/dashboard")}>
    Apply Now
    </Button>
    

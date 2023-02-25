@@ -1,12 +1,13 @@
 import { EmailIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons"
 import { Box, Center } from "@chakra-ui/layout"
 import { Button, Flex, FormControl, FormLabel, Heading, HStack, Image, Input, InputGroup, InputRightElement, Link, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, PinInput, PinInputField, Stack, Text, useDisclosure } from "@chakra-ui/react"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FcGoogle } from "react-icons/fc"
 import popup_image from "../images/popup_image.jpg";
 import validator from 'validator';
 import {RecaptchaVerifier, signInWithPhoneNumber} from "firebase/auth";
 import {auth} from "../firebase"
+import PrivateRoute from "./PrivateRoute";
 export default function Model3() {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [showPassword, setShowPassword] = useState(false);
@@ -23,7 +24,8 @@ export default function Model3() {
     const countryCode = "+91";
     const [phoneNumber, setPhoneNumber] = useState(countryCode);
     const [expandForm, setExpandForm] = useState(false)
-    const [getOtp, setGetOtp] = useState('')
+    const [getOtp, setGetOtp] = useState('');
+    // const [token, setToken] = useState('')
     console.log(phoneNumber)
     const genarateRecaptcha = ()=>{
       window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {
@@ -45,7 +47,7 @@ export default function Model3() {
           signInWithPhoneNumber(auth,num,appVerifier)
           .then(confirmationResult=>{
                window.confirmationResult = confirmationResult;
-               console.log(confirmationResult.verificationId)
+               console.log("confirmationResult.verificationId",confirmationResult.verificationId)
                setExpandForm(confirmationResult);
           }).catch((error)=>{
              console.log(error)
@@ -61,6 +63,7 @@ export default function Model3() {
        signInWithPhoneNumber(auth,num,appVerifier)
        .then(confirmationResult=>{
             window.confirmationResult = confirmationResult;
+            console.log("confirmationResult",confirmationResult)
        }).catch((error)=>{
           console.log(error)
        })
@@ -77,17 +80,23 @@ export default function Model3() {
       confirmationResult.confirm(otp).then((result)=>{
         const user = result.user;
         console.log("user",user.accessToken)
+
         setToken(user.accessToken)
       }).catch((error)=>{
         console.log(error)
       })
     }
         
-if(token){
-    alert("Success")
-}
+
     }
     
+
+    // useEffect(() => {
+    //   const timer = setTimeout(() => {
+    //     console.log('This will run after 1 second!')
+    //   }, 1000);
+    //   return () => clearTimeout(timer);
+    // }, []);
 
 
 
@@ -95,8 +104,10 @@ if(token){
       <>
 
       {expandForm?<>
-      
-        {/* <Text onClick={onOpen}>Sign-in with phone number</Text> */}
+
+      {/* <PrivateRoute token={token} /> */}
+
+        <Text onClick={onOpen}>Sign-in with phone number</Text>
         
         <Text onClick={onOpen} fontSize={"14px"}>Sign-up to prepleaf phone</Text>
   <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
@@ -295,7 +306,9 @@ if(token){
   </Modal>
       
       
-      </>:<>
+      </>:
+      
+      <>
       
       <Text onClick={onOpen} fontSize={"14px"}>Sign-up to prepleaf phone</Text>
   
@@ -304,6 +317,7 @@ if(token){
     <ModalContent>
       
           <ModalCloseButton />
+
 <Box  color="white"  >
 {/* <Image src={popup_image} alt="popup"  /> */}
 <svg  viewBox="0 0 480 136" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -437,6 +451,7 @@ if(token){
 </svg>
 
 </Box>
+
 <Stack margin={"30px"} spacing={4}>
       <HStack>
       

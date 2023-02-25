@@ -243,7 +243,9 @@ export default function DetailPage() {
 						
 					</Container>
 					<hr/>
-					<Box textAlign={"right"} marginRight={"40px"} >
+
+					<Box marginTop="30px" marginBottom={"30px"} textAlign={"right"} marginRight={"40px"} >
+
 						
 					<Button bg={"blue.400"} color={"white"}>Apply Now</Button>
 					</Box>

@@ -14,18 +14,27 @@ import SignUp from "../components/SignUp";
 const AllRoutes = () => {
   return (
     <>
-      <Navbar />
-      <Routes>
-        <Route element={<PrivateRoute />}>
-          <Route path="/dashboard" element={<SideBar />} />
-          <Route path="/dashboard/:id" element={<DetailPage />} />
-          <Route path="/score" element={<ScoreDashboard />} />
-        </Route>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/landingSignup" element={<LandingSignUp />} />
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/signup" element={<SignUp />} />
-      </Routes>
+
+    {/* <Navbar/>
+     */}
+    <Routes>
+
+      <Route element={<PrivateRoute/>}>
+      <Route path="/dashboard" element={<SideBar/>} />
+
+      <Route path="/dashboard/:id" element={<DetailPage/>} />
+      <Route path="/score" element={<ScoreDashboard/>} />
+
+
+      </Route>
+      
+     <Route path="/" element={<LandingPage/>} />
+     <Route path="/landingSignup" element={<LandingSignUp/>}/>
+     <Route path="/signin" element={<SignIn/>}/>
+     <Route path="/signup" element={<SignUp/>}/>
+
+    </Routes>
+
     </>
   );
 };
