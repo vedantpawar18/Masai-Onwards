@@ -97,11 +97,13 @@ export const signInAuth = (data) => (dispatch) => {
   dispatch(signInAuthRequest());
   return axios({
     method: "POST",
-    url: "",
+    url: "https://team8-backend-production.up.railway.app/auth/signin",
     data,
   })
     .then((res) => {
       dispatch(signInAuthSuccess(res.data));
+      console.log("signin Token check",res.data)
+      localStorage.setItem("accessToken",res.data.Primarytoken)
     })
 
     .then((error) => {

@@ -8,7 +8,6 @@ import {
     FormLabel,
     Heading,
     Input,
-    Link,
     Stack,
     Text,
     InputRightElement,
@@ -25,7 +24,7 @@ import validator from 'validator';
 import {  useDispatch, useSelector } from 'react-redux';
 import { googleAuth, signInAuth } from '../redux/action';
 import PrivateRoute from './PrivateRoute';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Link } from 'react-router-dom';
 import { signInWithPopup } from 'firebase/auth';
 import { auth, provider } from '../firebase';
 import Navbar from './Navbar';
@@ -71,6 +70,7 @@ const handleClick = ()=>{
         email:email,
         password:password
       }
+      console.log("data useState",data)
            dispatch(signInAuth(data))
            
 console.log("sign in token",authToken)
@@ -200,7 +200,7 @@ setName(localStorage.getItem("displayName"))
                 align={'start'}
                 justify={'space-between'}>
                 <FormLabel>Password</FormLabel>
-                <Link color={'blue.400'}>Forgot password?</Link>
+                <Link color={"blue"}>Forgot password?</Link>
               </Stack>
               <InputGroup>
                 <Input placeholder='To keep your profile safe' onChange={(e)=>setPassword(e.target.value)} type={showPassword ? 'text' : 'password'} />
@@ -255,7 +255,7 @@ setName(localStorage.getItem("displayName"))
             </Stack>
             <Stack pt={6}>
               <Text align={'center'}>
-              Don't have an account? <Link color={'blue.400'}>Sign up</Link>
+              Don't have an account? <Link color={"blue"} to="/signup">Sign up</Link>
               </Text>
             </Stack>
           </Stack>
@@ -350,7 +350,7 @@ setName(localStorage.getItem("displayName"))
           </Stack>
           <Stack pt={6}>
             <Text align={'center'}>
-             Don't have an account? <Link color={'blue.400'}>Sign up</Link>
+             Don't have an account? <Link color={"blue"}  to="/signup">Sign up</Link>
             </Text>
           </Stack>
         </Stack>

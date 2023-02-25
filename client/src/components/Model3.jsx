@@ -8,6 +8,7 @@ import validator from 'validator';
 import {RecaptchaVerifier, signInWithPhoneNumber} from "firebase/auth";
 import {auth} from "../firebase"
 import PrivateRoute from "./PrivateRoute";
+import { useNavigate } from "react-router-dom";
 export default function Model3() {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [showPassword, setShowPassword] = useState(false);
@@ -25,6 +26,7 @@ export default function Model3() {
     const [phoneNumber, setPhoneNumber] = useState(countryCode);
     const [expandForm, setExpandForm] = useState(false)
     const [getOtp, setGetOtp] = useState('');
+    const navigate = useNavigate()
     // const [token, setToken] = useState('')
     console.log(phoneNumber)
     const genarateRecaptcha = ()=>{
@@ -80,8 +82,9 @@ export default function Model3() {
       confirmationResult.confirm(otp).then((result)=>{
         const user = result.user;
         console.log("user",user.accessToken)
-
+        localStorage.setItem("accessToken",user.accessToken)
         setToken(user.accessToken)
+        navigate("/dashboard")
       }).catch((error)=>{
         console.log(error)
       })

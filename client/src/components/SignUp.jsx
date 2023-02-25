@@ -7,7 +7,6 @@ import {
     FormLabel,
     Heading,
     Input,
-    Link,
     Stack,
     Text,
     InputRightElement,
@@ -23,6 +22,7 @@ import {
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { postData } from '../redux/action';
+import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
   
   export default function SignUp() {
@@ -35,6 +35,7 @@ import Navbar from './Navbar';
     const [name, setName] = useState('')
     const [nameError, setNameError] = useState('')
     const dispatch = useDispatch()
+    
 const handleClick = ()=>{
      
   let emailFlag = false;
@@ -235,7 +236,7 @@ const handleClick = ()=>{
             </Stack>
             <Stack pt={6}>
               <Text align={'center'}>
-                Already have an account? <Link color={'blue.400'}>Sign in</Link>
+                Already have an account? <Link color={'blue.400'} to="/signin">Sign in</Link>
               </Text>
             </Stack>
           </Stack>
@@ -312,7 +313,7 @@ const handleClick = ()=>{
           </Stack>
           <Stack pt={6}>
             <Text align={'center'}>
-              Already have an account? <Link color={'blue.400'}>Sign in</Link>
+              Already have an account? <Link color={'blue.400'} to="/signin">Sign in</Link>
             </Text>
           </Stack>
         </Stack>
