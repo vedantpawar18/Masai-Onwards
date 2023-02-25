@@ -4,83 +4,68 @@ const jwt = require("jsonwebtoken");
 
 // function to check if email is validate or not.
 const emailvalidation = (email) => {
-    const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    if (email.match(mailformat)) return true;
-    else return false;
-  };
+  const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  if (email.match(mailformat)) return true;
+  else return false;
+};
 
-  function validateUserName(username){
-    if(username.length>=3){
-      var usernameRegex = /^[a-zA-Z ]+$/;
-    return usernameRegex.test(username);
-    }
-    else{
-      return false
-    }
-  }
-  
 //   function to send mail using nodemailer
 
-const sendmail=async(email)=>
-{
-      
+const sendmail = async (email, customEmailMessage, username) => {
   const user = await OTPModel.findOne({ email });
-      if (user) await OTPModel.deleteOne({ email: email });
+  if (user) await OTPModel.deleteOne({ email: email });
 
-      const mail =  nodemailer.createTransport({
-        service: "gmail",
-        secure: false,
-        host: "smtp.gmail.com",
+  const mail = await nodemailer.createTransport({
+    service: "gmail",
+    secure: false,
+    host: "smtp.gmail.com",
 
-        auth: {
-          user: process.env.Email,
-          pass: process.env.password,
-        },
-      });
+    auth: {
+      user: process.env.Email,
+      pass: process.env.password,
+    },
+  });
 
-      let otp = Math.floor(100000 + Math.random() * 900000);
+  let otp = Math.floor(100000 + Math.random() * 900000);
 
-     const info =await mail.sendMail({
-        from: "Team8masai@gmail.com",
-        to: email,
-        subject: "Masai School",
-        html: `<p>Otp for sign in with masai portal is ${otp}</p>`,
-      });
-      const newotp = new OTPModel({ email: email, otp: otp });
-      await newotp.save();
-     
-}
+  const info = await mail.sendMail({
+    from: "Team8masai@gmail.com",
+    to: email,
+    subject: "Masai School",
+    html: `<h1>Hi ${username},</h1>
+              <p>Greetings from Masai School</p>
+              <p>We got a request to ${customEmailMessage} </p>  
+              <p>Here is the OTP ${otp}</p>      
+              <p>Thank You😊.</p>
+              <p>Team Masai</p>                
+        `,
+  });
+  const newotp = new OTPModel({ email: email, otp: otp });
+  console.log(newotp);
+  newotp.save();
+};
 
-
-  // function for generating token
+// function for generating token
 const generateToken = ({ email = null, full_name = null, mobile = null }) => {
-    const Primarytoken = jwt.sign(
-      { email: email, name: full_name, mobile: mobile },
-      process.env.PRIMARY_SECRET_KEY,
-      {
-        expiresIn: "1h",
-      }
-    );
-    const Refreshtoken = jwt.sign(
-      { email: email, name: full_name, mobile: mobile },
-      process.env.REFRESH_SECRET_KEY,
-      {
-        expiresIn: "7days",
-      }
-    );
-    return {
-      message: "Signed in successfully",
-      Primarytoken,
-      Refreshtoken,email:email,
-      full_name:full_name,
-      mobile:mobile
-    };
+  const Primarytoken = jwt.sign(
+    { email: email, name: full_name, mobile: mobile },
+    process.env.PRIMARY_SECRET_KEY,
+    {
+      expiresIn: "1h",
+    }
+  );
+  const Refreshtoken = jwt.sign(
+    { email: email, name: full_name, mobile: mobile },
+    process.env.REFRESH_SECRET_KEY,
+    {
+      expiresIn: "7days",
+    }
+  );
+  return {
+    message: "Signed in successfully",
+    Primarytoken,
+    Refreshtoken,
   };
+};
 
-  const decryptToken =(token) =>{
-    const tokenDecodablePart = token.split('.')[1];
-    const decoded = JSON.parse(Buffer.from(tokenDecodablePart, 'base64').toString());
-    return(decoded)
-  }
-
-  module.exports={sendmail,generateToken,emailvalidation, validateUserName, decryptToken};
+module.exports = { sendmail, generateToken, emailvalidation };

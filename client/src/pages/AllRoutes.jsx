@@ -1,5 +1,5 @@
 import React from "react";
-import {Routes, Route} from "react-router-dom"
+import { Routes, Route } from "react-router-dom";
 import DetailPage from "../components/DetailPage";
 import Home from "../components/Home";
 import LandingPage from "../components/LandingPage";
@@ -8,13 +8,13 @@ import Navbar from "../components/Navbar";
 import PrivateRoute from "../components/PrivateRoute";
 import ScoreDashboard from "../components/ScoreDashboard";
 import SideBar from "../components/SideBar";
-
 import SignIn from "../components/SignIn";
 import SignUp from "../components/SignUp";
 
 const AllRoutes = () => {
-  return(
+  return (
     <>
+
     {/* <Navbar/>
      */}
     <Routes>
@@ -34,8 +34,9 @@ const AllRoutes = () => {
      <Route path="/signup" element={<SignUp/>}/>
 
     </Routes>
+
     </>
-  )
+  );
 };
 
 export default AllRoutes;

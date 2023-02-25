@@ -6,6 +6,8 @@ const jwt = require("jsonwebtoken");
 const OTPModel = require("../models/Otp.model");
 require("dotenv").config();
 const {emailvalidation,generateToken, validateUserName, sendmail, decryptToken }= require("../util/emailotp")
+const customEmailMessage = "sign in with masai portal.";
+
 
 // email, username and mobile number verification for the first page of signup
 
@@ -31,7 +33,7 @@ userController.post("/verify", async(req,res)=>{
             return res.status(403).send("User already exists");
         }
         else{
-           await sendmail(email)
+           await sendmail(email, customEmailMessage, full_name)
            return res.status(200).send("Otp sent to your email address")   
         }
     }
