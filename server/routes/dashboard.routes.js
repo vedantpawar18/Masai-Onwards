@@ -20,30 +20,30 @@ dashboardController.get("/course-details", async (req, res) => {
  //  <----------------------Course creation- static data--------------------------------------------------> //
 
 dashboardController.post("/create-course", async (req, res) => {
-    const {course_type ,
-        course_name ,
-        course_start_date ,
-        course_description ,
+    const {courseType ,
+        courseName ,
+        courseStartDate ,
+        courseDescription ,
         deadline ,
-        course_guarantee ,
-        course_mode ,
-        course_duration,
-        cutoff_cognitive_abl,
-        cutoff_mettl_test,
-        cutoff_communication_skills } = req.body;
+        courseGuarantee ,
+        courseMode ,
+        courseDuration,
+        cutoffCognitiveAbl,
+        cutoffMettlTest,
+        cutoffCommunicationSkills } = req.body;
 
     const course = new CourseModel({
-        course_type ,
-    course_name ,
-    course_start_date ,
-    course_description ,
-    deadline ,
-    course_guarantee ,
-    course_mode ,
-    course_duration ,
-    cutoff_cognitive_abl,
-    cutoff_mettl_test,
-    cutoff_communication_skills
+        courseType ,
+        courseName ,
+        courseStartDate ,
+        courseDescription ,
+        deadline ,
+        courseGuarantee ,
+        courseMode ,
+        courseDuration,
+        cutoffCognitiveAbl,
+        cutoffMettlTest,
+        cutoffCommunicationSkills
     })
     try{
         await course.save()
@@ -58,37 +58,39 @@ dashboardController.post("/create-course", async (req, res) => {
          //  <----------------------Form to collect user details after applying to a course--------------------------------------------------> //
 
 dashboardController.post("/user-data-collection", async (req, res) => {
-    const { mob_numb ,
-        date_of_birth ,
-        twelth_diploma_completion ,
-        course_start_date ,
-        year_of_graduation ,
-        referral_code ,
-        ready_to_work ,
-        distance_learning,token, courseId} = req.body;
+    const { mob ,
+        dateOfBirth ,
+        twelthDiplomaCompletion ,
+        courseStartDate ,
+        yearOfGraduation ,
+        referralCode ,
+        readyToWork ,
+        distanceLearning,token, courseId} = req.body;
 
         const userToken=decryptToken(token);
 
         const email= userToken.email || "email"
         const mobNumb=userToken.mobile || "mob"
 
-        const user = await UserModel.find({ $or: [{ email:email }, { mob_numb: mobNumb }] });
+        const user = await UserModel.find({ $or: [{ email:email }, { mob: mobNumb }] });
 
         const userId =((user[0]._id))
 
-        await UserModel.findOneAndUpdate({ _id: userId },{ $push: { courses_applied: courseId } });
+        console.log(user)
+
+        await UserModel.findOneAndUpdate({ _id: userId },{ $push: { coursesApplied: {courseId:courseId} } });
         
         const userform = new FormModel({
         userId,
         courseId,
-        mob_numb ,
-        date_of_birth ,
-        twelth_diploma_completion ,
-        course_start_date ,
-        year_of_graduation ,
-        referral_code ,
-        ready_to_work ,
-        distance_learning 
+        mob ,
+        dateOfBirth ,
+        twelthDiplomaCompletion ,
+        courseStartDate ,
+        yearOfGraduation ,
+        referralCode ,
+        readyToWork ,
+        distanceLearning 
          })
     try{
         await userform.save()

@@ -14,14 +14,14 @@ const customEmailMessage = "sign in with masai portal.";
 userController.post("/verify", async(req,res)=>{
 
   //  <----------------------If user is signed up with email id --------------------------------------------------> //
-  const {email, password, full_name,mob_numb} = req.body;
+  const {email, password, fullName,mob} = req.body;
 
   //  <----------------------If user is signed up with email id --------------------------------------------------> //
     if (email && !password)
     {
         const alreadyUser = await UserModel.find({ email });
         const valideMail= emailvalidation(email);
-        const validName= validateUserName(full_name)
+        const validName= validateUserName(fullName)
 
         if(valideMail==false){
             return res.status(401).send("Invalid email address !");
@@ -33,17 +33,17 @@ userController.post("/verify", async(req,res)=>{
             return res.status(403).send("User already exists");
         }
         else{
-           await sendmail(email, customEmailMessage, full_name)
+           await sendmail(email, customEmailMessage, fullName)
            return res.status(200).send("Otp sent to your email address")   
         }
     }
 
      //  <----------------------If user is signed up with mobile number--------------------------------------------------> //
 
-     if(mob_numb && !password){
+     if(mob && !password){
 
-      const alreadyUser = await UserModel.find({ mob_numb});
-      const validName= validateUserName(full_name)
+      const alreadyUser = await UserModel.find({ mob});
+      const validName= validateUserName(fullName)
 
       if (alreadyUser.length>0){
         return res.status(403).send("User already exists");
@@ -51,7 +51,7 @@ userController.post("/verify", async(req,res)=>{
        else if (validName==false){
         return res.status(401).send("Please enter atleast 3 characters, no symbols or numbers as full name");
       }
-      else if(mob_numb.length!==10){
+      else if(mob.length!==10){
         return res.status(401).send("Invalid mobile number!");
       }
      else {
@@ -66,7 +66,7 @@ userController.post("/verify", async(req,res)=>{
 
       const alreadyUser = await UserModel.find({ email });
        const valideMail= emailvalidation(email);
-       const validName= validateUserName(full_name)
+       const validName= validateUserName(fullName)
 
        if(valideMail==false){
            return res.status(401).send("Invalid email address !");
@@ -88,17 +88,17 @@ userController.post("/verify", async(req,res)=>{
            const user = new UserModel({
                email,
                password : hash,
-               full_name
+               fullName
            })
            try{
                await user.save()
                const token = generateToken({
                 email: user.email,
-                full_name: user.full_name,
-                mobile: user.mob_numb,
+                fullname: user.fullName,
+                mobile: user.mob,
               })
               decryptToken(token.Primarytoken)
-               res.json({msg : "Signup successfull at email password",token, email:email, mobNumb:mob_numb, userName:full_name})
+               res.json({msg : "Signup successfull at email password",token, email:email, mobNumb:mob, userName:fullName})
            }
            catch(err){
                console.log(err)
@@ -110,14 +110,14 @@ userController.post("/verify", async(req,res)=>{
    }
 
 //  <----------------------If user is signed up  with full name , mobile number and password--------------------------------------------------> //
-   if(password && mob_numb){
-    const alreadyUser = await UserModel.find({ mob_numb});
+   if(password && mob){
+    const alreadyUser = await UserModel.find({ mob});
 
     if (alreadyUser.length>0){
       return res.status(403).send("User already exists");
      }
       
-    else if(mob_numb.length!==10){
+    else if(mob.length!==10){
       return res.status(401).send("Invalid mobile number at end !");
     }
     if (password.length<8){
@@ -130,19 +130,19 @@ userController.post("/verify", async(req,res)=>{
             res.send("Something went wrong, plz try again later")
         }
         const user = new UserModel({
-            mob_numb,
+            mob,
             password : hash,
-            full_name
+            fullName
         })
         try{
             await user.save()
             const token = generateToken({
               email: user.email,
-              full_name: user.full_name,
-              mobile: user.mob_numb,
+              fullname: user.fullName,
+              mobile: user.mob,
             })
             decryptToken(token.Primarytoken)
-            res.json({msg : "Signup successfull at email password",token, email:email, mobNumb:mob_numb, userName:full_name})
+            res.json({msg : "Signup successfull at email password",token, email:email, mobNumb:mob, userName:fullName})
         }
         catch(err){
             console.log(err)
@@ -158,26 +158,26 @@ userController.post("/verify", async(req,res)=>{
 // email, username and mobile number stored to db after otp verification
 
 userController.post("/signup", async(req, res) => {
-    const {email, password, full_name, mob_numb, otp} = req.body;
+    const {email, password, fullName, mob, otp} = req.body;
 
       //  <----------------------If user is signed up with email address--------------------------------------------------> //
   
     if(email && !password){
-      const user_exists = await OTPModel.findOne({ email });
+      const userExists = await OTPModel.findOne({ email });
 
-      if(user_exists && user_exists.otp==otp){
+      if(userExists && userExists.otp==otp){
         
         const user = new UserModel({
           email,
-          full_name
+          fullName
       })
       await user.save();
       const token= generateToken({
         email: user.email,
-        full_name: user.full_name,
-        mobile: user.mob_numb,
+        fullname: user.fullName,
+        mobile: user.mob,
       })
-      res.json({msg : "Signup successfull ",token, email:email, mobNumb:mob_numb, userName:full_name})
+      res.json({msg : "Signup successfull ",token, email:email, mobNumb:mob, userName:fullName})
       } else res.status(401).send({ msg: "Please enter a valid 6 digit OTP." });
      
   
@@ -185,20 +185,21 @@ userController.post("/signup", async(req, res) => {
 
          //  <----------------------If user is signed up with mobile number--------------------------------------------------> //
 
-  if (mob_numb && !password){
+  if (mob && !password){
     
    {
     const user = new UserModel({
-      full_name,
-      mob_numb
+      fullName,
+      mob
   })
   await user.save()
+
   const token = generateToken({
     email: user.email,
-    full_name: user.full_name,
-    mobile: user.mob_numb,
+    fullname: user.fullName,
+    mobile: user.mob,
   });
-  res.json({msg : "Signup successfull ",token, email:email, mobNumb:mob_numb, userName:full_name})
+  res.json({msg : "Signup successfull ",token, email:email, mobNumb:mob, userName:fullName})
    }
   }
          

@@ -2,12 +2,12 @@ const mongoose = require("mongoose")
 
 
 const userSchema = new mongoose.Schema({
-    user_id : {type : Number},
+    userId : {type : Number},
     email : {type : String },
     password : {type : String},
-    mob_numb: {type: String},
-    full_name: {type: String, required: true},
-    courses_applied: {type:Array}
+    mob: {type: String},
+    fullName: {type: String, required: true},
+    coursesApplied: {type:Array}
 })
 
 const  UserModel = mongoose.model("User", userSchema)

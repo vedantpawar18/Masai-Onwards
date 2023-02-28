@@ -2,33 +2,33 @@ const mongoose = require("mongoose")
 
 
 const courseSchema = new mongoose.Schema({
-    course_id : {type : Number},
-    course_type : {type : String, required : true},
-    course_name : {type : String, required : true},
-    course_start_date : {type : String, required : true},
-    course_description : {type : String, required : true},
+    courseId : {type : Number},
+    courseType : {type : String, required : true},
+    courseName : {type : String, required : true},
+    courseStartDate : {type : String, required : true},
+    courseDescription : {type : String, required : true},
     deadline : {type : String, required : true},
-    course_guarantee : {type : String, required : true},
-    course_mode : {type : String, required : true},
-    course_duration : {type : String, required : true},
-    cutoff_cognitive_abl: {type: Number, },
-    cutoff_mettl_test: {type: Number, },
-    cutoff_communication_skills: {type: Number, }
+    courseGuarantee : {type : String, required : true},
+    courseMode : {type : String, required : true},
+    courseDuration : {type : String, required : true},
+    cutoffCognitiveAbl: {type: Number, },
+    cutoffMettlTest: {type: Number, },
+    cutoffCommunicationSkills: {type: Number, }
     
 })
 
 const formSchema = new mongoose.Schema({
-    form_id : {type : Number},
+    formId : {type : Number},
     userId : {type : Object},
     courseId : {type : Object},
-    mob_numb : {type : Number},
-    date_of_birth : {type : String},
-    twelth_diploma_completion : {type : String},
-    course_start_date : {type : String},
-    year_of_graduation : {type : String},
-    referral_code : {type : String},
-    ready_to_work : {type : String},
-    distance_learning : {type : String}
+    mobNumb : {type : Number},
+    dateOfBirth : {type : String},
+    twelthDiplomaCompletion : {type : String},
+    courseStartDate : {type : String},
+    yearOfGraduation : {type : String},
+    referralCode : {type : String},
+    readyToWork : {type : String},
+    distanceLearning : {type : String}
     
 })
 
