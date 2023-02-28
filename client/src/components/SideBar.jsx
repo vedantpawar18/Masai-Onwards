@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from "react";
+import React, {  useState } from "react";
 import {
     IconButton,
     CloseButton,
@@ -12,8 +12,6 @@ import {
     DrawerContent,
     Text,
     useDisclosure,
-    BoxProps,
-    FlexProps,
     Menu,
     MenuButton,
     MenuDivider,
@@ -21,30 +19,26 @@ import {
     MenuList,
     Image,
 } from "@chakra-ui/react";
+
 import {
-    FiHome,
-    FiTrendingUp,
-    FiCompass,
-    FiStar,
-    FiSettings,
+
     FiMenu,
-    FiBell,
-    FiChevronDown,
+    FiChevronDown
+
 } from "react-icons/fi";
-import { IconType } from "react-icons";
+
 import { SlGraduation } from "react-icons/sl";
 import { AiOutlineTrophy } from "react-icons/ai";
 import { MdEventAvailable } from "react-icons/md";
 import { BsBook } from "react-icons/bs";
-import { ReactText } from "react";
-// import masai_logo from "../images/masai_logo.png";
+
+import masai_logo from "../images/masai_logo.png";
 import AR from "../images/AR.png";
 import Cards from "./Cards";
-import FailAlertBar from "./FailAlertBar";
-import PassAlertBar from "./PassAlertBar";
+
 import { Box } from "@chakra-ui/layout";
 import customer_care_icon from "../images/customer_care_icon.jpg";
-import ScoreScreen from "./ScoreScreen";
+
 const LinkItems = [
     { name: "Courses", icon: SlGraduation },
     { name: "Contests", icon: AiOutlineTrophy },
@@ -55,9 +49,7 @@ export default function SideBar() {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [apply, setApply] = useState(false);
 
-const handleClick = ()=>{
 
-}
 
 
 
@@ -106,7 +98,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
             {...rest}
         >
             <Flex h="20"  alignItems="center" mx="8" justifyContent="space-between">
-                <Image src={"masai_logo"} />
+                <Image src={masai_logo} />
                 <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
             </Flex>
             {LinkItems.map((link) => (
@@ -175,6 +167,7 @@ const NavItem = ({ icon, children, ...rest }) => {
         </Link>
     );
 };
+
 const MobileNav = ({ onOpen, ...rest }) => {
 
 

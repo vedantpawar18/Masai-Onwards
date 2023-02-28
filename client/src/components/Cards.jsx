@@ -1,6 +1,6 @@
 import {
   Box,
-  Center,
+
   Text,
   Stack,
   Button,
