@@ -10,7 +10,7 @@ const PassAlertBar = () => {
 				w="900px"
 				bgColor={" rgba(238, 255, 247, 1)"}
 				height={"136px"}
-				marginTop={"80px"}
+				marginTop={""}
 				// border="1px solid red"
 				marginLeft={"24px"}
 				color="white"

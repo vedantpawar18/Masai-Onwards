@@ -1,11 +1,12 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import DetailPage from "../components/DetailPage";
-import Home from "../components/Home";
+
 import LandingPage from "../components/LandingPage";
 import LandingSignUp from "../components/LandingSignUp";
-import Navbar from "../components/Navbar";
+
 import PrivateRoute from "../components/PrivateRoute";
+import ScoreCard from "../components/ScoreCard";
 import ScoreDashboard from "../components/ScoreDashboard";
 import SideBar from "../components/SideBar";
 import SignIn from "../components/SignIn";
@@ -15,8 +16,9 @@ const AllRoutes = () => {
   return (
     <>
 
-    {/* <Navbar/>
-     */}
+    {/* <Navbar/> */}
+    
+    {/* <ScoreCard/> */}
     <Routes>
 
       <Route element={<PrivateRoute/>}>
