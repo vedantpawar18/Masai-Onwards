@@ -68,4 +68,22 @@ const generateToken = ({ email = null, full_name = null, mobile = null }) => {
   };
 };
 
-module.exports = { sendmail, generateToken, emailvalidation };
+// function for validating user name
+function validateUserName(username){
+  if(username.length>=3){
+    var usernameRegex = /^[a-zA-Z ]+$/;
+  return usernameRegex.test(username);
+  }
+  else{
+    return false
+  }
+}
+
+// function for decrypting token
+const decryptToken =(token) =>{
+  const tokenDecodablePart = token.split('.')[1];
+  const decoded = JSON.parse(Buffer.from(tokenDecodablePart, 'base64').toString());
+  return(decoded)
+}
+
+module.exports = { sendmail, generateToken, emailvalidation,validateUserName,decryptToken};
