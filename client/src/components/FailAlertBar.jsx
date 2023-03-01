@@ -1,4 +1,4 @@
-import { Box, Text, Image } from "@chakra-ui/layout";
+import { Box, Text } from "@chakra-ui/layout";
 import React from "react";
 import circle from "../images/circle.png";
 
@@ -9,9 +9,6 @@ const FailAlertBar = () => {
 				bg="white"
 				w="900px"
 				height={"136px"}
-				marginTop={"80px"}
-				// border="1px solid red"
-				marginLeft={"24px"}
 				color="white"
 				display={"flex"}
               

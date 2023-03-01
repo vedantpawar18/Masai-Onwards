@@ -3,6 +3,7 @@
 
 import {initializeApp} from "firebase/app";
 import {getAuth, GoogleAuthProvider} from "firebase/auth";
+
 const firebaseConfig = {
   apiKey: "AIzaSyBFaIudnhY_Hp1dWT8_Sh36UbnLWrvToBo",
   authDomain: "prepleaf-masai.firebaseapp.com",

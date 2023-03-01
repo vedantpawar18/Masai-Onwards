@@ -1,14 +1,24 @@
 import { Box, Heading, Text} from "@chakra-ui/layout";
-import {  HStack, Select } from "@chakra-ui/react";
+import {   HStack, Input, Select } from "@chakra-ui/react";
 import { Button, ButtonGroup } from '@chakra-ui/react'
 import React, { useState } from "react";
 import circle from "../images/circle.png";
+import Cards from "./Cards";
 import PassAlertBar from "./PassAlertBar";
+import ScoreCard from "./ScoreCard";
 export default function ScoreScreen() {
 
 	const [main, setMain] = useState(true);
 	const [fail, setFail] = useState(false);
 	const [pass, setPass] = useState(false);
+    const [cognitive, setCognitive] = useState("")
+	const [mettl, setMettl] = useState("")
+	const [communication , setCommunication ] = useState("")
+	 const [credibility , setCredibility ] = useState("")
+	 const [status, setStatus] = useState([]);
+
+
+
 
 
 	// const data = [
@@ -23,20 +33,44 @@ export default function ScoreScreen() {
 	// 	}
 	// }
 
-let score = 6
+
 
 	const handleClick = ()=>{
-       if(score<5){
-		setMain(false)
-        setFail(true)
-	   }else{
-		setMain(false)
-        setPass(true)
-	   }
-		
+
+		if(cognitive===""||mettl===""||communication===""||credibility===""){
+			alert("Enter score")
+		}else{
+			if(Number(cognitive)>=6&&Number(mettl)>=6.5&&Number(communication)>=6&&credibility!=="low"){
+				setMain(false)
+				setPass(true)
+				let passData = {
+					"cognitive":cognitive,
+					"mettl":mettl,
+					"communication":communication,
+					"credibility":credibility,
+                     "status":"Passed",
+					 "color":"green"
+				}
+				setStatus(passData)
+			   }else{
+				setMain(false)
+				setFail(true)
+				let failData = {
+					"cognitive":cognitive,
+					"mettl":mettl,
+					"communication":communication,
+					"credibility":credibility,
+                     "status":"Not cleared",
+					 "color":"red"
+				}
+				setStatus(failData)
+
+			   }
+		}
+      
 	}
 
-
+console.log("statuzzzzzzzzzz",status)
 
 
 	return (
@@ -93,7 +127,7 @@ let score = 6
 						Cognitive Ability
 					</Text>{" "}
 					<Box borderRadius={"5px"}   width={"120px"} border="1px solid #d1cfd0  ">
-						<Text
+						{/* <Text
 							fontFamily={"Open Sans"}
 							fontStyle={"normal"}
 							fontWeight={"530"}
@@ -102,7 +136,8 @@ let score = 6
                             
 						>
 							-/10
-						</Text>
+						</Text> */}
+						<Input placeholder="-/10" onChange={(e)=>setCognitive(e.target.value)} />
 					</Box>
 				</HStack>
 				<HStack marginTop={"20px"} gap={"100px"}>
@@ -111,10 +146,11 @@ let score = 6
 						fontWeight={"530"}
 						fontSize={"23px"}>Mettl Text Score</Text>{" "}
 					<Box borderRadius={"5px"} marginLeft={"22px"} width={"120px"} border="1px solid #d1cfd0 " >
-						<Text fontFamily={"Open Sans"}
+						{/* <Text fontFamily={"Open Sans"}
 							fontStyle={"normal"}
 							fontWeight={"530"}
-							fontSize={"23px"} >-/10</Text>
+							fontSize={"23px"} >-/10</Text> */}
+							<Input placeholder="-/10" onChange={(e)=>setMettl(e.target.value)} />
 					</Box>
 				</HStack>
 				<HStack marginTop={"20px"} gap={"50px"}>
@@ -123,10 +159,11 @@ let score = 6
 						fontWeight={"530"}
 						fontSize={"23px"}>Communication Skills</Text>{" "}
 					<Box borderRadius={"5px"} width={"120px"} border="1px solid #d1cfd0 ">
-						<Text fontFamily={"Open Sans"}
+						<Input placeholder="-/10" onChange={(e)=>setCommunication(e.target.value)} />
+						{/* <Text fontFamily={"Open Sans"}
 							fontStyle={"normal"}
 							fontWeight={"530"}
-							fontSize={"23px"}>-/10</Text>
+							fontSize={"23px"}>-/10</Text> */}
 					</Box>
 				</HStack>
 				<HStack marginTop={"20px"} gap={"95px"}>
@@ -134,7 +171,8 @@ let score = 6
 						fontStyle={"normal"}
 						fontWeight={"530"}
 						fontSize={"23px"}>Credibility Score</Text>
-					<Select width={"120px"} >
+					<Select width={"120px"} onChange={(e)=>setCredibility(e.target.value)}>
+					<option value="#">score</option>
 						<option value="low">Low</option>
 						<option value="high">High</option>
 						<option value="medium">Medium</option>
@@ -148,8 +186,24 @@ let score = 6
             <Button colorScheme='blue' position={"absolute"}  right={"0px"} onClick={handleClick}  >Submit</Button>
             </Box>
 			</>}
-            {fail&&<FailAlertBar/>}
-			{pass&&<PassAlertBar/>}
+            {fail &&
+			<>
+		
+			<FailAlertBar/>
+			<ScoreCard status={status}/>
+			<Cards />
+			
+			</>
+			
+			
+			}
+			{pass &&
+			<>
+			<PassAlertBar/>
+			<ScoreCard status={status}/>
+			
+			</>
+			}
 		</Box>
 	);
 }

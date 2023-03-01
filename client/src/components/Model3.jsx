@@ -119,7 +119,9 @@ export default function Model3() {
       
           <ModalCloseButton />
 <Box  color="white"  >
+  
 {/* <Image src={popup_image} alt="popup"  /> */}
+
 <svg  viewBox="0 0 480 136" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0_916_27637)">
 <rect width="480" height="136" fill="#7261DF"/>

@@ -36,31 +36,36 @@ export default function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate()
   const [value, setValue] = useState("");
+  const [userEmail, setUserEmail] = useState("");
   const [name, setName] = useState("")
   const [token, setToken] = useState("")
   const dispatch = useDispatch()
   const token2 = useSelector((store)=>store.auth.auth);
-
-// console.log("token",token2)
+  const user_name = localStorage.getItem("displayName")||name
+  const user_email = localStorage.getItem("email")||userEmail
+  const access_token = localStorage.getItem("accessToken");
+console.log("user_name",user_name)
   
   const handleClick = ()=>{
       signInWithPopup(auth,provider).then((data)=>{
-          setValue(data.user.email)
-        
+          setValue(data.user.email);
           console.log("data",data.user.accessToken);
-          setToken(data.user.accessToken)
-          localStorage.setItem("accessToken",data.user.accessToken)
-             dispatch(googleAuth(data.user.accessToken))
-          localStorage.setItem("displayName",data.user.displayName)
-
-          localStorage.setItem("email",data.user.email)
+          setToken(data.user.accessToken);
+          localStorage.setItem("accessToken",data.user.accessToken);
+          dispatch(googleAuth(data.user.accessToken));
+          localStorage.setItem("displayName",data.user.displayName);
+          localStorage.setItem("email",data.user.email);
+          setUserEmail(data.user.email);
+          setName(data.user.displayName);
       }) 
+   
+      
   }
   
   useEffect(()=>{
-  setValue(localStorage.getItem("email"))
-  setName(localStorage.getItem("displayName"))
-  },[])
+  localStorage.getItem("email")
+  localStorage.getItem("displayName")
+  },[user_name,user_email])
 
   // console.log("name",name)
 
@@ -78,9 +83,9 @@ export default function Navbar() {
             aria-label={'Open Menu'}
             display={{ md: 'none' }}
             onClick={isOpen ? onClose : onOpen}
-          />
+            />
           <HStack spacing={8} alignItems={'center'}>
-            <Box>
+            <Box cursor={"pointer"} onClick={()=>navigate("/")}>
 <svg width="140" height="47" viewBox="0 0 140 47" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M51.4518 14.7329H49.3637V21.4836H45.1755V3.56424H51.5358C55.34 3.56424 58.3162 4.97799 58.3162 9.08966C58.3402 13.2249 55.088 14.7329 51.4518 14.7329ZM51.2118 7.03972H49.3877V11.2692H51.1518C52.7119 11.2692 54.164 10.7862 54.164 9.08966C54.14 7.38137 52.7119 7.03972 51.2118 7.03972Z" fill="black"/>
 <path d="M67.1966 12.2706C66.8245 12.1763 66.4885 12.1292 66.1645 12.1292C64.0044 12.1292 63.2964 13.9435 63.2964 14.9921V21.4718H59.2642V8.8658H63.1403V10.6801H63.1884C63.8004 9.40774 64.9884 8.50058 66.4885 8.50058C66.8005 8.50058 67.1486 8.52414 67.3526 8.59483L67.1966 12.2706Z" fill="black"/>
@@ -146,8 +151,12 @@ export default function Navbar() {
 
 </Select>
 
+{/* <Text>COURSES</Text>
 
-
+<Text>COURSES</Text>
+<Text>COURSES</Text>
+<Text>COURSES</Text>
+<Text>COURSES</Text> */}
 
 
             </HStack>
@@ -160,7 +169,7 @@ export default function Navbar() {
                 variant={'link'}
                 cursor={'pointer'}
                 minW={0}>
-              <Button bg="blue.50" color={"blue.400"}>
+              <Button bg="blue.50" color={"blue.400"}  >
                 LOGIN
               </Button>
               </MenuButton>
@@ -219,7 +228,7 @@ export default function Navbar() {
                     </GridItem>
                     
                     <GridItem marginLeft={"-100px"} > 
-                    <Text fontSize={"14px"}>Sign-in with e-mail </Text>
+                    <Text fontSize={"14px"}>Sign-in with e-mail</Text>
                     </GridItem>
                    </Grid>
                    
@@ -243,13 +252,13 @@ export default function Navbar() {
                     </GridItem>
                     
                     <GridItem marginLeft={"-100px"} > 
-                    <Text fontWeight="bold">{name}</Text>
-                    <Text fontSize={"12px"}>{value}</Text>
+                    <Text fontWeight="bold">{user_name}</Text>
+                    <Text fontSize={"12px"}>{user_email}</Text>
                     </GridItem>
                    </Grid>
                   
                
-                  <Button bg="blue.400" onClick={()=>navigate("/dashboard")}>Continue as {name}</Button>
+                  <Button bg="blue.400" onClick={()=>navigate("/dashboard")}>Continue as {user_name}</Button>
                     <Text fontSize={"16px"}>To create your account, google will share your name, 
                         email address and profile picture with coding Ninjas, 
                         see coding Ninja's privecy policy and terms and service </Text>

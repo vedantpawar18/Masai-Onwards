@@ -9,11 +9,11 @@ import {
 	ModalCloseButton,
 	ModalContent,
 	ModalFooter,
-	ModalHeader,
+
 	ModalOverlay,
 	Select,
 	useDisclosure,
-	useMediaQuery,
+
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 
@@ -33,7 +33,7 @@ export default function ApplyModel() {
 	};
 
 
-
+	let num = localStorage.getItem('num');
 
 
 
@@ -68,15 +68,15 @@ export default function ApplyModel() {
 					</Text>
 					<ModalCloseButton />
 					<ModalBody pb={6}>
-						<FormControl>
+						<FormControl isRequired>
 							<FormLabel>Mobile number</FormLabel>
-							<Input ref={initialRef} placeholder="Enter Mobile number" />
+							<Input ref={initialRef} placeholder="Enter Mobile number" value={num} />
 						</FormControl>
-						<FormControl>
-							<FormLabel>Date of Birth</FormLabel>
-							<Input ref={initialRef} placeholder="Enter Date of Birth" />
+						<FormControl isRequired>
+							<FormLabel>Age</FormLabel>
+							<Input ref={initialRef} placeholder="Enter your age" />
 						</FormControl>
-						<FormControl>
+						<FormControl isRequired>
 							<FormLabel> When did you pass 12th class or diploma?</FormLabel>
 							<Input
 								ref={initialRef}
@@ -85,7 +85,7 @@ export default function ApplyModel() {
 							/>
 						</FormControl>
 
-						<FormControl mt={4}>
+						<FormControl mt={4} isRequired>
 							<FormLabel>Graduation year</FormLabel>
 							<Select
 								placeholder="Select year of graduation"
@@ -101,21 +101,21 @@ export default function ApplyModel() {
 							</Select>
 						</FormControl>
 
-						<FormControl mt={4}>
+						<FormControl mt={4} isRequired>
 							<FormLabel>
 								Are you ready to work after completion of the course?
 							</FormLabel>
-							<Select placeholder="select">
+							<Select >
 								<option value="option1">Yes</option>
 								<option value="option2">No</option>
 							</Select>
-						</FormControl>
+						</FormControl >
 						{flag && (
-							<FormControl mt={4}>
+							<FormControl mt={4} isRequired>
 								<FormLabel>
 									Are you completing your graduation through distance learning?
 								</FormLabel>
-								<Select placeholder="select">
+								<Select >
 									<option value="option1">Yes</option>
 									<option value="option2">No</option>
 								</Select>
