@@ -23,14 +23,13 @@ import { useEffect, useState } from 'react';
 import validator from 'validator';
 import {  useDispatch, useSelector } from 'react-redux';
 import { googleAuth, signInAuth } from '../redux/action';
-import PrivateRoute from './PrivateRoute';
 import { useNavigate,Link } from 'react-router-dom';
 import { signInWithPopup } from 'firebase/auth';
 import { auth, provider } from '../firebase';
 import Navbar from './Navbar';
   export default function SignIn() {
     const [showPassword, setShowPassword] = useState(false);
-    const [isLargerThan800] = useMediaQuery('(min-width: 800px)')
+    const [isLargerThan800] = useMediaQuery('(min-width: 800px)');
     const [emailError, setEmailError] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
     const [email, setEmail] = useState('')
@@ -40,51 +39,59 @@ import Navbar from './Navbar';
     const [token, setToken] = useState("")
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const  authToken = useSelector((store)=>store.auth.auth.Primarytoken);
+    const  auth_token = useSelector((store)=>store.auth.auth);
     const  signin_email = useSelector((store)=>store.auth.auth.email);
     const  full_name = useSelector((store)=>store.auth.auth.full_name);
-    // "email": "rohan@gmail.com",
-    // "full_name": "rohan",
+  console.log("check token".auth_token)
 const handleClick = ()=>{
      console.log("clicked")
-//    let emailFlag = false;
-//    let passFlag = false;
+   let emailFlag = false;
+   let passFlag = false;
   
-//     if (validator.isEmail(email)) {
-//       setEmailError('')
-//       emailFlag = true;
-//     } else {
-//       setEmailError('Enter valid Email!')
-//     }
-//     if (validator.isStrongPassword(password, {
-//         minLength: 8, minLowercase: 0,
-//         minUppercase: 0, minNumbers: 1, minSymbols: 1
-//       })) {
-//         setErrorMessage('');
-//         passFlag = true;
-//       } else {
-//         setErrorMessage('Weak Password')
-//       }
-// console.log("check flags", emailFlag, passFlag)
+    if (validator.isEmail(email)) {
+      setEmailError('')
+      emailFlag = true;
+    } else {
+      setEmailError('Enter valid Email!')
+    }
+    if (validator.isStrongPassword(password, {
+        minLength: 8, minLowercase: 0,
+        minUppercase: 0, minNumbers: 0, minSymbols: 0
+      })) {
+        setErrorMessage('');
+        passFlag = true;
+      } else {
+        setErrorMessage('Weak Password')
+      }
+      if(emailFlag&&passFlag){
+        console.log("check flags", emailFlag, passFlag)
+        
       let data = {
         email:email,
         password:password
       }
-      console.log("data useState",data)
+   
            dispatch(signInAuth(data))
-           
-console.log("sign in token",authToken)
 
+           if(auth_token){
+            navigate("/dashboard")
+           }   
+
+      }
+
+      if(auth_token){
+        navigate("/dashboard")
+       }   
 
 }
 
 useEffect(()=>{
-if(authToken!==undefined){
-  localStorage.setItem("accessToken",authToken)
+if(auth_token!==undefined){
+  localStorage.setItem("accessToken",auth_token)
   localStorage.setItem("displayName",full_name)
   localStorage.setItem("email",signin_email)
 }
-},[authToken,signin_email,full_name])
+},[auth_token,signin_email,full_name])
 
 
 
@@ -106,7 +113,7 @@ const handleGoogle = ()=>{
 useEffect(()=>{
 setValue(localStorage.getItem("email"))
 setName(localStorage.getItem("displayName"))
-},[])
+},[name,value])
 
 
 
