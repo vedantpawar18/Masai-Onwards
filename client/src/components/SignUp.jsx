@@ -19,10 +19,10 @@ import {
     useMediaQuery,
   } from '@chakra-ui/react';
   import validator from 'validator';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { postData } from '../redux/action';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { postData, verifyData } from '../redux/action';
+import { Link, useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
   
   export default function SignUp() {
@@ -35,7 +35,11 @@ import Navbar from './Navbar';
     const [name, setName] = useState('')
     const [nameError, setNameError] = useState('')
     const dispatch = useDispatch()
-    
+    const  auth_token = useSelector((store)=>store.auth.auth.token)
+    const  save_locally = useSelector((store)=>store.auth.auth);
+    const navigate_token = localStorage.getItem("accessToken")
+   
+    const navigate = useNavigate()
 const handleClick = ()=>{
      
   let emailFlag = false;
@@ -77,23 +81,39 @@ const handleClick = ()=>{
      if(emailFlag&&passFlag&&nameFlag){
 
       let data = {
-        email,
-        password,
-        name
+        email:email,
+        password:password,
+        fullName:name
       }
-      console.log("data signup",data)
+      // console.log("data signup",data)
       
-      // dispatch(postData(data))
+      dispatch(verifyData(data))
      }
-
-
-
+ 
+    
+    // console.log("authhhh token",navigate_token)
+    
+   
 }
 
+// console.log("token signup check",navigate_token)
 
 
 
 
+useEffect(()=>{
+if(auth_token!==undefined){
+    localStorage.setItem("accessToken",auth_token.Primarytoken);
+    localStorage.setItem("email",save_locally.email);
+    localStorage.setItem("displayName",save_locally.userName);
+    navigate("/dashboard")
+}
+
+},[auth_token,navigate])
+
+
+// console.log("save data check",navigate_token)
+console.log("Save locally",save_locally)  
 
 
     return (

@@ -17,6 +17,10 @@ export const PHONE_AUTH_REQUEST = "PHONE_AUTH_REQUEST";
 export const PHONE_AUTH_SUCCESS = "PHONE_AUTH_SUCCESS";
 export const PHONE_AUTH_FAILURE = "PHONE_AUTH_FAILURE";
 
+export const VERIFY_AUTH_REQUEST = "VERIFY_AUTH_REQUEST";
+export const VERIFY_AUTH_SUCCESS = "VERIFY_AUTH_SUCCESS";
+export const VERIFY_AUTH_FAILURE = "VERIFY_AUTH_FAILURE";
+
 export const signInAuthRequest = () => {
   return {
     type: SIGNIN_AUTH_REQUEST,
@@ -93,6 +97,26 @@ export const phoneDataFailure = () => {
   };
 };
 
+export const verifyDataRequest = () => {
+  return {
+    type: VERIFY_AUTH_REQUEST
+  };
+};
+
+export const verifyDataSuccess = (auth) => {
+  return {
+    type: VERIFY_AUTH_SUCCESS,
+    payload:auth,
+  };
+};
+
+export const verifyDataFailure = () => {
+  return {
+    type: VERIFY_AUTH_FAILURE
+  };
+};
+
+
 export const signInAuth = (data) => (dispatch) => {
   dispatch(signInAuthRequest());
   return axios({
@@ -104,6 +128,8 @@ export const signInAuth = (data) => (dispatch) => {
       dispatch(signInAuthSuccess(res.data));
       console.log("signin Token check",res.data)
       localStorage.setItem("accessToken",res.data.Primarytoken)
+      localStorage.setItem("displayName",res.data.full_name)
+      localStorage.setItem("email",res.data.email)
     })
 
     .then((error) => {
@@ -116,7 +142,7 @@ export const postData = (data) => (dispatch) => {
 
   return axios({
     method: "POST",
-    url: "",
+    url: "http://localhost:8080/user/signup",
     data,
   })
     .then((res) => {
@@ -149,4 +175,21 @@ export const phoneAuth = (auth) => (dispatch) => {
 
 
 
+
+export const verifyData = (data) => (dispatch) => {
+  dispatch(verifyDataRequest());
+
+  return axios({
+    method:"POST",
+    url:"http://localhost:8080/user/verify",
+    data,
+  })
+    .then((res) => {
+      dispatch(verifyDataSuccess(res.data));
+    })
+
+    .then((error) => {
+      dispatch(verifyDataFailure());
+    });
+};
 
