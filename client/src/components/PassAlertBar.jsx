@@ -10,9 +10,6 @@ const PassAlertBar = () => {
 				w="900px"
 				bgColor={" rgba(238, 255, 247, 1)"}
 				height={"136px"}
-				
-				// border="1px solid red"
-			
 				color="white"
 				display={"flex"}
 			>

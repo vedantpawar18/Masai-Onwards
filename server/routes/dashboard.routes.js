@@ -76,9 +76,10 @@ dashboardController.post("/user-data-collection", async (req, res) => {
 
         const userId =((user[0]._id))
 
-        console.log(user)
-
-        await UserModel.findOneAndUpdate({ _id: userId },{ $push: { coursesApplied: {courseId:courseId} } });
+        if (user) {await UserModel.findOneAndUpdate({ _id: userId },{ $push: { coursesApplied: {courseId:courseId} } });
+        }else{
+            res.send("User not found while storing user form data collection")
+        }
         
         const userform = new FormModel({
         userId,

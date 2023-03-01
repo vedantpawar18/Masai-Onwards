@@ -33,6 +33,7 @@ import { MdEventAvailable } from "react-icons/md";
 import { BsBook } from "react-icons/bs";
 
 import masai_logo from "../images/masai_logo.png";
+
 import AR from "../images/AR.png";
 import Cards from "./Cards";
 
