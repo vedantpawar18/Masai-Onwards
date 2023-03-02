@@ -42,7 +42,7 @@ import Navbar from './Navbar';
     const  auth_token = useSelector((store)=>store.auth.auth);
     const  signin_email = useSelector((store)=>store.auth.auth.email);
     const  full_name = useSelector((store)=>store.auth.auth.full_name);
-  console.log("check token".auth_token)
+    let navigate_token = localStorage.getItem("accessToken")
 const handleClick = ()=>{
      console.log("clicked")
    let emailFlag = false;
@@ -65,6 +65,7 @@ const handleClick = ()=>{
       }
       if(emailFlag&&passFlag){
         console.log("check flags", emailFlag, passFlag)
+        console.log("check tokenzzzzzz",auth_token.Primarytoken)
         
       let data = {
         email:email,
@@ -73,25 +74,25 @@ const handleClick = ()=>{
    
            dispatch(signInAuth(data))
 
-           if(auth_token){
-            navigate("/dashboard")
-           }   
 
       }
-
-      if(auth_token){
+      // console.log("check tokenzzzzzz",auth_token)
+      if(auth_token.Primarytoken){
         navigate("/dashboard")
        }   
-
+       
 }
 
-useEffect(()=>{
-if(auth_token!==undefined){
-  localStorage.setItem("accessToken",auth_token)
-  localStorage.setItem("displayName",full_name)
-  localStorage.setItem("email",signin_email)
-}
-},[auth_token,signin_email,full_name])
+
+
+// useEffect(()=>{
+// if(auth_token!==undefined){
+//   localStorage.setItem("accessToken",auth_token)
+//   localStorage.setItem("displayName",full_name)
+//   localStorage.setItem("email",signin_email)
+  
+// }
+// },[auth_token,signin_email,full_name])
 
 
 
@@ -111,8 +112,11 @@ const handleGoogle = ()=>{
 }
 
 useEffect(()=>{
-setValue(localStorage.getItem("email"))
-setName(localStorage.getItem("displayName"))
+
+    setValue(localStorage.getItem("email"))
+    setName(localStorage.getItem("displayName"))
+ 
+
 },[name,value])
 
 
