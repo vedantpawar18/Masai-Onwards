@@ -98,11 +98,11 @@ userController.post("/verify", async(req,res)=>{
                 mobile: user.mob,
               })
               decryptToken(token.Primarytoken)
-               res.json({msg : "Signup successfull at email password",token, email:email, mobNumb:mob, userName:fullName})
+               res.status(200).json({msg : "Signup successfull at email password",token, email:email, mobNumb:mob, userName:fullName})
            }
            catch(err){
                console.log(err)
-               res.send("Something went wrong, plz try again")
+               res.status(400).send("Something went wrong, plz try again")
            }
           
        }); 
@@ -127,7 +127,7 @@ userController.post("/verify", async(req,res)=>{
       bcrypt.hash(password, 5, async function(err, hash) {
         if(err){
           console.log(err)
-            res.send("Something went wrong, plz try again later")
+            res.status(400).send("Something went wrong, plz try again later")
         }
         const user = new UserModel({
             mob,
@@ -142,11 +142,11 @@ userController.post("/verify", async(req,res)=>{
               mobile: user.mob,
             })
             decryptToken(token.Primarytoken)
-            res.json({msg : "Signup successfull at email password",token, email:email, mobNumb:mob, userName:fullName})
+            res.status(200).json({msg : "Signup successfull at email password",token, email:email, mobNumb:mob, userName:fullName})
         }
         catch(err){
             console.log(err)
-            res.send("Something went wrong, plz try again")
+            res.status(400).send("Something went wrong, plz try again")
         }
        
     }); 
@@ -177,7 +177,7 @@ userController.post("/signup", async(req, res) => {
         fullname: user.fullName,
         mobile: user.mob,
       })
-      res.json({msg : "Signup successfull ",token, email:email, mobNumb:mob, userName:fullName})
+      res.status(200).json({msg : "Signup successfull ",token, email:email, mobNumb:mob, userName:fullName})
       } else res.status(401).send({ msg: "Please enter a valid 6 digit OTP." });
      
   
@@ -199,7 +199,7 @@ userController.post("/signup", async(req, res) => {
     fullname: user.fullName,
     mobile: user.mob,
   });
-  res.json({msg : "Signup successfull ",token, email:email, mobNumb:mob, userName:fullName})
+  res.status(200).json({msg : "Signup successfull ",token, email:email, mobNumb:mob, userName:fullName})
    }
   }
          

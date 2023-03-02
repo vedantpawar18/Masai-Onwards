@@ -17,7 +17,6 @@ dashboardController.get("/course-details", async (req, res) => {
         return res.send("Please login again")
     }
     const courses = await CourseModel.find({})
-    console.log(courses[0]._id)
     const token = req.headers.authorization
     const userToken=decryptToken(token);
 
@@ -27,7 +26,7 @@ dashboardController.get("/course-details", async (req, res) => {
     const user = await UserModel.find({ $or: [{ email:email }, { mob: mobNumb }] });
 
     if(!user){
-        return res.send("User doesn't exists.")
+        return res.status(404).send("User doesn't exists.")
     }
     const userId =((user[0]._id))
     const userDetails=await FormModel.find({userId:userId});
@@ -66,10 +65,10 @@ dashboardController.post("/create-course", async (req, res) => {
     })
     try{
         await course.save()
-        res.send("course created")
+        res.status(200).send("course created")
     }
     catch(err){
-        res.send("something went wrong while creating course", err)
+        res.status(400).send("something went wrong while creating course", err)
     }
 });
 
@@ -139,11 +138,11 @@ dashboardController.post("/user-applied", async (req, res) => {
         const userId =((user[0]._id))
 
         if (userId) {
-            await UserModel.findOneAndUpdate({ _id: userId },{ $push: { coursesApplied: {courseId:courseId} } });
-            await FormModel.findOneAndUpdate({ userId: userId },{ $push: { coursesApplied: {courseId:courseId} } });
-            res.send("Applied courses by the user submitted to database")
+            await UserModel.findOneAndUpdate({ _id: userId },{ $push: { coursesApplied: courseId } });
+            await FormModel.findOneAndUpdate({ userId: userId },{ $push: { coursesApplied: courseId } });
+            res.status(200).send("Applied courses by the user submitted to database")
         }else{
-            res.send("User not found while storing user form data collection")
+            res.status(404).send("User not found while storing user form data collection")
         }
         
 })
