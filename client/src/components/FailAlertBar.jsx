@@ -8,10 +8,11 @@ const FailAlertBar = () => {
 			<Box
 				bg="white"
 				w="900px"
+				bgColor={" rgba(238, 255, 247, 1)"}
 				height={"136px"}
+
 				color="white"
 				display={"flex"}
-              
 			>
 				<Box width={"70%"} color={"black"} textAlign={"start"}   p={4}>
 					<Text
