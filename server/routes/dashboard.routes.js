@@ -17,6 +17,7 @@ dashboardController.get("/course-details", async (req, res) => {
         return res.send("Please login again")
     }
     const courses = await CourseModel.find({})
+    console.log(courses[0]._id)
     const token = req.headers.authorization
     const userToken=decryptToken(token);
 
@@ -28,11 +29,10 @@ dashboardController.get("/course-details", async (req, res) => {
     if(!user){
         return res.send("User doesn't exists.")
     }
-    const userId =((user[0]._id));
-    const userName=(user[0].fullName)
+    const userId =((user[0]._id))
     const userDetails=await FormModel.find({userId:userId});
 
-    return res.status(200).json({msg : "Form submitted successfully",courses:courses, userFormDetails:userDetails, userName:userName, email:email, mobNumb:mobNumb})
+    return res.status(200).json({msg : "Form submitted successfully",courses:courses, userFormDetails:userDetails})
    
 });
 
@@ -91,7 +91,6 @@ dashboardController.post("/user-data-collection", async (req, res) => {
         readyToWork ,
         token} = req.body;
 
-        // const token = req.headers.authorization
         const userToken=decryptToken(token);
 
         const email= userToken.email || "email"
@@ -100,11 +99,6 @@ dashboardController.post("/user-data-collection", async (req, res) => {
         const user = await UserModel.find({ $or: [{ email:email }, { mob: mobNumb }] });
 
         const userId =((user[0]._id))
-
-        // if (user) {await UserModel.findOneAndUpdate({ _id: userId },{ $push: { coursesApplied: {courseId:courseId} } });
-        // }else{
-        //     res.send("User not found while storing user form data collection")
-        // }
         
         const userform = new FormModel({
             mob ,
@@ -123,14 +117,36 @@ dashboardController.post("/user-data-collection", async (req, res) => {
          })
     try{
         await userform.save()
-        res.send("User-form created")
+        res.status(200).send("User-form created")
     }
     catch(err){
-        res.send("something went wrong while creating user detail form", err)
+        console.log(err)
+        res.status(400).send("something went wrong while creating course")
     }
 })
 
+dashboardController.post("/user-applied", async (req, res) => {
+    const { courseId,
+        token} = req.body;
 
+        const userToken=decryptToken(token);
+
+        const email= userToken.email || "email"
+        const mobNumb=userToken.mobile || "mob"
+
+        const user = await UserModel.find({ $or: [{ email:email }, { mob: mobNumb }] });
+
+        const userId =((user[0]._id))
+
+        if (userId) {
+            await UserModel.findOneAndUpdate({ _id: userId },{ $push: { coursesApplied: {courseId:courseId} } });
+            await FormModel.findOneAndUpdate({ userId: userId },{ $push: { coursesApplied: {courseId:courseId} } });
+            res.send("Applied courses by the user submitted to database")
+        }else{
+            res.send("User not found while storing user form data collection")
+        }
+        
+})
 
 module.exports = {
     dashboardController
