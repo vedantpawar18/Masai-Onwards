@@ -28,7 +28,8 @@ const formSchema = new mongoose.Schema({
     yearOfGraduation : {type : String},
     referralCode : {type : String},
     readyToWork : {type : String},
-    distanceLearning : {type : String}
+    distanceLearning : {type : String},
+    coursesApplies:{type:Array}
     
 })
 
