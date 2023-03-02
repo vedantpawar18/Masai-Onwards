@@ -18,17 +18,20 @@ const courseSchema = new mongoose.Schema({
 })
 
 const formSchema = new mongoose.Schema({
-    formId : {type : Number},
     userId : {type : Object},
-    courseId : {type : Object},
-    mobNumb : {type : Number},
+    mob : {type : Number},
+    fullName:{type:String},
+    emailId:{type:String},
+    workingStatus:{type:String},
+    receiveUpdates:{type:Array},
+    gender:{type:String},
     dateOfBirth : {type : String},
     twelthDiplomaCompletion : {type : String},
     courseStartDate : {type : String},
     yearOfGraduation : {type : String},
     referralCode : {type : String},
     readyToWork : {type : String},
-    distanceLearning : {type : String}
+    coursesApplied:{type: Array}
     
 })
 
