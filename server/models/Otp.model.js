@@ -1,12 +1,12 @@
 const {Schema,model}=require('mongoose');
 
-const OTPSchema=new Schema(
+const otpSchema=new Schema(
     {
         email:{type:String},
         otp:{type:Number,required:true}
        }
     )
 
-const OTPModel=new model('otp',OTPSchema);
+const OtpModel=new model('otp',otpSchema);
 
-module.exports=OTPModel;
+module.exports=OtpModel;
