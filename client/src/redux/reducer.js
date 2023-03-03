@@ -17,6 +17,10 @@ import {
     PHONE_AUTH_REQUEST,
     PHONE_AUTH_SUCCESS,
     PHONE_AUTH_FAILURE,
+
+    VERIFY_AUTH_REQUEST,
+    VERIFY_AUTH_SUCCESS,
+    VERIFY_AUTH_FAILURE,
     
 } from "./action"
 
@@ -66,7 +70,7 @@ export const authReducer = (state = initState, action) => {
                 ...state,
                 isLoading: false,
                 isError: false,
-                auth: action.payload
+                auth:action.payload
             })
 
         case POST_AUTH_FAILURE:
@@ -122,6 +126,29 @@ export const authReducer = (state = initState, action) => {
                 isError: true
             })
 
+       
+            case VERIFY_AUTH_REQUEST:
+                return ({
+                    ...state,
+                    isLoading: true,
+                    isError: false
+                })
+    
+            case VERIFY_AUTH_SUCCESS:
+                return ({
+                    ...state,
+                    isLoading: false,
+                    isError: false,
+                    auth: action.payload
+                })
+    
+            case VERIFY_AUTH_FAILURE:
+                return ({
+                    ...state,
+                    isLoading: false,
+                    isError: true
+                })
+         
 
 
 

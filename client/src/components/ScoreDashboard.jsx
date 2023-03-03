@@ -37,7 +37,7 @@ import { AiOutlineTrophy } from "react-icons/ai";
 import { MdEventAvailable } from "react-icons/md";
 import { BsBook } from "react-icons/bs";
 import { ReactText } from "react";
-import masai_logo from "../images/masai_logo.jpg";
+import masai_logo from "../images/masai_logo.png";
 import AR from "../images/AR.png";
 import Cards from "./Cards";
 import FailAlertBar from "./FailAlertBar";

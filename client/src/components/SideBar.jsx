@@ -32,7 +32,8 @@ import { AiOutlineTrophy } from "react-icons/ai";
 import { MdEventAvailable } from "react-icons/md";
 import { BsBook } from "react-icons/bs";
 
-// import masai_logo from "../images/masai_logo.png";
+import masai_logo from "../images/masai_logo.png";
+
 import AR from "../images/AR.png";
 import Cards from "./Cards";
 
@@ -98,7 +99,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
             {...rest}
         >
             <Flex h="20"  alignItems="center" mx="8" justifyContent="space-between">
-                <Image src={"masai_logo"} />
+                <Image src={masai_logo} />
                 <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
             </Flex>
             {LinkItems.map((link) => (

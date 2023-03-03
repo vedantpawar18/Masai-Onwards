@@ -1,17 +1,21 @@
 const { Router } = require("express");
-const authRouter = Router();
+const authController = Router();
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const { UserModel } = require("../models/User.model");
 const {
-  sendmail,
+  sendMailOtp,
   generateToken,
-  emailvalidation,
+ validateEmail,
 } = require("../util/emailotp");
-const OTPModel = require("../models/Otp.model");
+const OtpModel = require("../models/Otp.model");
 const customEmailMessage = "sign in with masai portal.";
 const customEmailMessage2 = "reset your old password";
 const rateLimit = require("express-rate-limit");
+
+
+
+// <----------------------  Function to limit the 10 requests per 60 minutes   -------------->
 
 const apiLimiter = rateLimit({
   windowMs: 360 * 60 * 1000, //1 hour
@@ -21,13 +25,14 @@ const apiLimiter = rateLimit({
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 
-authRouter.use("/signin", apiLimiter);
+authController.use("/signin", apiLimiter);
 
-// APT for sign in
-authRouter.post("/signin", async (req, res) => {
+//<-------------------------------   APT for sign in   ------------------------------->
+
+authController.post("/signin", async (req, res) => {
   const { email, password } = req.body;
-  const emailvalidate = emailvalidation(email);
-  if (emailvalidate) {
+  const valideEmail = validateEmail(email);
+  if (valideEmail) {
     const user = await UserModel.findOne({ email });
     if (user && password) {
       const hash = user.password;
@@ -37,7 +42,7 @@ authRouter.post("/signin", async (req, res) => {
           res.send(
             generateToken({
               email: user.email,
-              full_name: user.full_name,
+              fullName: user.fullName,
               mobile: user.mobile,
             })
           );
@@ -45,7 +50,7 @@ authRouter.post("/signin", async (req, res) => {
           res.status(401).send({ msg: "Please enter a valid password." });
       }
     } else if (user) {
-      sendmail(email, customEmailMessage, user?.full_name);
+      sendMailOtp(email, customEmailMessage, user?.fullName);
       res.status(200).send({
         msg: "OTP sent successfully, Please check your email for OTP.",
       });
@@ -56,29 +61,29 @@ authRouter.post("/signin", async (req, res) => {
   } else res.status(401).send({ msg: "Please enter a valid email address." });
 });
 
-// API to verify otp sent on email
-authRouter.post("/verifyotp", async (req, res) => {
+//<--------------------    API to verify otp sent on email ----------------------->
+authController.post("/verifyotp", async (req, res) => {
   const { email, otp } = req.body;
-  const user = await OTPModel.findOne({ email });
+  const user = await OtpModel.findOne({ email });
   if (user && user.otp == otp) {
-    const userdetails = await UserModel.findOne({ email });
-    if (userdetails)
+    const userDetails = await UserModel.findOne({ email });
+    if (userDetails)
       res.send(
         generateToken({
-          email: userdetails.email,
-          full_name: userdetails.full_name,
-          mobile: userdetails.mobile,
+          email: userDetails.email,
+          fullName: userDetails.fullName,
+          mobile: userDetails.mobile,
         })
       );
   } else res.status(401).send({ msg: "Please enter a valid 6 digit OTP." });
 });
 
-authRouter.post("/forget", async (req, res) => {
+authController.post("/forget", async (req, res) => {
   let { email } = req.body;
   const user = await UserModel.findOne({ email });
   if (user) {
     try {
-      sendmail(email, customEmailMessage2, user?.full_name);
+      sendMailOtp(email, customEmailMessage2, user?.fullName);
       res.status(200).send({ msg: "your otp for reset password is sended" });
     } catch (err) {
       console.log(err);
@@ -89,9 +94,9 @@ authRouter.post("/forget", async (req, res) => {
   }
 });
 
-authRouter.post("/reset", async (req, res) => {
+authController.post("/reset", async (req, res) => {
   let { otp, password } = req.body;
-  let isValidOtp = await OTPModel.findOne({ otp });
+  let isValidOtp = await OtpModel.findOne({ otp });
   if (isValidOtp) {
     let { email } = isValidOtp;
     bcrypt.hash(password, 5, async function (err, hash) {
@@ -112,4 +117,4 @@ authRouter.post("/reset", async (req, res) => {
   }
 });
 
-module.exports = authRouter;
+module.exports = authController;
