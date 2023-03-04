@@ -52,7 +52,7 @@ authController.post("/signin", async (req, res) => {
     } else if (user) {
       sendMailOtp(email, customEmailMessage, user?.fullName);
       res.status(200).send({
-        msg: "OTP sent successfuly, Please check your email for OTP.",
+        msg: "OTP sent successfully, Please check your email for OTP.",
       });
     } else
       res.status(401).send({
