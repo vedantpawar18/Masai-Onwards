@@ -184,7 +184,7 @@ const ResetPass = () => {
             <Box id="div2" className={styles.afterDiv2}>
               <Box m="auto">
                 <Text>
-                  Your password is successfuly reset. Click below to sign in
+                  Your password is successfully reset. Click below to sign in
                   your account.
                 </Text>
               </Box>

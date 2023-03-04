@@ -29,7 +29,7 @@ const ForgetPass = () => {
         .then((res) => {
           if (res.status === 200) {
             toast({
-              title: 'OTP Sended successfuly.',
+              title: 'OTP Sended Successfully.',
               description: "We've sended you a otp in mail.",
               status: 'success',
               duration: 9000,

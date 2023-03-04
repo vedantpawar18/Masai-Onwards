@@ -29,7 +29,7 @@ const PassAlertBar = () => {
 						fontStyle={"normal"}
 						color={"#544D4F"}
 					>
-						You have successfuly cleared MSAT! Complete the id verification to
+						You have successfully cleared MSAT! Complete the id verification to
 						get admitted to Masai School.
 					</Text>
 

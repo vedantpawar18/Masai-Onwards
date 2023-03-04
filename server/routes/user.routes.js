@@ -5,8 +5,9 @@ const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken");
 const OTPModel = require("../models/Otp.model");
 require("dotenv").config();
-const {validateEmail, generateToken, validateUserName, sendMailOtp, decryptToken }= require("../util/emailotp")
+const {validateEmail,generateToken, validateUserName, sendMailOtp, decryptToken }= require("../util/emailotp")
 const customEmailMessage = "sign in with masai portal.";
+
 
 // email, username and mobile number verification for the first page of signup
 
