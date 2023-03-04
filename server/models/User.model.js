@@ -9,7 +9,6 @@ const userSchema = new mongoose.Schema({
     fullName: {type: String, required: true},
     coursesApplied: {type:Array},
     coursesPassed:{type:Array},
-    coursesPassed:{type:Array}
 })
 
 const  UserModel = mongoose.model("User", userSchema)
