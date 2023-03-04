@@ -5,9 +5,8 @@ const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken");
 const OTPModel = require("../models/Otp.model");
 require("dotenv").config();
-const {emailvalidation,generateToken, validateUserName, sendmail, decryptToken }= require("../util/emailotp")
+const {validateEmail, generateToken, validateUserName, sendMailOtp, decryptToken }= require("../util/emailotp")
 const customEmailMessage = "sign in with masai portal.";
-
 
 // email, username and mobile number verification for the first page of signup
 
@@ -20,7 +19,7 @@ userController.post("/verify", async(req,res)=>{
     if (email && !password)
     {
         const alreadyUser = await UserModel.find({ email });
-        const valideMail= emailvalidation(email);
+        const valideMail= validateEmail(email);
         const validName= validateUserName(fullName)
 
         if(valideMail==false){
@@ -33,7 +32,7 @@ userController.post("/verify", async(req,res)=>{
             return res.status(403).send("User already exists");
         }
         else{
-           await sendmail(email, customEmailMessage, fullName)
+           await sendMailOtp(email, customEmailMessage, fullName)
            return res.status(200).send("Otp sent to your email address")   
         }
     }
@@ -65,7 +64,7 @@ userController.post("/verify", async(req,res)=>{
     if(password && email){
 
       const alreadyUser = await UserModel.find({ email });
-       const valideMail= emailvalidation(email);
+       const valideMail= validateEmail(email);
        const validName= validateUserName(fullName)
 
        if(valideMail==false){
@@ -98,7 +97,7 @@ userController.post("/verify", async(req,res)=>{
                 mobile: user.mob,
               })
               decryptToken(token.Primarytoken)
-               res.status(200).json({msg : "Signup successfull at email password",token, email:email, mobNumb:mob, userName:fullName})
+               res.status(200).json({msg : "Signup successful at email password",token, email:email, mobNumb:mob, userName:fullName})
            }
            catch(err){
                console.log(err)
@@ -142,7 +141,7 @@ userController.post("/verify", async(req,res)=>{
               mobile: user.mob,
             })
             decryptToken(token.Primarytoken)
-            res.status(200).json({msg : "Signup successfull at email password",token, email:email, mobNumb:mob, userName:fullName})
+            res.status(200).json({msg : "Signup successful at email password",token, email:email, mobNumb:mob, userName:fullName})
         }
         catch(err){
             console.log(err)
@@ -177,7 +176,7 @@ userController.post("/signup", async(req, res) => {
         fullname: user.fullName,
         mobile: user.mob,
       })
-      res.status(200).json({msg : "Signup successfull ",token, email:email, mobNumb:mob, userName:fullName})
+      res.status(200).json({msg : "Signup successful ",token, email:email, mobNumb:mob, userName:fullName})
       } else res.status(401).send({ msg: "Please enter a valid 6 digit OTP." });
      
   
@@ -199,7 +198,7 @@ userController.post("/signup", async(req, res) => {
     fullname: user.fullName,
     mobile: user.mob,
   });
-  res.status(200).json({msg : "Signup successfull ",token, email:email, mobNumb:mob, userName:fullName})
+  res.status(200).json({msg : "Signup successful ",token, email:email, mobNumb:mob, userName:fullName})
    }
   }
          

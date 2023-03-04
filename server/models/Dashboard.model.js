@@ -32,16 +32,16 @@ const formSchema = new mongoose.Schema({
     referralCode : {type : String},
     readyToWork : {type : String},
     coursesApplied:{type: Array},
-    coursesEligibleFor:{type:Array},
-    coursesNotEligibleFor:{type:Array}
+    coursesPassed:{type:Array},
+    coursesPassed:{type:Array}
     
 })
 
 const mediumSchema = new mongoose.Schema({
-    medium1:{type:String},
-    medium2:{type:String},
-    medium3:{type:String},
-    medium4:{type:String}
+    med1:{type:String},
+    med2:{type:String},
+    med3:{type:String},
+    med4:{type:String}
 })
 
 const CourseModel = mongoose.model("course", courseSchema)

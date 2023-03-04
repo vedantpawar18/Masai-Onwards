@@ -8,8 +8,8 @@ const userSchema = new mongoose.Schema({
     mob: {type: String},
     fullName: {type: String, required: true},
     coursesApplied: {type:Array},
-    coursesEligibleFor:{type:Array},
-    coursesNotEligibleFor:{type:Array}
+    coursesPassed:{type:Array},
+    coursesPassed:{type:Array}
 })
 
 const  UserModel = mongoose.model("User", userSchema)

@@ -12,7 +12,7 @@ const dashboardController = Router();
 
 //  <----------------------Fetching Course -static data--------------------------------------------------> //
 
-dashboardController.get("/course-details", async (req, res) => {
+dashboardController.get("/dashboard-details", async (req, res) => {
 
     if(!req.headers.authorization){
         return res.send("Please login again")
@@ -34,7 +34,7 @@ dashboardController.get("/course-details", async (req, res) => {
     const userId =((user[0]._id))
     const userDetails=await FormModel.find({userId:userId});
 
-    return res.status(200).json({msg : "Form submitted successfully",courses:courses, userFormDetails:userDetails, updateMediums:mediums[0]})
+    return res.status(200).json({msg : "Form submitted successfuly",courses:courses, userFormDetails:userDetails, updateMediums:mediums[0]})
    
 });
 
@@ -138,39 +138,42 @@ dashboardController.post("/user-applied", async (req, res) => {
 
         const user = await UserModel.find({ $or: [{ email:email }, { mob: mobNumb }] });
         console.log(status)
-        const userId =((user[0]._id))
+        const userId =((user[0]._id));
+
+        await UserModel.findOneAndUpdate({ _id: userId },{ $push: { coursesApplied: {courseId:courseId,congAbilityScore:congAbilityScore, MetTestScore:MetTestScore, communicationScore:communicationScore, credibilityScore:credibilityScore, status:status} } });
+
+        await FormModel.findOneAndUpdate({ userId: userId },{ $push: { coursesApplied: {courseId:courseId,congAbilityScore:congAbilityScore, MetTestScore:MetTestScore, communicationScore:communicationScore, credibilityScore:credibilityScore, status:status} } });
+
+        let message = "";
+        let reqStatus = 200;
 
         if (userId && status=="pass") {
-            await UserModel.findOneAndUpdate({ _id: userId },{ $push: { coursesApplied: {courseId:courseId,congAbilityScore:congAbilityScore, MetTestScore:MetTestScore, communicationScore:communicationScore, credibilityScore:credibilityScore, status:status} } });
-
-            await FormModel.findOneAndUpdate({ userId: userId },{ $push: { coursesApplied: {courseId:courseId,congAbilityScore:congAbilityScore, MetTestScore:MetTestScore, communicationScore:communicationScore, credibilityScore:credibilityScore, status:status} } });
-
-            await UserModel.findOneAndUpdate({ _id: userId },{ $push: { coursesEligibleFor: {courseId} } });
-            await FormModel.findOneAndUpdate({ userId: userId },{ $push: { coursesEligibleFor: {courseId} } });
-            res.status(200).json({msg:"Applied courses and course eligible is submitted to database"})
+            reqStatus = 200;
+            message = "Applied courses and course eligible is submitted to database";
+            await UserModel.findOneAndUpdate({ _id: userId },{ $push: { coursesPassed: {courseId} } });
+            await FormModel.findOneAndUpdate({ userId: userId },{ $push: { coursesPassed: {courseId} } });
         }
         else if(userId && status=="fail"){
-            await UserModel.findOneAndUpdate({ _id: userId },{ $push: { coursesApplied: {courseId:courseId,congAbilityScore:congAbilityScore, MetTestScore:MetTestScore, communicationScore:communicationScore, credibilityScore:credibilityScore, status:status} } });
-
-            await FormModel.findOneAndUpdate({ userId: userId },{ $push: { coursesApplied: {courseId:courseId,congAbilityScore:congAbilityScore, MetTestScore:MetTestScore, communicationScore:communicationScore, credibilityScore:credibilityScore, status:status} } });
-
-            await UserModel.findOneAndUpdate({ _id: userId },{ $push: { coursesNotEligibleFor: {courseId} } });
-            await FormModel.findOneAndUpdate({ userId: userId },{ $push: { coursesNotEligibleFor: {courseId} } });
-            res.status(200).json({msg:"Applied courses and courses not eligible is submitted to database"})
+            message = "Applied courses and courses not eligible is submitted to database";
+            reqStatus = 200;
+            await UserModel.findOneAndUpdate({ _id: userId },{ $push: { coursesPassed: {courseId} } });
+            await FormModel.findOneAndUpdate({ userId: userId },{ $push: { coursesPassed: {courseId} } });
         }
         else{
-            res.status(404).send("User not found while storing user form data collection")
+            message = "User not found while storing user form data collection";
+            reqStatus = 404;
         }
+        res.status(reqStatus).send(message)
         
 })
 
 // --------------------------- creating db for user updates availibility ----------------------->
 
-dashboardController.post("/create-mediums", async (req, res) => {
-    const {medium1, medium2, medium3, medium4 } = req.body;
+dashboardController.post("/notification-medium", async (req, res) => {
+    const {med1, med2, med3, med4 } = req.body;
 
     const medium = new MediumsModel({
-        medium1, medium2, medium3, medium4
+        med1, med2, med3, med4
     })
     try{
         await medium.save()

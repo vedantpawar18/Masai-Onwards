@@ -61,7 +61,7 @@ const generateToken = ({ email = null, fullName = null, mobile = null }) => {
     }
   );
   return {
-    message: "Signed in successfully",
+    message: "Signed in successfuly",
     fullName,
     email,
     primaryToken,
