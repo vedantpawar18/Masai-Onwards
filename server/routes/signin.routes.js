@@ -30,13 +30,15 @@ authController.use("/signin", apiLimiter);
 //<-------------------------------   APT for sign in   ------------------------------->
 
 authController.post("/signin", async (req, res) => {
-  const { email, password } = req.body;
-  const valideEmail = validateEmail(email);
+  const { email, password, mobile } = req.body;
+  if(email)
+  {
+    const valideEmail = validateEmail(email);
   if (valideEmail) {
     const user = await UserModel.findOne({ email });
     if (user && password) {
       const hash = user.password;
-      if (user && password) {
+      if (user && hash) {
         const verification = await bcrypt.compare(password, hash);
         if (verification) {
           res.send(
@@ -49,6 +51,10 @@ authController.post("/signin", async (req, res) => {
         } else if (user && !verification)
           res.status(401).send({ msg: "Please enter a valid password." });
       }
+    } else if (user && !user.password) {
+      res.status(200).send({
+        msg: "Password is not associated with your email address, Please try with OTP.",
+      });
     } else if (user) {
       sendMailOtp(email, customEmailMessage, user?.fullName);
       res.status(200).send({
@@ -59,12 +65,39 @@ authController.post("/signin", async (req, res) => {
         msg: "The account you mentioned does not exist. Please try with correct email address.",
       });
   } else res.status(401).send({ msg: "Please enter a valid email address." });
+}
+else if(mobile)
+{
+  if(mobile.length!=10 || mobile[0]==0)
+  res.status(401).send({msg:"Please Enter 10 digit valid mobile number"});
+  else{
+    const userDetails=await UserModel.findOne({mob:mobile});
+    if(userDetails && password && !userDetails.password)
+    {
+      res.status(200).send({
+        msg: "Password is not associated with your mobile number, Please try with OTP.",
+      });
+    }
+    else if(!userDetails)
+    {
+      res.status(401).send({msg:"There is no account associated with this mobile number"})
+      
+    }
+    else
+    res.send(generateToken({
+      email: userDetails.email,
+      fullName: userDetails.fullName,
+      mobile: userDetails.mob,
+    }));
+  }
+}
 });
 
 //<--------------------    API to verify otp sent on email ----------------------->
 authController.post("/verifyotp", async (req, res) => {
   const { email, otp } = req.body;
   const user = await OtpModel.findOne({ email });
+  console.log(user)
   if (user && user.otp == otp) {
     const userDetails = await UserModel.findOne({ email });
     if (userDetails)
