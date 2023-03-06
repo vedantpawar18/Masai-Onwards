@@ -5,23 +5,26 @@ require("dotenv").config()
 const {decryptToken}=require("../util/emailotp")
 const {CourseModel} = require("../models/Dashboard.model");
 const {FormModel} = require("../models/Dashboard.model");
+const {MediumsModel} = require("../models/Dashboard.model");
 const {UserModel} = require("../models/User.model")
 
 const dashboardController = Router();
 
 //  <----------------------Fetching Course -static data--------------------------------------------------> //
 
-dashboardController.get("/course-details", async (req, res) => {
+dashboardController.get("/dashboard-details", async (req, res) => {
 
     if(!req.headers.authorization){
         return res.send("Please login again")
     }
+    const token = req.headers.authorization.split(" ")[1]
     const courses = await CourseModel.find({})
-    const token = req.headers.authorization
     const userToken=decryptToken(token);
 
     const email= userToken.email || "email"
-    const mobNumb=userToken.mobile || "mob"
+    const mobNumb=userToken.mobile || "mob";
+
+    const mediums = await MediumsModel.find({});
 
     const user = await UserModel.find({ $or: [{ email:email }, { mob: mobNumb }] });
 
@@ -31,7 +34,7 @@ dashboardController.get("/course-details", async (req, res) => {
     const userId =((user[0]._id))
     const userDetails=await FormModel.find({userId:userId});
 
-    return res.status(200).json({msg : "Form submitted successfully",courses:courses, userFormDetails:userDetails})
+    return res.status(200).json({msg : "Form submitted successfully",courses:courses, userFormDetails:userDetails, updateMediums:mediums[0]})
    
 });
 
@@ -87,8 +90,12 @@ dashboardController.post("/user-data-collection", async (req, res) => {
         courseStartDate ,
         yearOfGraduation ,
         referralCode ,
-        readyToWork ,
-        token} = req.body;
+        readyToWork } = req.body;
+
+        if(!req.headers.authorization){
+            return res.send("Please login again")
+        }
+        const token = req.headers.authorization.split(" ")[1]
 
         const userToken=decryptToken(token);
 
@@ -96,6 +103,9 @@ dashboardController.post("/user-data-collection", async (req, res) => {
         const mobNumb=userToken.mobile || "mob"
 
         const user = await UserModel.find({ $or: [{ email:email }, { mob: mobNumb }] });
+        if(!user){
+            return res.status(404).send("User doesn't exists.")
+        }
 
         const userId =((user[0]._id))
         
@@ -125,27 +135,70 @@ dashboardController.post("/user-data-collection", async (req, res) => {
 })
 
 dashboardController.post("/user-applied", async (req, res) => {
-    const { courseId,
-        token} = req.body;
-
+    const { courseId, congAbilityScore, MetTestScore, communicationScore, credibilityScore, status } = req.body;
+    
+        if(!req.headers.authorization){
+            return res.send("Please login again")
+        }
+        const token = req.headers.authorization.split(" ")[1]
         const userToken=decryptToken(token);
 
         const email= userToken.email || "email"
         const mobNumb=userToken.mobile || "mob"
 
         const user = await UserModel.find({ $or: [{ email:email }, { mob: mobNumb }] });
-
+        
+        if(!user){
+            return res.status(404).send("User doesn't exists.")
+        }
         const userId =((user[0]._id))
 
-        if (userId) {
-            await UserModel.findOneAndUpdate({ _id: userId },{ $push: { coursesApplied: courseId } });
-            await FormModel.findOneAndUpdate({ userId: userId },{ $push: { coursesApplied: courseId } });
-            res.status(200).send("Applied courses by the user submitted to database")
-        }else{
-            res.status(404).send("User not found while storing user form data collection")
+        await UserModel.findOneAndUpdate({ _id: userId },{ $push: { coursesApplied: {courseId:courseId,congAbilityScore:congAbilityScore, MetTestScore:MetTestScore, communicationScore:communicationScore, credibilityScore:credibilityScore, status:status} } });
+
+        await FormModel.findOneAndUpdate({ userId: userId },{ $push: { coursesApplied: {courseId:courseId,congAbilityScore:congAbilityScore, MetTestScore:MetTestScore, communicationScore:communicationScore, credibilityScore:credibilityScore, status:status} } });
+
+        let message = "";
+        let reqStatus = 200;
+
+        if (userId && status=="pass") {
+            reqStatus = 200;
+            message = "Applied courses and course eligible is submitted to database";
+
+            await UserModel.findOneAndUpdate({ _id: userId },{ $push: { coursesPassed: {courseId} } });
+            await FormModel.findOneAndUpdate({ userId: userId },{ $push: { coursesFailed: {courseId} } });
+            res.status(200).json({msg:"Applied courses and course eligible is submitted to database"})
         }
-        
+        else if(userId && status=="fail"){
+            message = "Applied courses and courses not eligible is submitted to database";
+            reqStatus = 200;
+
+            await UserModel.findOneAndUpdate({ _id: userId },{ $push: { coursesPassed: {courseId} } });
+            await FormModel.findOneAndUpdate({ userId: userId },{ $push: { coursesFailed: {courseId} } });
+            res.status(200).json({msg:"Applied courses and courses not eligible is submitted to database"})
+        }
+        else{
+            message = "User not found while storing user form data collection";
+            reqStatus = 404;
+        }
+        res.status(reqStatus).send(message)
 })
+
+// --------------------------- creating db for user updates availibility ----------------------->
+
+dashboardController.post("/notification-medium", async (req, res) => {
+    const {med1, med2, med3, med4 } = req.body;
+
+    const medium = new MediumsModel({
+        med1, med2, med3, med4
+    })
+    try{
+        await medium.save()
+        res.status(200).send("mediums created")
+    }
+    catch(err){
+        res.status(400).send("something went wrong while creating update mediums", err)
+    }
+});
 
 module.exports = {
     dashboardController

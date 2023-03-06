@@ -31,14 +31,23 @@ const formSchema = new mongoose.Schema({
     yearOfGraduation : {type : String},
     referralCode : {type : String},
     readyToWork : {type : String},
-    coursesApplied:{type: Array}
-    
+    coursesApplied:{type: Array},
+    coursesPassed:{type:Array},
+    coursesFailed:{type:Array},
+})
+
+const mediumSchema = new mongoose.Schema({
+    med1:{type:String},
+    med2:{type:String},
+    med3:{type:String},
+    med4:{type:String}
 })
 
 const CourseModel = mongoose.model("course", courseSchema)
 const FormModel = mongoose.model("userform", formSchema)
+const MediumsModel = mongoose.model("medium", mediumSchema)
 
 
 module.exports = {
-    CourseModel, FormModel
+    CourseModel, FormModel, MediumsModel
 }

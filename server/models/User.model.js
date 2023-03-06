@@ -7,7 +7,9 @@ const userSchema = new mongoose.Schema({
     password : {type : String},
     mob: {type: String},
     fullName: {type: String, required: true},
-    coursesApplied: {type:Array}
+    coursesApplied: {type:Array},
+    coursesPassed:{type:Array},
+    coursesFailed:{type:Array},
 })
 
 const  UserModel = mongoose.model("User", userSchema)
