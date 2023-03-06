@@ -17,8 +17,8 @@ dashboardController.get("/dashboard-details", async (req, res) => {
     if(!req.headers.authorization){
         return res.send("Please login again")
     }
+    const token = req.headers.authorization.split(" ")[1]
     const courses = await CourseModel.find({})
-    const token = req.headers.authorization
     const userToken=decryptToken(token);
 
     const email= userToken.email || "email"
@@ -90,8 +90,12 @@ dashboardController.post("/user-data-collection", async (req, res) => {
         courseStartDate ,
         yearOfGraduation ,
         referralCode ,
-        readyToWork ,
-        token} = req.body;
+        readyToWork } = req.body;
+
+        if(!req.headers.authorization){
+            return res.send("Please login again")
+        }
+        const token = req.headers.authorization.split(" ")[1]
 
         const userToken=decryptToken(token);
 
@@ -99,6 +103,9 @@ dashboardController.post("/user-data-collection", async (req, res) => {
         const mobNumb=userToken.mobile || "mob"
 
         const user = await UserModel.find({ $or: [{ email:email }, { mob: mobNumb }] });
+        if(!user){
+            return res.status(404).send("User doesn't exists.")
+        }
 
         const userId =((user[0]._id))
         
@@ -128,16 +135,22 @@ dashboardController.post("/user-data-collection", async (req, res) => {
 })
 
 dashboardController.post("/user-applied", async (req, res) => {
-    const { courseId, congAbilityScore, MetTestScore, communicationScore, credibilityScore, status,
-        token} = req.body;
-
+    const { courseId, congAbilityScore, MetTestScore, communicationScore, credibilityScore, status } = req.body;
+    
+        if(!req.headers.authorization){
+            return res.send("Please login again")
+        }
+        const token = req.headers.authorization.split(" ")[1]
         const userToken=decryptToken(token);
 
         const email= userToken.email || "email"
         const mobNumb=userToken.mobile || "mob"
 
         const user = await UserModel.find({ $or: [{ email:email }, { mob: mobNumb }] });
-        console.log(status)
+        
+        if(!user){
+            return res.status(404).send("User doesn't exists.")
+        }
         const userId =((user[0]._id))
 
         await UserModel.findOneAndUpdate({ _id: userId },{ $push: { coursesApplied: {courseId:courseId,congAbilityScore:congAbilityScore, MetTestScore:MetTestScore, communicationScore:communicationScore, credibilityScore:credibilityScore, status:status} } });
@@ -151,16 +164,16 @@ dashboardController.post("/user-applied", async (req, res) => {
             reqStatus = 200;
             message = "Applied courses and course eligible is submitted to database";
 
-            await UserModel.findOneAndUpdate({ _id: userId },{ $push: { coursesEligibleFor: {courseId} } });
-            await FormModel.findOneAndUpdate({ userId: userId },{ $push: { coursesEligibleFor: {courseId} } });
+            await UserModel.findOneAndUpdate({ _id: userId },{ $push: { coursesPassed: {courseId} } });
+            await FormModel.findOneAndUpdate({ userId: userId },{ $push: { coursesFailed: {courseId} } });
             res.status(200).json({msg:"Applied courses and course eligible is submitted to database"})
         }
         else if(userId && status=="fail"){
             message = "Applied courses and courses not eligible is submitted to database";
             reqStatus = 200;
 
-            await UserModel.findOneAndUpdate({ _id: userId },{ $push: { coursesNotEligibleFor: {courseId} } });
-            await FormModel.findOneAndUpdate({ userId: userId },{ $push: { coursesNotEligibleFor: {courseId} } });
+            await UserModel.findOneAndUpdate({ _id: userId },{ $push: { coursesPassed: {courseId} } });
+            await FormModel.findOneAndUpdate({ userId: userId },{ $push: { coursesFailed: {courseId} } });
             res.status(200).json({msg:"Applied courses and courses not eligible is submitted to database"})
         }
         else{

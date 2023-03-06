@@ -33,7 +33,7 @@ const formSchema = new mongoose.Schema({
     readyToWork : {type : String},
     coursesApplied:{type: Array},
     coursesPassed:{type:Array},
-    
+    coursesFailed:{type:Array},
 })
 
 const mediumSchema = new mongoose.Schema({
