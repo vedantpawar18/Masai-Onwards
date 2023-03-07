@@ -60,7 +60,6 @@ const generateToken = ({ email=null ,fullName=null,mobile=null }) => {
     }
   );
   return {
-    msg: "Signed in successfully",
     fullName,
     email,
      mobile ,

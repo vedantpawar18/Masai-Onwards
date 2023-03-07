@@ -33,8 +33,8 @@ authController.post("/signin", async (req, res) => {
   const { email, password, mobile } = req.body;
   if(email)
   {
-    const valideEmail = validateEmail(email);
-  if (valideEmail) {
+    const validEmail = validateEmail(email);
+  if (validEmail) {
     const user = await UserModel.findOne({ email });
     if (user && password) {
       const hash = user.password;
@@ -84,11 +84,11 @@ else if(mobile)
       
     }
     else
-    res.send(generateToken({
+    res.status(200).send(generateToken({
       email: userDetails.email,
       fullName: userDetails.fullName,
       mobile: userDetails.mob,
-    }));
+    }),{msg:"Signed in Successfully"});
   }
 }
 });
@@ -97,7 +97,6 @@ else if(mobile)
 authController.post("/verifyotp", async (req, res) => {
   const { email, otp } = req.body;
   const user = await OtpModel.findOne({ email });
-  console.log(user)
   if (user && user.otp == otp) {
     const userDetails = await UserModel.findOne({ email });
     if (userDetails)
@@ -119,7 +118,6 @@ authController.post("/forget", async (req, res) => {
       sendMailOtp(email, customEmailMessage2, user?.fullName);
       res.status(200).send({ msg: "your otp for reset password is sended" });
     } catch (err) {
-      console.log(err);
       res.status(401).send("something went wrong! try again");
     }
   } else {
