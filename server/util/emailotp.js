@@ -12,9 +12,8 @@ const validateEmail = (email) => {
 //   function to send mail using nodemailer
 
 const sendMailOtp = async (email, customEmailMessage, userName) => {
-  const user = await otpModel.findOne({ email });
-  if (user) await otpModel.deleteOne({ email: email });
-
+  const user = await otpModel.findOneAndDelete({ email });
+ 
   const mail = await nodemailer.createTransport({
     service: "gmail",
     secure: false,
@@ -45,25 +44,25 @@ const sendMailOtp = async (email, customEmailMessage, userName) => {
 };
 
 // function for generating token
-const generateToken = ({ email = null, fullName = null, mobile = null }) => {
+const generateToken = ({ email=null ,fullName=null,mobile=null }) => {
   const primaryToken = jwt.sign(
-    { email: email, name: fullName, mobile: mobile },
+    { email: email, name: fullName,  mobile :  mobile  },
     process.env.PRIMARY_SECRET_KEY,
     {
       expiresIn: "1h",
     }
   );
   const refreshToken = jwt.sign(
-    { email: email, name: fullName, mobile: mobile },
+    { email: email, name: fullName,  mobile :  mobile },
     process.env.REFRESH_SECRET_KEY,
     {
       expiresIn: "7days",
     }
   );
   return {
-    message: "Signed in successfully",
     fullName,
     email,
+     mobile ,
     primaryToken,
     refreshToken,
   };
