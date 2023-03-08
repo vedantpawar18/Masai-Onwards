@@ -45,7 +45,7 @@ const sendMailOtp = async (email, customEmailMessage, userName) => {
 };
 
 // function for generating token
-const generateToken = ({ email = null, fullName = null, mobile = null }) => {
+const generateToken = ({ email = null, fullName = null, mobile = null }) => { 
   const primaryToken = jwt.sign(
     { email: email, name: fullName, mobile: mobile },
     process.env.PRIMARY_SECRET_KEY,
