@@ -1,0 +1,449 @@
+swagger: "2.0"
+info:
+  title: Masai Onwards
+  description: API documentation.
+  
+  servers:
+    -url: http://localhost:8080
+    description: THis is my local Server 
+schemes: [http]
+paths:
+  /user/verify:
+    post:
+      summary: Verifies the user and add user to databse
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          schema:
+            type: object 
+            properties:
+              mob:
+                type: integer
+              fullName:
+                type: string
+              email:
+                type: string
+              password:
+                type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: string
+            example: "Otp sent to your email address"
+        '401':
+          description: OK
+          schema:
+            type: string
+            example: "Invalid email address !"
+        '401':
+          description: OK
+          schema:
+            type: string
+            example: "Please enter atleast 3 characters, no symbols or numbers as full name"
+        '403':
+          description: OK
+          schema:
+            type: string
+            example: "User already exists" 
+
+  /user/signup:
+    post:
+      summary: Add user to databse
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          schema:
+            type: object 
+            properties:
+              mob:
+                type: integer
+              fullName:
+                type: string
+              email:
+                type: string 
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            properties:
+              mobNumb:
+                type: integer
+              userName:
+                type: string
+              email:
+                type: string 
+              token:
+                type: string 
+        '401':
+          description: OK
+          schema:
+            type: string
+            example: "Please enter a valid 6 digit OTP." 
+          
+  
+  /auth/signin :
+    post:
+      summary: User logging in.
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters: 
+        - in: body
+          name: body
+          schema:
+            type: object 
+            properties:
+              email:
+                type: string 
+              password:
+                type: string  
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: string
+            example: "OTP sent successfully, Please check your email for OTP." 
+             
+        '401':
+          description: OK
+          schema:
+            type: string
+            example: "Please enter a valid password." 
+        '404':
+          description: OK
+          schema:
+            type: string
+            example: "The account you mentioned does not exist. Please try with correct email address." 
+
+  /auth/verifyotp :
+    post:
+      summary: Verify OTP to log in.
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters: 
+        - in: body
+          name: body
+          schema:
+            type: object 
+            properties:
+              email:
+                type: string 
+              otp:
+                type: integer  
+      responses: 
+        '401':
+          description: OK
+          schema:
+            type: string
+            example: "Please enter a valid 6 digit OTP."  
+
+  /auth/forget :
+    post:
+      summary: User logging in.
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters: 
+        - in: body
+          name: body
+          schema:
+            type: object 
+            properties:
+              email:
+                type: string  
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: string
+            example: "your otp for reset password is sended" 
+             
+        '401':
+          description: OK
+          schema:
+            type: string
+            example: "something went wrong! try again" 
+        '404':
+          description: OK
+          schema:
+            type: string
+            example: "user not found" 
+
+  
+  /auth/reset :
+    post:
+      summary: User logging in.
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters: 
+        - in: body
+          name: body
+          schema:
+            type: object 
+            properties:
+              otp:
+                type: integer 
+              password:
+                type: string  
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: string
+            example: "password updated" 
+             
+        '400':
+          description: OK
+          schema:
+            type: string
+            example: "something went wrong! try again" 
+        '404':
+          description: OK
+          schema:
+            type: string
+            example: "Invalid otp" 
+
+  /dashboard/dashboard-details:
+    get:
+      summary: Fetch user and course details
+      parameters:
+        - in: header
+          name: Bearer-token
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              msg:
+                type: string
+              courses:
+                type: array
+                course: 
+                  type: string
+                example: ["str1", "str2"]
+              userFormDetails:
+                type: array
+                course: 
+                  type: string
+                example: ["str1", "str2"]
+              updateMediums:
+                type: array
+                course: 
+                  type: string
+                example: ["str1", "str2"]
+              
+        404:
+          description: User doesn't exists. 
+  
+  /dashboard/create-course:
+    post:
+      summary: Add course to database
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          schema:
+            type: object 
+            properties:
+              cutoffCognitiveAbl:
+                type: integer
+              cutoffMettlTest:
+                type: integer
+              cutoffCommunicationSkills:
+                type: integer
+              fullName:
+                type: string
+              courseName:
+                type: string 
+              courseType :
+                type: string 
+              deadline :
+                type: string 
+              courseStartDate:
+                type: string 
+              courseDescription:
+                type: string 
+              courseGuarantee:
+                type: string 
+              courseMode:
+                type: string 
+              courseDuration:
+                type: string 
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: string
+            example: "course created" 
+             
+        '400':
+          description: OK
+          schema:
+            type: string
+            example: "something went wrong while creating course" 
+
+  /dashboard/user-data-collection :
+    post:
+      summary: User data collection
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: header
+          name: Bearer-token
+          schema:
+            type: string
+          required: true
+        - in: body
+          name: body
+          schema:
+            type: object 
+            properties:
+              mob:
+                type: integer 
+              fullName:
+                type: string
+              emailId:
+                type: string 
+              gender :
+                type: string 
+              workingStatus :
+                type: string 
+              receiveUpdates:
+                type: string 
+              dateOfBirth:
+                type: string 
+              twelthDiplomaCompletion:
+                type: string 
+              courseStartDate:
+                type: string 
+              yearOfGraduation:
+                type: integer
+              referralCode:
+                type: string 
+              readyToWork:
+                type: string 
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: string
+            example: "User-form created" 
+             
+        '400':
+          description: OK
+          schema:
+            type: string
+            example: "something went wrong while creating course" 
+        '404':
+          description: OK
+          schema:
+            type: string
+            example: "User doesn't exists" 
+
+
+  /dashboard/user-applied :
+    post:
+      summary: User applied to a course saved at database
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: header
+          name: Bearer-token
+          schema:
+            type: string
+          required: true
+        - in: body
+          name: body
+          schema:
+            type: object 
+            properties:
+              courseId:
+                type: string 
+              congAbilityScore:
+                type: integer
+              MetTestScore:
+                type: integer 
+              communicationScore :
+                type: integer 
+              credibilityScore :
+                type: integer 
+              status:
+                type: string 
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: string
+            example: "Applied courses and course eligible is submitted to database" 
+             
+        '401':
+          description: OK
+          schema:
+            type: string
+            example: "User not found while storing user form data collection" 
+        '404':
+          description: OK
+          schema:
+            type: string
+            example: "User doesn't exists" 
+
+  
+  /dashboard/notification-medium :
+    post:
+      summary: Methods available to send user notifications.
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters: 
+        - in: body
+          name: body
+          schema:
+            type: object 
+            properties:
+              med1:
+                type: string 
+              med2:
+                type: string
+              med3:
+                type: string 
+              med4 :
+                type: string  
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: string
+            example: "mediums created"  
+        '400':
+          description: OK
+          schema:
+            type: string
+            example: "something went wrong while creating update mediums" 

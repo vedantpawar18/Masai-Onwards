@@ -91,13 +91,13 @@ userController.post("/verify", async(req,res)=>{
                fullName
            })
            try{
-               await user.save()
+               await user.save();
                const token = generateToken({
                 email: user.email,
-                fullname: user.fullName,
+                fullName:user.fullName,
                 mobile: user.mob,
               })
-              decryptToken(token.Primarytoken)
+              decryptToken(token.primaryToken)
                res.status(200).json({msg : "Signup successful at email password",token, email:email, mobNumb:mob, userName:fullName})
            }
            catch(err){
@@ -138,10 +138,10 @@ userController.post("/verify", async(req,res)=>{
             await user.save()
             const token = generateToken({
               email: user.email,
-              fullname: user.fullName,
+              fullName: user.fullName,
               mobile: user.mob,
             })
-            decryptToken(token.Primarytoken)
+            decryptToken(token.primaryToken)
             res.status(200).json({msg : "Signup successful at email password",token, email:email, mobNumb:mob, userName:fullName})
         }
         catch(err){
@@ -163,7 +163,7 @@ userController.post("/signup", async(req, res) => {
       //  <----------------------If user is signed up with email address--------------------------------------------------> //
   
     if(email && !password){
-      const userExists = await OTPModel.findOne({ email });
+      const userExists = await OTPModel.findOne({ email }); 
 
       if(userExists && userExists.otp==otp){
         
@@ -174,7 +174,7 @@ userController.post("/signup", async(req, res) => {
       await user.save();
       const token= generateToken({
         email: user.email,
-        fullname: user.fullName,
+        fullName: user.fullName,
         mobile: user.mob,
       })
       res.status(200).json({msg : "Signup successful ",token, email:email, mobNumb:mob, userName:fullName})
@@ -196,7 +196,7 @@ userController.post("/signup", async(req, res) => {
 
   const token = generateToken({
     email: user.email,
-    fullname: user.fullName,
+    fullName: user.fullName,
     mobile: user.mob,
   });
   res.status(200).json({msg : "Signup successful ",token, email:email, mobNumb:mob, userName:fullName})

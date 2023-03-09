@@ -71,7 +71,7 @@ dashboardController.post("/create-course", async (req, res) => {
         res.status(200).send("course created")
     }
     catch(err){
-        res.status(400).send("something went wrong while creating course", err)
+        res.status(400).send("something went wrong while creating course" )
     }
 });
 
@@ -129,7 +129,6 @@ dashboardController.post("/user-data-collection", async (req, res) => {
         res.status(200).send("User-form created")
     }
     catch(err){
-        console.log(err)
         res.status(400).send("something went wrong while creating course")
     }
 })
@@ -165,20 +164,20 @@ dashboardController.post("/user-applied", async (req, res) => {
             message = "Applied courses and course eligible is submitted to database";
 
             await UserModel.findOneAndUpdate({ _id: userId },{ $push: { coursesPassed: {courseId} } });
-            await FormModel.findOneAndUpdate({ userId: userId },{ $push: { coursesFailed: {courseId} } });
-            res.status(200).json({msg:"Applied courses and course eligible is submitted to database"})
+            await FormModel.findOneAndUpdate({ userId: userId },{ $push: { coursesPassed: {courseId} } });
+           
         }
         else if(userId && status=="fail"){
             message = "Applied courses and courses not eligible is submitted to database";
             reqStatus = 200;
 
-            await UserModel.findOneAndUpdate({ _id: userId },{ $push: { coursesPassed: {courseId} } });
+            await UserModel.findOneAndUpdate({ _id: userId },{ $push: { coursesFailed: {courseId} } });
             await FormModel.findOneAndUpdate({ userId: userId },{ $push: { coursesFailed: {courseId} } });
-            res.status(200).json({msg:"Applied courses and courses not eligible is submitted to database"})
+            
         }
         else{
             message = "User not found while storing user form data collection";
-            reqStatus = 404;
+            reqStatus = 401;
         }
         res.status(reqStatus).send(message)
 })
@@ -196,7 +195,7 @@ dashboardController.post("/notification-medium", async (req, res) => {
         res.status(200).send("mediums created")
     }
     catch(err){
-        res.status(400).send("something went wrong while creating update mediums", err)
+        res.status(400).send("something went wrong while creating update mediums" )
     }
 });
 
