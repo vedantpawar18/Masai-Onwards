@@ -71,7 +71,6 @@ dashboardController.post("/create-course", async (req, res) => {
         res.status(200).send("course created")
     }
     catch(err){
-        console.log(err)
         res.status(400).send("something went wrong while creating course" )
     }
 });
@@ -130,7 +129,6 @@ dashboardController.post("/user-data-collection", async (req, res) => {
         res.status(200).send("User-form created")
     }
     catch(err){
-        console.log(err)
         res.status(400).send("something went wrong while creating course")
     }
 })
@@ -197,7 +195,6 @@ dashboardController.post("/notification-medium", async (req, res) => {
         res.status(200).send("mediums created")
     }
     catch(err){
-        console.log(err)
         res.status(400).send("something went wrong while creating update mediums" )
     }
 });
