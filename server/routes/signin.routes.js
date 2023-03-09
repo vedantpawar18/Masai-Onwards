@@ -109,9 +109,9 @@ authController.post("/verifyotp", async (req, res) => {
       });
       res.status(200).send({msg: "Signed in successfully",email:user.email,mobile:user.mob,fullName:user.fullName,token})
     }
+  }
   else 
   res.status(401).send({ msg: "Please enter a valid 6 digit OTP." });
-  }
 });
 
 authController.post("/forget", async (req, res) => {
