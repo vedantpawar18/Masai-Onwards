@@ -60,9 +60,6 @@ const generateToken = ({ email=null ,fullName=null,mobile=null }) => {
     }
   );
   return {
-    fullName,
-    email,
-     mobile ,
     primaryToken,
     refreshToken,
   };
