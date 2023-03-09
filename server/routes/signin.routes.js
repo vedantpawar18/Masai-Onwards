@@ -125,7 +125,7 @@ authController.post("/forget", async (req, res) => {
       res.status(401).send("something went wrong! try again");
     }
   } else {
-    res.status(404).send({ msg: "usernot found" });
+    res.status(404).send({ msg: "user not found" });
   }
 });
 
