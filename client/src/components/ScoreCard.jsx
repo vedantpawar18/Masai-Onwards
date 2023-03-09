@@ -1,124 +1,528 @@
-import { Box, Text } from '@chakra-ui/layout'
-import React from 'react'
-import { Flex, Heading, Image } from '@chakra-ui/react'
+import { Box, Text } from "@chakra-ui/layout";
+import React from "react";
+import { Flex, Grid, GridItem, Heading, Image, useMediaQuery } from "@chakra-ui/react";
 // import vector from "../images/vector.png";
 
-const ScoreCard = ({status}) => {
-  console.log("statussssssssss",status)
-  return (
-    <>
-    <Box marginTop={"30px"} marginBottom={"30px"}>
-    <Heading fontSize={"20px"} textAlign={"left"}>Score Details</Heading>
-    <Text textAlign={"left"}>Here are your score details </Text>
-    </Box>
-    <Flex gap="20px" marginBottom={"40px"}>
-      <Box width={"264px"} height={"156px"} border={"1px solid #e4d1d6"} textAlign={"start"}
-    borderRadius={"16px"} padding={"8px"}>
-        <Box width={"100%"} height={"55px"} marginTop={"2px"} display={"flex"} justifyContent={"space-between"}>
-        <Box
-            h={'30px'}
-            w={"30px"}
-            bg= {`url(${"vector"})`}
-            backgroundPosition="center"
-            backgroundRepeat="no-repeat"
-            backgroundSize="cover"
-            borderRadius={"15px"}
-           ></Box>
-            <Text color={`${status.color}`} fontFamily={"Open Sans"}
-					fontStyle={"normal"}
-					fontWeight={"600"}
-					fontSize={"16px"}
-					>{status.status}</Text>
-        </Box>
-        <Text fontFamily={"Open Sans"}
-					fontStyle={"normal"}
-					fontWeight={"600"}
-					fontSize={"16px"}
-				>Cognitive Ability </Text>
-        <Text color={" #544D4F"}>Marks : {status.cognitive}/10 </Text>
-    </Box>
-    
+const ScoreCard = ({ status }) => {
+  const [isLargerThan800] = useMediaQuery("(max-width: 800px)");
 
-    <Box width={"264px"} height={"156px"} border={"1px solid #e4d1d6"} textAlign={"start"}
-    borderRadius={"16px"} padding={"8px"}>
-        <Box width={"100%"} height={"55px"} marginTop={"2px"} display={"flex"} justifyContent={"space-between"}>
-        <Box
-            h={'30px'}
-            w={"30px"}
-            bg= {`url(${"vector"})`}
-            backgroundPosition="center"
-            backgroundRepeat="no-repeat"
-            backgroundSize="cover"
-            borderRadius={"15px"}
-           ></Box>
-            <Text color={`${status.color}`} fontFamily={"Open Sans"}
-					fontStyle={"normal"}
-					fontWeight={"600"}
-					fontSize={"16px"}
-					>{status.status}</Text>
-        </Box>
-        <Text fontFamily={"Open Sans"}
-					fontStyle={"normal"}
-					fontWeight={"600"}
-					fontSize={"16px"}
-				>Mettl Test Score </Text>
-        <Text color={" #544D4F"}>Marks : {status.mettl}/10 </Text>
-    </Box>
+	return (
+		<>
+			<Box marginTop={"30px"} marginBottom={"30px"}>
+				<Heading fontSize={"20px"} textAlign={"left"}>
+					Score Details
+				</Heading>
+				<Text textAlign={"left"}>Here are your score details </Text>
+			</Box>
+			{isLargerThan800? <>
+      
+        <Grid gap="20px" gridTemplateColumns={"repeat(1,1fr)"} marginBottom={"40px"}>
 
-    <Box width={"264px"} height={"156px"} border={"1px solid #e4d1d6"} textAlign={"start"}
-    borderRadius={"16px"} padding={"8px"}>
-        <Box width={"100%"} height={"55px"} marginTop={"2px"} display={"flex"} justifyContent={"space-between"}>
-        <Box
-            h={'30px'}
-            w={"30px"}
-            bg= {`url(${"vector"})`}
-            backgroundPosition="center"
-            backgroundRepeat="no-repeat"
-            backgroundSize="cover"
-            borderRadius={"15px"}
-           ></Box>
-            <Text color={`${status.color}`} fontFamily={"Open Sans"}
-					fontStyle={"normal"}
-					fontWeight={"600"}
-					fontSize={"16px"}
-					>{status.status}</Text>
-        </Box>
-        <Text fontFamily={"Open Sans"}
-					fontStyle={"normal"}
-					fontWeight={"600"}
-					fontSize={"16px"}
-				> Communication Skills </Text>
-        <Text color={" #544D4F"}>Marks : {status.communication}/10 </Text>
-    </Box>
 
-    <Box width={"264px"} height={"156px"} border={"1px solid #e4d1d6"} textAlign={"start"}
-    borderRadius={"16px"} padding={"8px"}>
-        <Box width={"100%"} height={"55px"} marginTop={"2px"} display={"flex"} justifyContent={"space-between"}>
-        <Box
-            h={'30px'}
-            w={"30px"}
-            bg= {`url(${"vector"})`}
-            backgroundPosition="center"
-            backgroundRepeat="no-repeat"
-            backgroundSize="cover"
-            borderRadius={"15px"}
-           ></Box>
-            <Text color={`${status.color}`} fontFamily={"Open Sans"}
-					fontStyle={"normal"}
-					fontWeight={"600"}
-					fontSize={"16px"}
-					>{status.status}</Text>
-        </Box>
-        <Text fontFamily={"Open Sans"}
-					fontStyle={"normal"}
-					fontWeight={"600"}
-					fontSize={"16px"}
-				>Credibility Score </Text>
-        <Text color={" #544D4F"}>Marks :  {status.credibility}/10 </Text>
-    </Box>
-    </Flex>
-    </>
-  )
-}
+          <GridItem>
+            <Flex>
+				<Box
+					width={"264px"}
+					height={"156px"}
+					border={"1px solid #e4d1d6"}
+					textAlign={"start"}
+					borderRadius={"16px"}
+					padding={"8px"}
+				>
+					<Box
+						width={"95%"}
+						height={"55px"}
+						marginLeft={"2px"}
+						marginTop={"2px"}
+						display={"flex"}
+						justifyContent={"space-between"}
+					>
+						<Box
+							h={"30px"}
+							w={"30px"}
+							bg={`url(${"vector"})`}
+							backgroundPosition="center"
+							backgroundRepeat="no-repeat"
+							backgroundSize="cover"
+							borderRadius={"15px"}
+						>
+							<svg
+								width="22"
+								height="21"
+								viewBox="0 0 22 21"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									d="M20.3301 11.9096C20.4201 13.4596 19.7101 14.9496 18.4401 15.8596L19.2101 17.3496C19.4401 17.7996 19.4701 18.3296 19.2701 18.7996C19.0801 19.2696 18.6901 19.6396 18.2101 19.7996L17.4201 20.0496C17.2501 20.1096 17.0601 20.1396 16.8801 20.1396C16.3701 20.1396 15.8901 19.9096 15.5601 19.4996L13.4401 16.9996C12.5501 16.8496 11.7101 16.4696 11.0001 15.8996C10.5001 16.0496 10.0001 16.1296 9.50006 16.1296C8.62006 16.1296 7.74006 15.8596 7.00006 15.3396C6.47006 15.4996 5.93006 15.5696 5.38006 15.5596C4.59006 15.5696 3.81006 15.4096 3.08006 15.1096C1.65006 14.4696 0.700057 13.0696 0.650057 11.4996C0.570057 10.7796 0.690057 10.0496 1.00006 9.38958C0.710057 8.63958 0.680057 7.81958 0.930057 7.05958C1.30006 6.10958 2.00006 5.31958 2.87006 4.81958C3.45006 3.12958 5.08006 1.99958 6.87006 2.11958C8.47006 0.619583 10.9201 0.459583 12.7001 1.74958C13.1201 1.63958 13.5601 1.57958 14.0001 1.57958C15.3601 1.54958 16.6501 2.14958 17.5001 3.21958C19.5401 3.74958 21.0001 5.56958 21.0801 7.68958C21.1301 8.79958 20.8301 9.88958 20.2201 10.8196C20.2901 11.1796 20.3301 11.5396 20.3301 11.9096ZM15.3301 10.4996C15.9001 10.5696 16.3501 10.9996 16.3501 11.5696C16.3501 11.8348 16.2447 12.0892 16.0572 12.2767C15.8696 12.4642 15.6153 12.5696 15.3501 12.5696H14.7201C14.4001 13.4696 13.8401 14.2596 13.1001 14.8596C13.3501 14.9496 13.6101 14.9996 13.8701 15.0696C19.0001 14.9996 18.4001 11.8696 18.4001 11.8196C18.3401 10.3896 17.1401 9.26958 15.7101 9.32958C15.4448 9.32958 15.1905 9.22423 15.003 9.03669C14.8154 8.84915 14.7101 8.5948 14.7101 8.32958C14.7101 8.06437 14.8154 7.81001 15.003 7.62248C15.1905 7.43494 15.4448 7.32958 15.7101 7.32958C16.9401 7.35958 18.1201 7.81958 19.0401 8.62958C19.0901 8.33958 19.1201 8.03958 19.1201 7.73958C19.0601 6.49958 18.5001 5.41958 16.2501 5.20958C15.0001 2.24958 11.8501 3.88958 11.8501 4.80958C11.8201 5.03958 12.0601 5.52958 12.1001 5.55958C12.3653 5.55958 12.6196 5.66494 12.8072 5.85248C12.9947 6.04001 13.1001 6.29437 13.1001 6.55958C13.1001 7.10958 12.6501 7.55958 12.1001 7.55958C11.5701 7.53958 11.0701 7.33958 10.6701 6.99958C10.1901 7.30958 9.64006 7.49958 9.07006 7.55958C8.50006 7.60958 8.03006 7.20958 8.00006 6.65958C7.92006 6.09958 8.33006 5.60958 8.88006 5.55958C9.04006 5.53958 9.82006 5.41958 9.82006 4.78958C9.82006 4.12958 10.0701 3.49958 10.5001 2.99958C9.58006 2.74958 8.59006 3.07958 7.59006 4.28958C5.75006 3.99958 5.00006 4.24958 4.45006 6.19958C3.50006 6.66958 3.00006 6.99958 2.78006 7.99958C3.86006 7.77958 4.97006 7.86958 6.00006 8.24958C6.50006 8.43958 6.78006 8.99958 6.59006 9.53958C6.40006 10.0596 5.82006 10.3196 5.30006 10.1296C4.57006 9.80958 3.75006 9.78958 3.00006 10.0696C2.68006 10.3396 2.68006 10.8996 2.68006 11.3396C2.68006 12.0796 3.05006 12.7696 3.68006 13.1696C4.21006 13.4396 4.80006 13.5796 5.39006 13.5696C5.24006 13.3096 5.11006 13.0396 5.00006 12.7596C4.81006 12.2196 5.10006 11.6296 5.64006 11.4396C6.18006 11.2496 6.77006 11.5396 6.96006 12.0796C7.36006 13.2196 8.38006 13.9996 9.58006 14.1296C10.9501 14.0596 12.1701 13.2496 12.7701 11.9996C13.0001 10.6196 14.1101 10.4996 15.3301 10.4996ZM17.3301 17.9696L16.7101 16.6696L16.0001 16.8296L17.0001 18.0796L17.3301 17.9696ZM12.6801 9.35958C12.7001 8.82958 12.3001 8.37958 11.7701 8.32958C11.0601 8.28958 10.3701 8.52958 9.84006 8.99958C9.27006 9.57958 8.97006 10.3796 9.00006 11.1896C9.00006 11.4548 9.10541 11.7092 9.29295 11.8967C9.48049 12.0842 9.73484 12.1896 10.0001 12.1896C10.5701 12.1896 11.0001 11.7396 11.0001 11.1896C11.0001 10.9196 11.0701 10.6496 11.2301 10.4296C11.3501 10.3296 11.5001 10.2796 11.6601 10.2796C12.2101 10.3096 12.6801 9.89958 12.6801 9.35958Z"
+									fill="#6E71CC"
+								/>
+							</svg>
+						</Box>
+						<Text
+							color={`${status.color}`}
+							fontFamily={"Open Sans"}
+							fontStyle={"normal"}
+							fontWeight={"600"}
+							fontSize={"16px"}
+						>
+							{status.status}
+						</Text>
+					</Box>
+					<Text
+						fontFamily={"Open Sans"}
+						fontStyle={"normal"}
+						fontWeight={"600"}
+						fontSize={"16px"}
+					>
+						Cognitive Ability{" "}
+					</Text>
+					<Text color={" #544D4F"}>Marks : {status.cognitive}/10 </Text>
+				</Box>
 
-export default ScoreCard
+				<Box
+					width={"264px"}
+					height={"156px"}
+					border={"1px solid #e4d1d6"}
+					textAlign={"start"}
+					borderRadius={"16px"}
+					padding={"8px"}
+				>
+					<Box
+						width={"95%"}
+						height={"55px"}
+						marginLeft={"2px"}
+						marginTop={"2px"}
+						display={"flex"}
+						justifyContent={"space-between"}
+					>
+						<Box
+							h={"30px"}
+							w={"30px"}
+							bg={`url(${"vector"})`}
+							backgroundPosition="center"
+							backgroundRepeat="no-repeat"
+							backgroundSize="cover"
+							borderRadius={"15px"}
+						>
+							<svg
+								width="22"
+								height="16"
+								viewBox="0 0 22 16"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									d="M11 5C11.7956 5 12.5587 5.31607 13.1213 5.87868C13.6839 6.44129 14 7.20435 14 8C14 8.79565 13.6839 9.55871 13.1213 10.1213C12.5587 10.6839 11.7956 11 11 11C10.2044 11 9.44129 10.6839 8.87868 10.1213C8.31607 9.55871 8 8.79565 8 8C8 7.20435 8.31607 6.44129 8.87868 5.87868C9.44129 5.31607 10.2044 5 11 5ZM11 0.5C16 0.5 20.27 3.61 22 8C20.27 12.39 16 15.5 11 15.5C6 15.5 1.73 12.39 0 8C1.73 3.61 6 0.5 11 0.5ZM2.18 8C3.83 11.36 7.24 13.5 11 13.5C14.76 13.5 18.17 11.36 19.82 8C18.17 4.64 14.76 2.5 11 2.5C7.24 2.5 3.83 4.64 2.18 8Z"
+									fill="#6E71CC"
+								/>
+							</svg>
+						</Box>
+						<Text
+							color={`${status.color}`}
+							fontFamily={"Open Sans"}
+							fontStyle={"normal"}
+							fontWeight={"600"}
+							fontSize={"16px"}
+						>
+							{status.status}
+						</Text>
+					</Box>
+					<Text
+						fontFamily={"Open Sans"}
+						fontStyle={"normal"}
+						fontWeight={"600"}
+						fontSize={"16px"}
+					>
+						Mettl Test Score{" "}
+					</Text>
+					<Text color={" #544D4F"}>Marks : {status.mettl}/10 </Text>
+				</Box>
+        </Flex>
+        </GridItem>
+        <GridItem>
+        <Flex>
+				<Box
+					width={"264px"}
+					height={"156px"}
+					border={"1px solid #e4d1d6"}
+					textAlign={"start"}
+					borderRadius={"16px"}
+					padding={"8px"}
+				>
+					<Box
+						width={"95%"}
+						height={"55px"}
+						marginLeft={"2px"}
+						marginTop={"2px"}
+						display={"flex"}
+						justifyContent={"space-between"}
+					>
+						<Box
+							h={"30px"}
+							w={"30px"}
+							bg={`url(${"vector"})`}
+							backgroundPosition="center"
+							backgroundRepeat="no-repeat"
+							backgroundSize="cover"
+							borderRadius={"15px"}
+						>
+							<svg
+								width="22"
+								height="21"
+								viewBox="0 0 22 21"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									d="M15.75 3.36C17.77 5.56 17.77 8.61 15.75 10.63L14.07 8.94C14.91 7.76 14.91 6.23 14.07 5.05L15.75 3.36ZM19.06 0C23 4.05 22.96 10.11 19.06 14L17.43 12.37C20.2 9.19 20.2 4.65 17.43 1.63L19.06 0ZM12.36 12.76C14.31 13.42 16 14.5 16 16V21H0V16C0 14.5 1.69 13.42 3.65 12.76L4.27 14L4.5 14.5C3 14.96 1.9 15.62 1.9 16V19.1H6.12L7 14.03L6.06 12.15C6.68 12.08 7.33 12.03 8 12.03C8.67 12.03 9.32 12.08 9.94 12.15L9 14.03L9.88 19.1H14.1V16C14.1 15.62 13 14.96 11.5 14.5L11.73 14L12.36 12.76ZM8 5C6.9 5 6 5.9 6 7C6 8.1 6.9 9 8 9C9.1 9 10 8.1 10 7C10 5.9 9.1 5 8 5ZM8 11C5.79 11 4 9.21 4 7C4 4.79 5.79 3 8 3C10.21 3 12 4.79 12 7C12 9.21 10.21 11 8 11Z"
+									fill="#6E71CC"
+								/>
+							</svg>
+						</Box>
+						<Text
+							color={`${status.color}`}
+							fontFamily={"Open Sans"}
+							fontStyle={"normal"}
+							fontWeight={"600"}
+							fontSize={"16px"}
+						>
+							{status.status}
+						</Text>
+					</Box>
+					<Text
+						fontFamily={"Open Sans"}
+						fontStyle={"normal"}
+						fontWeight={"600"}
+						fontSize={"16px"}
+					>
+						{" "}
+						Communication Skills{" "}
+					</Text>
+					<Text color={" #544D4F"}>Marks : {status.communication}/10 </Text>
+				</Box>
+
+
+      
+				<Box
+					width={"264px"}
+					height={"156px"}
+					border={"1px solid #e4d1d6"}
+					textAlign={"start"}
+					borderRadius={"16px"}
+					padding={"8px"}
+				>
+					<Box
+						width={"95%"}
+						height={"55px"}
+						marginLeft={"2px"}
+						marginTop={"2px"}
+						display={"flex"}
+						justifyContent={"space-between"}
+					>
+						<Box
+							h={"30px"}
+							w={"30px"}
+							bg={`url(${"vector"})`}
+							backgroundPosition="center"
+							backgroundRepeat="no-repeat"
+							backgroundSize="cover"
+							borderRadius={"15px"}
+						>
+							<svg
+								width="22"
+								height="22"
+								viewBox="0 0 22 22"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									d="M20.7101 7.70999C21.9601 6.45999 21.3901 4.99999 20.7101 4.28999L17.7101 1.28999C16.4501 0.0399901 15.0001 0.60999 14.2901 1.28999L12.5901 2.99999H10.0001C8.10005 2.99999 7.00005 3.99999 6.44005 5.14999L2.00005 9.58999V13.59L1.29005 14.29C0.0400511 15.55 0.610051 17 1.29005 17.71L4.29005 20.71C4.83005 21.25 5.41005 21.45 5.96005 21.45C6.67005 21.45 7.32005 21.1 7.71005 20.71L10.4101 18H14.0001C15.7001 18 16.5601 16.94 16.8701 15.9C18.0001 15.6 18.6201 14.74 18.8701 13.9C20.4201 13.5 21.0001 12.03 21.0001 11V7.99999H20.4101L20.7101 7.70999ZM19.0001 11C19.0001 11.45 18.8101 12 18.0001 12H17.0001V13C17.0001 13.45 16.8101 14 16.0001 14H15.0001V15C15.0001 15.45 14.8101 16 14.0001 16H9.59005L6.31005 19.28C6.00005 19.57 5.82005 19.4 5.71005 19.29L2.72005 16.31C2.43005 16 2.60005 15.82 2.71005 15.71L4.00005 14.41V10.41L6.00005 8.40999V9.99999C6.00005 11.21 6.80005 13 9.00005 13C11.2001 13 12.0001 11.21 12.0001 9.99999H19.0001V11ZM19.2901 6.28999L17.5901 7.99999H10.0001V9.99999C10.0001 10.45 9.81005 11 9.00005 11C8.19005 11 8.00005 10.45 8.00005 9.99999V6.99999C8.00005 6.53999 8.17005 4.99999 10.0001 4.99999H13.4101L15.6901 2.71999C16.0001 2.42999 16.1801 2.59999 16.2901 2.70999L19.2801 5.68999C19.5701 5.99999 19.4001 6.17999 19.2901 6.28999Z"
+									fill="#6E71CC"
+								/>
+							</svg>
+						</Box>
+						<Text
+							color={`${status.color}`}
+							fontFamily={"Open Sans"}
+							fontStyle={"normal"}
+							fontWeight={"600"}
+							fontSize={"16px"}
+						>
+							{status.status}
+						</Text>
+					</Box>
+					<Text
+						fontFamily={"Open Sans"}
+						fontStyle={"normal"}
+						fontWeight={"600"}
+						fontSize={"16px"}
+					>
+						Credibility Score{" "}
+					</Text>
+					<Text color={" #544D4F"}>
+						Application failed due to credibility score
+					</Text>
+				</Box>
+        </Flex>
+        </GridItem>
+			</Grid>
+      
+      </> :
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <Flex gap="20px" marginBottom={"40px"}>
+				<Box
+					width={"264px"}
+					height={"156px"}
+					border={"1px solid #e4d1d6"}
+					textAlign={"start"}
+					borderRadius={"16px"}
+					padding={"8px"}
+				>
+					<Box
+						width={"95%"}
+						height={"55px"}
+						marginLeft={"2px"}
+						marginTop={"2px"}
+						display={"flex"}
+						justifyContent={"space-between"}
+					>
+						<Box
+							h={"30px"}
+							w={"30px"}
+							bg={`url(${"vector"})`}
+							backgroundPosition="center"
+							backgroundRepeat="no-repeat"
+							backgroundSize="cover"
+							borderRadius={"15px"}
+						>
+							<svg
+								width="22"
+								height="21"
+								viewBox="0 0 22 21"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									d="M20.3301 11.9096C20.4201 13.4596 19.7101 14.9496 18.4401 15.8596L19.2101 17.3496C19.4401 17.7996 19.4701 18.3296 19.2701 18.7996C19.0801 19.2696 18.6901 19.6396 18.2101 19.7996L17.4201 20.0496C17.2501 20.1096 17.0601 20.1396 16.8801 20.1396C16.3701 20.1396 15.8901 19.9096 15.5601 19.4996L13.4401 16.9996C12.5501 16.8496 11.7101 16.4696 11.0001 15.8996C10.5001 16.0496 10.0001 16.1296 9.50006 16.1296C8.62006 16.1296 7.74006 15.8596 7.00006 15.3396C6.47006 15.4996 5.93006 15.5696 5.38006 15.5596C4.59006 15.5696 3.81006 15.4096 3.08006 15.1096C1.65006 14.4696 0.700057 13.0696 0.650057 11.4996C0.570057 10.7796 0.690057 10.0496 1.00006 9.38958C0.710057 8.63958 0.680057 7.81958 0.930057 7.05958C1.30006 6.10958 2.00006 5.31958 2.87006 4.81958C3.45006 3.12958 5.08006 1.99958 6.87006 2.11958C8.47006 0.619583 10.9201 0.459583 12.7001 1.74958C13.1201 1.63958 13.5601 1.57958 14.0001 1.57958C15.3601 1.54958 16.6501 2.14958 17.5001 3.21958C19.5401 3.74958 21.0001 5.56958 21.0801 7.68958C21.1301 8.79958 20.8301 9.88958 20.2201 10.8196C20.2901 11.1796 20.3301 11.5396 20.3301 11.9096ZM15.3301 10.4996C15.9001 10.5696 16.3501 10.9996 16.3501 11.5696C16.3501 11.8348 16.2447 12.0892 16.0572 12.2767C15.8696 12.4642 15.6153 12.5696 15.3501 12.5696H14.7201C14.4001 13.4696 13.8401 14.2596 13.1001 14.8596C13.3501 14.9496 13.6101 14.9996 13.8701 15.0696C19.0001 14.9996 18.4001 11.8696 18.4001 11.8196C18.3401 10.3896 17.1401 9.26958 15.7101 9.32958C15.4448 9.32958 15.1905 9.22423 15.003 9.03669C14.8154 8.84915 14.7101 8.5948 14.7101 8.32958C14.7101 8.06437 14.8154 7.81001 15.003 7.62248C15.1905 7.43494 15.4448 7.32958 15.7101 7.32958C16.9401 7.35958 18.1201 7.81958 19.0401 8.62958C19.0901 8.33958 19.1201 8.03958 19.1201 7.73958C19.0601 6.49958 18.5001 5.41958 16.2501 5.20958C15.0001 2.24958 11.8501 3.88958 11.8501 4.80958C11.8201 5.03958 12.0601 5.52958 12.1001 5.55958C12.3653 5.55958 12.6196 5.66494 12.8072 5.85248C12.9947 6.04001 13.1001 6.29437 13.1001 6.55958C13.1001 7.10958 12.6501 7.55958 12.1001 7.55958C11.5701 7.53958 11.0701 7.33958 10.6701 6.99958C10.1901 7.30958 9.64006 7.49958 9.07006 7.55958C8.50006 7.60958 8.03006 7.20958 8.00006 6.65958C7.92006 6.09958 8.33006 5.60958 8.88006 5.55958C9.04006 5.53958 9.82006 5.41958 9.82006 4.78958C9.82006 4.12958 10.0701 3.49958 10.5001 2.99958C9.58006 2.74958 8.59006 3.07958 7.59006 4.28958C5.75006 3.99958 5.00006 4.24958 4.45006 6.19958C3.50006 6.66958 3.00006 6.99958 2.78006 7.99958C3.86006 7.77958 4.97006 7.86958 6.00006 8.24958C6.50006 8.43958 6.78006 8.99958 6.59006 9.53958C6.40006 10.0596 5.82006 10.3196 5.30006 10.1296C4.57006 9.80958 3.75006 9.78958 3.00006 10.0696C2.68006 10.3396 2.68006 10.8996 2.68006 11.3396C2.68006 12.0796 3.05006 12.7696 3.68006 13.1696C4.21006 13.4396 4.80006 13.5796 5.39006 13.5696C5.24006 13.3096 5.11006 13.0396 5.00006 12.7596C4.81006 12.2196 5.10006 11.6296 5.64006 11.4396C6.18006 11.2496 6.77006 11.5396 6.96006 12.0796C7.36006 13.2196 8.38006 13.9996 9.58006 14.1296C10.9501 14.0596 12.1701 13.2496 12.7701 11.9996C13.0001 10.6196 14.1101 10.4996 15.3301 10.4996ZM17.3301 17.9696L16.7101 16.6696L16.0001 16.8296L17.0001 18.0796L17.3301 17.9696ZM12.6801 9.35958C12.7001 8.82958 12.3001 8.37958 11.7701 8.32958C11.0601 8.28958 10.3701 8.52958 9.84006 8.99958C9.27006 9.57958 8.97006 10.3796 9.00006 11.1896C9.00006 11.4548 9.10541 11.7092 9.29295 11.8967C9.48049 12.0842 9.73484 12.1896 10.0001 12.1896C10.5701 12.1896 11.0001 11.7396 11.0001 11.1896C11.0001 10.9196 11.0701 10.6496 11.2301 10.4296C11.3501 10.3296 11.5001 10.2796 11.6601 10.2796C12.2101 10.3096 12.6801 9.89958 12.6801 9.35958Z"
+									fill="#6E71CC"
+								/>
+							</svg>
+						</Box>
+						<Text
+							color={`${status.color}`}
+							fontFamily={"Open Sans"}
+							fontStyle={"normal"}
+							fontWeight={"600"}
+							fontSize={"16px"}
+						>
+							{status.status}
+						</Text>
+					</Box>
+					<Text
+						fontFamily={"Open Sans"}
+						fontStyle={"normal"}
+						fontWeight={"600"}
+						fontSize={"16px"}
+					>
+						Cognitive Ability{" "}
+					</Text>
+					<Text color={" #544D4F"}>Marks : {status.cognitive}/10 </Text>
+				</Box>
+
+				<Box
+					width={"264px"}
+					height={"156px"}
+					border={"1px solid #e4d1d6"}
+					textAlign={"start"}
+					borderRadius={"16px"}
+					padding={"8px"}
+				>
+					<Box
+						width={"95%"}
+						height={"55px"}
+						marginLeft={"2px"}
+						marginTop={"2px"}
+						display={"flex"}
+						justifyContent={"space-between"}
+					>
+						<Box
+							h={"30px"}
+							w={"30px"}
+							bg={`url(${"vector"})`}
+							backgroundPosition="center"
+							backgroundRepeat="no-repeat"
+							backgroundSize="cover"
+							borderRadius={"15px"}
+						>
+							<svg
+								width="22"
+								height="16"
+								viewBox="0 0 22 16"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									d="M11 5C11.7956 5 12.5587 5.31607 13.1213 5.87868C13.6839 6.44129 14 7.20435 14 8C14 8.79565 13.6839 9.55871 13.1213 10.1213C12.5587 10.6839 11.7956 11 11 11C10.2044 11 9.44129 10.6839 8.87868 10.1213C8.31607 9.55871 8 8.79565 8 8C8 7.20435 8.31607 6.44129 8.87868 5.87868C9.44129 5.31607 10.2044 5 11 5ZM11 0.5C16 0.5 20.27 3.61 22 8C20.27 12.39 16 15.5 11 15.5C6 15.5 1.73 12.39 0 8C1.73 3.61 6 0.5 11 0.5ZM2.18 8C3.83 11.36 7.24 13.5 11 13.5C14.76 13.5 18.17 11.36 19.82 8C18.17 4.64 14.76 2.5 11 2.5C7.24 2.5 3.83 4.64 2.18 8Z"
+									fill="#6E71CC"
+								/>
+							</svg>
+						</Box>
+						<Text
+							color={`${status.color}`}
+							fontFamily={"Open Sans"}
+							fontStyle={"normal"}
+							fontWeight={"600"}
+							fontSize={"16px"}
+						>
+							{status.status}
+						</Text>
+					</Box>
+					<Text
+						fontFamily={"Open Sans"}
+						fontStyle={"normal"}
+						fontWeight={"600"}
+						fontSize={"16px"}
+					>
+						Mettl Test Score{" "}
+					</Text>
+					<Text color={" #544D4F"}>Marks : {status.mettl}/10 </Text>
+				</Box>
+
+				<Box
+					width={"264px"}
+					height={"156px"}
+					border={"1px solid #e4d1d6"}
+					textAlign={"start"}
+					borderRadius={"16px"}
+					padding={"8px"}
+				>
+					<Box
+						width={"95%"}
+						height={"55px"}
+						marginLeft={"2px"}
+						marginTop={"2px"}
+						display={"flex"}
+						justifyContent={"space-between"}
+					>
+						<Box
+							h={"30px"}
+							w={"30px"}
+							bg={`url(${"vector"})`}
+							backgroundPosition="center"
+							backgroundRepeat="no-repeat"
+							backgroundSize="cover"
+							borderRadius={"15px"}
+						>
+							<svg
+								width="22"
+								height="21"
+								viewBox="0 0 22 21"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									d="M15.75 3.36C17.77 5.56 17.77 8.61 15.75 10.63L14.07 8.94C14.91 7.76 14.91 6.23 14.07 5.05L15.75 3.36ZM19.06 0C23 4.05 22.96 10.11 19.06 14L17.43 12.37C20.2 9.19 20.2 4.65 17.43 1.63L19.06 0ZM12.36 12.76C14.31 13.42 16 14.5 16 16V21H0V16C0 14.5 1.69 13.42 3.65 12.76L4.27 14L4.5 14.5C3 14.96 1.9 15.62 1.9 16V19.1H6.12L7 14.03L6.06 12.15C6.68 12.08 7.33 12.03 8 12.03C8.67 12.03 9.32 12.08 9.94 12.15L9 14.03L9.88 19.1H14.1V16C14.1 15.62 13 14.96 11.5 14.5L11.73 14L12.36 12.76ZM8 5C6.9 5 6 5.9 6 7C6 8.1 6.9 9 8 9C9.1 9 10 8.1 10 7C10 5.9 9.1 5 8 5ZM8 11C5.79 11 4 9.21 4 7C4 4.79 5.79 3 8 3C10.21 3 12 4.79 12 7C12 9.21 10.21 11 8 11Z"
+									fill="#6E71CC"
+								/>
+							</svg>
+						</Box>
+						<Text
+							color={`${status.color}`}
+							fontFamily={"Open Sans"}
+							fontStyle={"normal"}
+							fontWeight={"600"}
+							fontSize={"16px"}
+						>
+							{status.status}
+						</Text>
+					</Box>
+					<Text
+						fontFamily={"Open Sans"}
+						fontStyle={"normal"}
+						fontWeight={"600"}
+						fontSize={"16px"}
+					>
+						{" "}
+						Communication Skills{" "}
+					</Text>
+					<Text color={" #544D4F"}>Marks : {status.communication}/10 </Text>
+				</Box>
+
+				<Box
+					width={"264px"}
+					height={"156px"}
+					border={"1px solid #e4d1d6"}
+					textAlign={"start"}
+					borderRadius={"16px"}
+					padding={"8px"}
+				>
+					<Box
+						width={"95%"}
+						height={"55px"}
+						marginLeft={"2px"}
+						marginTop={"2px"}
+						display={"flex"}
+						justifyContent={"space-between"}
+					>
+						<Box
+							h={"30px"}
+							w={"30px"}
+							bg={`url(${"vector"})`}
+							backgroundPosition="center"
+							backgroundRepeat="no-repeat"
+							backgroundSize="cover"
+							borderRadius={"15px"}
+						>
+							<svg
+								width="22"
+								height="22"
+								viewBox="0 0 22 22"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									d="M20.7101 7.70999C21.9601 6.45999 21.3901 4.99999 20.7101 4.28999L17.7101 1.28999C16.4501 0.0399901 15.0001 0.60999 14.2901 1.28999L12.5901 2.99999H10.0001C8.10005 2.99999 7.00005 3.99999 6.44005 5.14999L2.00005 9.58999V13.59L1.29005 14.29C0.0400511 15.55 0.610051 17 1.29005 17.71L4.29005 20.71C4.83005 21.25 5.41005 21.45 5.96005 21.45C6.67005 21.45 7.32005 21.1 7.71005 20.71L10.4101 18H14.0001C15.7001 18 16.5601 16.94 16.8701 15.9C18.0001 15.6 18.6201 14.74 18.8701 13.9C20.4201 13.5 21.0001 12.03 21.0001 11V7.99999H20.4101L20.7101 7.70999ZM19.0001 11C19.0001 11.45 18.8101 12 18.0001 12H17.0001V13C17.0001 13.45 16.8101 14 16.0001 14H15.0001V15C15.0001 15.45 14.8101 16 14.0001 16H9.59005L6.31005 19.28C6.00005 19.57 5.82005 19.4 5.71005 19.29L2.72005 16.31C2.43005 16 2.60005 15.82 2.71005 15.71L4.00005 14.41V10.41L6.00005 8.40999V9.99999C6.00005 11.21 6.80005 13 9.00005 13C11.2001 13 12.0001 11.21 12.0001 9.99999H19.0001V11ZM19.2901 6.28999L17.5901 7.99999H10.0001V9.99999C10.0001 10.45 9.81005 11 9.00005 11C8.19005 11 8.00005 10.45 8.00005 9.99999V6.99999C8.00005 6.53999 8.17005 4.99999 10.0001 4.99999H13.4101L15.6901 2.71999C16.0001 2.42999 16.1801 2.59999 16.2901 2.70999L19.2801 5.68999C19.5701 5.99999 19.4001 6.17999 19.2901 6.28999Z"
+									fill="#6E71CC"
+								/>
+							</svg>
+						</Box>
+						<Text
+							color={`${status.color}`}
+							fontFamily={"Open Sans"}
+							fontStyle={"normal"}
+							fontWeight={"600"}
+							fontSize={"16px"}
+						>
+							{status.status}
+						</Text>
+					</Box>
+					<Text
+						fontFamily={"Open Sans"}
+						fontStyle={"normal"}
+						fontWeight={"600"}
+						fontSize={"16px"}
+					>
+						Credibility Score{" "}
+					</Text>
+					<Text color={" #544D4F"}>
+						Application failed due to credibility score
+					</Text>
+				</Box>
+			</Flex>}
+		</>
+	);
+};
+
+export default ScoreCard;

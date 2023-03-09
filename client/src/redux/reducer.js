@@ -22,6 +22,10 @@ import {
     VERIFY_AUTH_SUCCESS,
     VERIFY_AUTH_FAILURE,
     
+    EMAIL_AUTH_REQUEST,
+    EMAIL_AUTH_SUCCESS,
+    EMAIL_AUTH_FAILURE,
+    
 } from "./action"
 
 
@@ -29,7 +33,8 @@ import {
 const initState = {
     isLoding: false,
     isError: false,
-    auth: ""
+    auth: "",
+    error:[]
 }
 
 export const authReducer = (state = initState, action) => {
@@ -55,7 +60,9 @@ export const authReducer = (state = initState, action) => {
             return ({
                 ...state,
                 isLoading: false,
-                isError: true
+                isError: true,
+                error:action.payload
+
             })
 
         case POST_AUTH_REQUEST:
@@ -77,7 +84,8 @@ export const authReducer = (state = initState, action) => {
             return ({
                 ...state,
                 isLoading: false,
-                isError: true
+                isError: true,
+                error:action.payload
             })
 
         case GOOGLE_AUTH_REQUEST:
@@ -99,7 +107,8 @@ export const authReducer = (state = initState, action) => {
             return ({
                 ...state,
                 isLoading: false,
-                isError: true
+                isError: true,
+                error:action.payload
             })
 
 
@@ -123,7 +132,8 @@ export const authReducer = (state = initState, action) => {
             return ({
                 ...state,
                 isLoading: false,
-                isError: true
+                isError: true,
+                error:action.payload
             })
 
        
@@ -146,10 +156,32 @@ export const authReducer = (state = initState, action) => {
                 return ({
                     ...state,
                     isLoading: false,
-                    isError: true
+                    isError: true,
+                    error:action.payload
                 })
          
-
+                case EMAIL_AUTH_REQUEST:
+                    return ({
+                        ...state,
+                        isLoading: true,
+                        isError: false
+                    })
+        
+                case EMAIL_AUTH_SUCCESS:
+                    return ({
+                        ...state,
+                        isLoading: false,
+                        isError: false,
+                        auth: action.payload
+                    })
+        
+                case EMAIL_AUTH_FAILURE:
+                    return ({
+                        ...state,
+                        isLoading: false,
+                        isError: true,
+                        error:action.payload
+                    })
 
 
         default:

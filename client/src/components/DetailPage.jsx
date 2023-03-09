@@ -30,7 +30,7 @@ import { SlGraduation } from "react-icons/sl";
 import { AiOutlineTrophy } from "react-icons/ai";
 import { MdEventAvailable } from "react-icons/md";
 import { BsBook } from "react-icons/bs";
-
+import Avatar from 'react-avatar';
 // import masai_logo from "../images/masai_logo.png";
 import AR from "../images/AR.png";
 
@@ -39,7 +39,7 @@ import { Box } from "@chakra-ui/layout";
 import customer_care_icon from "../images/customer_care_icon.jpg";
 
 // import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import DetailPageComponent from "./DetailPageComponent";
 
 const LinkItems = [
@@ -50,17 +50,11 @@ const LinkItems = [
 ];
 export default function DetailPage() {
     const { isOpen, onOpen, onClose } = useDisclosure();
-	// const data = useSelector((store) => store.data.data);
-	const { id } = useParams();
-	console.log("params", id);
-    // const filter = data.filter((item) => {
-	// 	return item._id === id;
-	// });
+    const navigate = useNavigate()
     
-// const handleClick = ()=>{
+	const { id } = useParams();
 
-// }
-
+	
 
 
 
@@ -213,21 +207,24 @@ const handleLogout = ()=>{
             />
             <HStack spacing={{ base: "0", md: "6" }}>
                 <Flex alignItems={"center"}>
-                    <Menu>
+                   <Menu>
                         <MenuButton
                             py={2}
                             transition="all 0.3s"
                             _focus={{ boxShadow: "none" }}
                         >
                             <HStack>
-                                <Image
+                                {/* <Image
                                     size={"sm"}
                                     backgroundColor={"brown"}
                                     src={AR}
                                     width={"20px"}
                                     height={"20px"}
                                     borderRadius={"50%"}
-                                />
+                                /> */}
+                                <Avatar  size={"25px"}
+                                    round="20px"
+                                    textSizeRatio={"60px"} name={userName} />
                                 <VStack
                                     display={{ base: "none", md: "flex" }}
                                     alignItems="flex-start"

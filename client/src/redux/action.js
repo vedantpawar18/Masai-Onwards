@@ -8,7 +8,6 @@ export const POST_AUTH_REQUEST = "POST_AUTH_REQUEST";
 export const POST_AUTH_SUCCESS = "POST_AUTH_SUCCESS";
 export const POST_AUTH_FAILURE = "POST_AUTH_FAILURE";
 
-
 export const GOOGLE_AUTH_REQUEST = "GOOGLE_AUTH_REQUEST";
 export const GOOGLE_AUTH_SUCCESS = "GOOGLE_AUTH_SUCCESS";
 export const GOOGLE_AUTH_FAILURE = "GOOGLE_AUTH_FAILURE";
@@ -20,6 +19,17 @@ export const PHONE_AUTH_FAILURE = "PHONE_AUTH_FAILURE";
 export const VERIFY_AUTH_REQUEST = "VERIFY_AUTH_REQUEST";
 export const VERIFY_AUTH_SUCCESS = "VERIFY_AUTH_SUCCESS";
 export const VERIFY_AUTH_FAILURE = "VERIFY_AUTH_FAILURE";
+
+export const EMAIL_AUTH_REQUEST = "EMAIL_AUTH_REQUEST";
+export const EMAIL_AUTH_SUCCESS = "EMAIL_AUTH_SUCCESS";
+export const EMAIL_AUTH_FAILURE = "EMAIL_AUTH_FAILURE";
+
+export const VERIFY_EMAIL_AUTH_REQUEST = "VERIFY_EMAIL_AUTH_REQUEST";
+export const VERIFY_EMAIL_AUTH_SUCCESS = "VERIFY_EMAIL_AUTH_SUCCESS";
+export const VERIFY_EMAIL_AUTH_FAILURE = "VERIFY_EMAIL_AUTH_FAILURE";
+
+
+
 
 export const signInAuthRequest = () => {
   return {
@@ -34,9 +44,10 @@ export const signInAuthSuccess = (auth) => {
   };
 };
 
-export const signInAuthFailure = () => {
+export const signInAuthFailure = (error) => {
   return {
     type: SIGNIN_AUTH_FAILURE,
+    payload:error
   };
 };
 
@@ -53,9 +64,10 @@ export const postDataSuccess = (auth) => {
   };
 };
 
-export const postDataFailure = () => {
+export const postDataFailure = (error) => {
   return {
     type: POST_AUTH_FAILURE,
+    payload:error
   };
 };
 
@@ -72,9 +84,10 @@ export const googleDataSuccess = (auth) => {
   };
 };
 
-export const googleDataFailure = () => {
+export const googleDataFailure = (error) => {
   return {
     type: GOOGLE_AUTH_FAILURE,
+    payload:error
   };
 };
 
@@ -91,9 +104,10 @@ export const phoneDataSuccess = (auth) => {
   };
 };
 
-export const phoneDataFailure = () => {
+export const phoneDataFailure = (error) => {
   return {
     type: PHONE_AUTH_FAILURE,
+    payload:error
   };
 };
 
@@ -106,34 +120,84 @@ export const verifyDataRequest = () => {
 export const verifyDataSuccess = (auth) => {
   return {
     type: VERIFY_AUTH_SUCCESS,
-    payload:auth,
+    payload: auth,
   };
 };
 
-export const verifyDataFailure = () => {
+export const verifyDataFailure = (error) => {
   return {
-    type: VERIFY_AUTH_FAILURE
+    type: VERIFY_AUTH_FAILURE,
+    payload:error
   };
 };
+
+
+export const emailDataRequest = () => {
+  return {
+    type: EMAIL_AUTH_REQUEST
+  };
+};
+
+export const emailDataSuccess = (auth) => {
+  return {
+    type: EMAIL_AUTH_SUCCESS,
+    payload: auth,
+  };
+};
+
+export const emailDataFailure = (error) => {
+  return {
+    type: EMAIL_AUTH_FAILURE,
+    payload:error
+  };
+};
+
+export const verifyEmailDataRequest = () => {
+  return {
+    type: VERIFY_EMAIL_AUTH_REQUEST
+  };
+};
+
+export const verifyEmailDataSuccess = (auth) => {
+  return {
+    type: VERIFY_EMAIL_AUTH_SUCCESS,
+    payload: auth,
+  };
+};
+
+export const verifyEmailDataFailure = (error) => {
+  return {
+    type: VERIFY_EMAIL_AUTH_FAILURE,
+    payload:error
+  };
+};
+
+
+
+
 
 
 export const signInAuth = (data) => (dispatch) => {
   dispatch(signInAuthRequest());
   return axios({
     method: "POST",
-    url: "https://team8-backend-production.up.railway.app/auth/signin",
+    url: "https://lazy-ruby-leopard-kilt.cyclic.app/auth/signin",
     data,
   })
     .then((res) => {
       dispatch(signInAuthSuccess(res.data));
-      console.log("signin Token check",res.data)
-      localStorage.setItem("accessToken",res.data.Primarytoken)
-      localStorage.setItem("displayName",res.data.full_name)
-      localStorage.setItem("email",res.data.email)
+     console.log("action signin check",res.data)
+      if(res.data.token.primaryToken){
+        localStorage.setItem("accessToken",res.data.token.primaryToken);
+        localStorage.setItem("displayName",res.data.token.fullName);
+        localStorage.setItem("email",res.data.token.email);
+      }
+
+ 
     })
 
-    .then((error) => {
-      dispatch(signInAuthFailure());
+    .catch((error) => {
+      dispatch(signInAuthFailure(error));
     });
 };
 
@@ -142,14 +206,21 @@ export const postData = (data) => (dispatch) => {
 
   return axios({
     method: "POST",
-    url: "http://localhost:8080/user/signup",
-    data,
+    url:"https://lazy-ruby-leopard-kilt.cyclic.app/user/signup",
+    data
   })
     .then((res) => {
-      dispatch(postDataSuccess(res.data));
+      console.log("res data",res.data)
+      dispatch(postDataSuccess(res.data.token.primaryToken));
+     
+      if(res.data.token.primaryToken){
+        localStorage.setItem("accessToken",res.data.token.primaryToken);
+        localStorage.setItem("displayName",res.data.userName);
+        localStorage.setItem("email",res.data.email);
+      }
     })
 
-    .then((error) => {
+    .catch((error) => {
       dispatch(postDataFailure());
     });
 };
@@ -177,19 +248,82 @@ export const phoneAuth = (auth) => (dispatch) => {
 
 
 export const verifyData = (data) => (dispatch) => {
+
   dispatch(verifyDataRequest());
 
   return axios({
-    method:"POST",
-    url:"http://localhost:8080/user/verify",
+    method: "POST",
+    url: "https://lazy-ruby-leopard-kilt.cyclic.app/user/verify",
+    data
+  })
+    .then((res) => {
+     console.log("action signup",res.data)
+      dispatch(verifyDataSuccess(res.data.token.primaryToken));
+      if(res.data.token.primaryToken){
+        localStorage.setItem("accessToken",res.data.token.primaryToken);
+        localStorage.setItem("displayName",res.data.userName);
+        localStorage.setItem("email",res.data.email);
+      }
+    })
+
+    .catch((error) => {
+     
+      dispatch(verifyDataFailure(error));
+      
+    });
+
+ 
+};
+
+
+
+export const emailData = (data) => (dispatch) => {
+  console.log("email action",data.email)
+  dispatch(emailDataRequest());
+
+  return axios({
+    method: "POST",
+    url: "https://lazy-ruby-leopard-kilt.cyclic.app/auth/signin",
     data,
   })
     .then((res) => {
-      dispatch(verifyDataSuccess(res.data));
+      console.log("email phone token action",res.data)
+      dispatch(emailDataSuccess(res.data.token.primaryToken));
+      if(res.data.token.primaryToken){
+        localStorage.setItem("accessToken",res.data.token.primaryToken);
+        localStorage.setItem("displayName",res.data.token.fullName);
+        localStorage.setItem("email",res.data.email);
+      }
     })
 
-    .then((error) => {
-      dispatch(verifyDataFailure());
+    .catch((error) => {
+      dispatch(emailDataFailure(error));
     });
 };
 
+
+export const verifyEmailData = (data) => (dispatch) => {
+
+  dispatch(verifyEmailDataRequest());
+
+  return axios({
+    method: "POST",
+    url: "https://lazy-ruby-leopard-kilt.cyclic.app/auth/verifyotp",
+    data,
+  })
+    .then((res) => {
+      console.log("verify email action",res.data);
+      dispatch(verifyEmailDataSuccess(res.data.token.primaryToken));
+      if(res.data.primaryToken){
+        localStorage.setItem("accessToken", res.data.token.primaryToken);
+        localStorage.setItem("displayName", res.data.token.fullName);
+        localStorage.setItem("email",data.email);
+       
+      }
+    
+    })
+
+    .catch((error) => {
+      dispatch(verifyEmailDataFailure(error));
+    });
+};

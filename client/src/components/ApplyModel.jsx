@@ -9,7 +9,6 @@ import {
 	ModalCloseButton,
 	ModalContent,
 	ModalFooter,
-
 	ModalOverlay,
 	Select,
 	useDisclosure,
@@ -32,12 +31,7 @@ export default function ApplyModel() {
 		}
 	};
 
-
 	let num = localStorage.getItem('num');
-
-
-
-
 
 	return (
 		<>
