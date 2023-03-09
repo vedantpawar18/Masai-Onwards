@@ -9,7 +9,7 @@ function PrivateRoute() {
 
  let token = localStorage.getItem("accessToken")
 
-//  console.log("tooookken",token)
+
 
   return (
     token ? <Outlet/>: <Navigate to="/" />

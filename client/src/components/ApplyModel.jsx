@@ -19,7 +19,7 @@ import { useRef, useState } from "react";
 export default function ApplyModel() {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [flag, setFlag] = useState(false);
-	const [submit,setSubmit]=useState(false)
+	
 
 	const initialRef = useRef(null);
 	const finalRef = useRef(null);

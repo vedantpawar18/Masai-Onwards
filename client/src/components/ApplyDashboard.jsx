@@ -32,14 +32,14 @@ import { MdEventAvailable } from "react-icons/md";
 import { BsBook } from "react-icons/bs";
 import Avatar from 'react-avatar';
 import masai_logo from "../images/masai_logo.png";
-import AR from "../images/AR.png";
+
 
 
 import { Box } from "@chakra-ui/layout";
 import customer_care_icon from "../images/customer_care_icon.jpg";
 
 // import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+
 
 import ApplyPage from "./ApplyPage";
 
@@ -52,12 +52,12 @@ const LinkItems = [
 export default function ApplyDashboard() {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-	// const data = useSelector((store) => store.data.data);
 
-	const { id } = useParams();
-	console.log("params", id);
 
-const navigate = useNavigate();
+	
+	
+
+
     return (
         
         <Box minH="100vh" >

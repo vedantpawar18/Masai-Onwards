@@ -53,7 +53,7 @@ export default function SignUpModal() {
       setCount(30);
       setDisable(true);
       if(phoneNumberOrEmail.includes("@")){
-          console.log("email",phoneNumberOrEmail)
+        
           let data = {
             fullName:name,
             email:phoneNumberOrEmail
@@ -73,7 +73,7 @@ export default function SignUpModal() {
             signInWithPhoneNumber(auth,num,appVerifier)
             .then(confirmationResult=>{
                  window.confirmationResult = confirmationResult;
-                 console.log("confirmationResult.verificationId",confirmationResult.verificationId)
+               
                  setExpandForm(confirmationResult);
             }).catch((error)=>{
                console.log(error)
@@ -88,7 +88,7 @@ export default function SignUpModal() {
       signInWithPhoneNumber(auth,num,appVerifier)
       .then(confirmationResult=>{
       window.confirmationResult = confirmationResult;
-      console.log("confirmationResult",confirmationResult)
+     
       }).catch((error)=>{
       console.log(error)
       })
@@ -112,17 +112,17 @@ export default function SignUpModal() {
      }else{
       let otp = e.target.value;
       setGetOtp(otp);
-      console.log(getOtp)
+     
       if(otp.length===6){
         let confirmationResult = window.confirmationResult;
         confirmationResult.confirm(otp).then((result)=>{
           const user = result.user;
         
-          // localStorage.setItem("accessToken",user.accessToken)
+      
           setToken(user.accessToken)
           
         }).catch((error)=>{
-          // console.log(error)
+          console.log(error)
         })
      }
      

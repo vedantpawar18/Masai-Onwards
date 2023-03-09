@@ -72,7 +72,7 @@ export default function SignInWithOtp() {
         signInWithPhoneNumber(auth, num, appVerifier)
           .then(confirmationResult => {
             window.confirmationResult = confirmationResult;
-            console.log("confirmationResult.verificationId", confirmationResult.verificationId);
+        
             setExpandForm(confirmationResult);
           }).catch((error) => {
             console.log(error)
@@ -90,7 +90,7 @@ export default function SignInWithOtp() {
     signInWithPhoneNumber(auth, num, appVerifier)
       .then(confirmationResult => {
         window.confirmationResult = confirmationResult;
-        // console.log("confirmationResult",confirmationResult)
+      
       }).catch((error) => {
         console.log(error)
       })
@@ -112,14 +112,14 @@ export default function SignInWithOtp() {
     } else {
       let otp = e.target.value;
       setGetOtp(otp);
-      // console.log(getOtp)
+  
       if (otp.length === 6) {
         let confirmationResult = window.confirmationResult;
         confirmationResult.confirm(otp).then((result) => {
           const user = result.user;
         
           setToken(user.accessToken);
-           console.log("phone token",token)
+         
         }).catch((error) => {
           console.log(error);
         })
@@ -171,9 +171,7 @@ export default function SignInWithOtp() {
 
       {expandForm ? <>
 
-        {/* <PrivateRoute token={token} /> */}
-
-        {/* <Text onClick={onOpen}>Sign-in with phone number</Text> */}
+      
 
         <Text onClick={onOpen} fontSize={"14px"}>Sign-in to prepleaf phone</Text>
 

@@ -22,7 +22,7 @@ export default function ScoreScreen() {
     const dispatch = useDispatch()
 	const id = localStorage.getItem("courseId")
 	const token = localStorage.getItem("accessToken")
-// console.log("coueseId",id)
+
 
 	// const data = [
 	// 	{"score":10}

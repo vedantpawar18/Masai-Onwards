@@ -45,11 +45,11 @@ import Navbar from './Navbar';
     let navigate_token = localStorage.getItem("accessToken");
     const  loginError = useSelector((store)=>store.auth.auth)
    
-    console.log("tokenCheck signin",token)
-    // let loginError =  localStorage.getItem("loginError");
+   
+
 
 const handleClick = ()=>{
-    //  console.log("clicked")
+    
    let emailFlag = false;
    let passFlag = false;
   
@@ -69,21 +69,14 @@ const handleClick = ()=>{
         setErrorMessage('Weak Password')
       }
       if(emailFlag&&passFlag){
-        // console.log("check flags", emailFlag, passFlag)
-        // console.log("check tokenzzzzzz",auth_token.Primarytoken)
+      
         
       let data = {
         email:email,
         password:password
       }
-   
            dispatch(signInAuth(data))
-
-
-      }
-     
-      
-       
+      }      
 }
 
 
@@ -96,7 +89,7 @@ const handleGoogle = ()=>{
   signInWithPopup(auth,provider).then((data)=>{
       setValue(data.user.email)
     
-      console.log("data",data.user.accessToken);
+     
       setToken(data.user.accessToken)
       localStorage.setItem("accessToken",data.user.accessToken)
          dispatch(googleAuth(data.user.accessToken))

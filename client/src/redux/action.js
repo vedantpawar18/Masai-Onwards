@@ -186,7 +186,7 @@ export const signInAuth = (data) => (dispatch) => {
   })
     .then((res) => {
       dispatch(signInAuthSuccess(res.data));
-     console.log("action signin check",res.data)
+   
       if(res.data.token.primaryToken){
         localStorage.setItem("accessToken",res.data.token.primaryToken);
         localStorage.setItem("displayName",res.data.token.fullName);
@@ -210,7 +210,7 @@ export const postData = (data) => (dispatch) => {
     data
   })
     .then((res) => {
-      console.log("res data",res.data)
+  
       dispatch(postDataSuccess(res.data.token.primaryToken));
      
       if(res.data.token.primaryToken){
@@ -257,7 +257,7 @@ export const verifyData = (data) => (dispatch) => {
     data
   })
     .then((res) => {
-     console.log("action signup",res.data)
+
       dispatch(verifyDataSuccess(res.data.token.primaryToken));
       if(res.data.token.primaryToken){
         localStorage.setItem("accessToken",res.data.token.primaryToken);
@@ -278,7 +278,7 @@ export const verifyData = (data) => (dispatch) => {
 
 
 export const emailData = (data) => (dispatch) => {
-  console.log("email action",data.email)
+
   dispatch(emailDataRequest());
 
   return axios({
@@ -287,7 +287,7 @@ export const emailData = (data) => (dispatch) => {
     data,
   })
     .then((res) => {
-      console.log("email phone token action",res.data)
+     
       dispatch(emailDataSuccess(res.data.token.primaryToken));
       if(res.data.token.primaryToken){
         localStorage.setItem("accessToken",res.data.token.primaryToken);
@@ -312,7 +312,7 @@ export const verifyEmailData = (data) => (dispatch) => {
     data,
   })
     .then((res) => {
-      console.log("verify email action",res.data);
+   
       dispatch(verifyEmailDataSuccess(res.data.token.primaryToken));
       if(res.data.primaryToken){
         localStorage.setItem("accessToken", res.data.token.primaryToken);
