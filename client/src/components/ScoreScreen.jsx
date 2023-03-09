@@ -1,9 +1,9 @@
 import { Box, Heading, Text} from "@chakra-ui/layout";
 import {   HStack, Input, Select } from "@chakra-ui/react";
-import { Button, ButtonGroup } from '@chakra-ui/react'
+import { Button } from '@chakra-ui/react'
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import circle from "../images/circle.png";
+
 import { scoreData } from "../redux/data/action";
 import Cards from "./Cards";
 import FailAlertBar from "./FailAlertBar";

@@ -125,7 +125,7 @@ export const profileData = (data,token) => (dispatch) => {
       data
     })
       .then((res) => {
-        console.log("profile data res",res.data)
+       
         dispatch(profileDataSuccess());
         
        
@@ -151,7 +151,7 @@ export const scoreData = (data,token) => (dispatch) => {
     data
   })
     .then((res) => {
-      console.log("score data res",res.data)
+      
       dispatch(scoreDataSuccess());
      
      

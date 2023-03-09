@@ -1,6 +1,5 @@
 import { Box, Button, Heading, Image, Text, useMediaQuery } from '@chakra-ui/react';
-import axios from 'axios';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import home_page_bg from "../images/landing_page.jpg";
 import "./landingPage.css"
@@ -8,31 +7,6 @@ import Navbar from './Navbar';
 function LandingPage() {
   const [isLargerThan800] = useMediaQuery('(min-width: 800px)')
   const navigate = useNavigate();
-	const token = localStorage.getItem("accessToken")
-
-	console.log("token card check",token)
-  const getData2 = () => {
-
-let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InZlZG50cGF3YXIxOEBnbWFpbC5jb20iLCJuYW1lIjoiVmVkYW50IFBhd2FyIiwibW9iaWxlIjpudWxsLCJpYXQiOjE2NzgyODUyMzYsImV4cCI6MTY3ODI4ODgzNn0.ovu0X-qCSd51FtPzI0AYBqWfXoaEvZzLoJg3zQOGlnM"
-    axios({
-      method:"GET",
-      url:"http://localhost:8080/dashboard/dashboard-details",
-      headers:{
-        'Authorization' : `Bearer ${token}`
-      }
-    })
-    .then((res)=>{
-       console.log("resssss",res.data.courses)
-    })
-    .catch((error)=>{
-
-    })
-}
-
-useEffect(()=>{
-   getData2()
-},[])
-
 
    
   return (

@@ -1,28 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
-	Progress,
+
 	Box,
 	ButtonGroup,
 	Button,
-	Heading,
 	Flex,
 	FormControl,
-	GridItem,
 	FormLabel,
 	Input,
 	Select,
-	SimpleGrid,
-	InputLeftAddon,
-	InputGroup,
-	Textarea,
-	FormHelperText,
-	InputRightElement,
 	RadioGroup,
 	Radio,
 	Checkbox,
 } from "@chakra-ui/react";
 import validator from 'validator' 
-import { useToast } from "@chakra-ui/react";
 import { HStack, Stack, Text } from "@chakra-ui/layout";
 import { useNavigate } from "react-router-dom";
 import { profileData } from "../redux/data/action";
@@ -50,12 +41,10 @@ export default function ApplyPage() {
 	const [update, setUpdate] = useState("");
 	const navigate = useNavigate();
     const dispatch = useDispatch()
-	const toast = useToast();
-	const [step, setStep] = useState(1);
-	const [progress, setProgress] = useState(33.33);
+
 	const [ageNow, setAgeNow] = useState("");
 	const token = localStorage.getItem("accessToken")
-	let formData = JSON.parse(localStorage.getItem("formData") )|| []
+
    
    
 	const calculate_age = () => {

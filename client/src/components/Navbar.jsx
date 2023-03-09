@@ -25,12 +25,12 @@ import { useNavigate } from 'react-router-dom';
 import { signInWithPopup } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { auth, provider } from '../firebase';
-import PrivateRoute from './PrivateRoute';
+
 import { useDispatch, useSelector } from 'react-redux';
-import { emailData, googleAuth, verifyData } from '../redux/action';
+import {  googleAuth, verifyData } from '../redux/action';
 import SignUpModal from './SignUpModal';
 
-const Links = ['Dashboard', 'Projects', 'Team'];
+
 
 
 export default function Navbar() {

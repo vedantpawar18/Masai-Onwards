@@ -1,4 +1,4 @@
-import { EmailIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons"
+
 import { Box, Center } from "@chakra-ui/layout"
 import { 
    Button, Flex, 
@@ -10,28 +10,19 @@ import {
    Stack, Text, useDisclosure } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { FcGoogle } from "react-icons/fc"
-import popup_image from "../images/popup_image.jpg";
-import validator from 'validator';
 import {RecaptchaVerifier, signInWithPhoneNumber} from "firebase/auth";
 import {auth} from "../firebase"
-import PrivateRoute from "./PrivateRoute";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {  postData, verifyData } from "../redux/action";
 export default function SignUpModal() {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [showPassword, setShowPassword] = useState(false);
     const [disable, setDisable] = useState(false)
     const [count, setCount] = useState(30)
     const [emailError, setEmailError] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
-    const [errorPhone, setErrorPhone] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     const [postNumber, setPostNumber] = useState('');
     const [token, setToken] = useState('');
-    const [nameError, setNameError] = useState('');
     const [flag,setFlag] = useState(false);
     const countryCode = "+91";
     const [phoneNumberOrEmail, setPhoneNumberOrEmail] = useState(countryCode);
@@ -73,10 +64,9 @@ export default function SignUpModal() {
             signInWithPhoneNumber(auth,num,appVerifier)
             .then(confirmationResult=>{
                  window.confirmationResult = confirmationResult;
-               
                  setExpandForm(confirmationResult);
             }).catch((error)=>{
-               console.log(error)
+             
             })
          } 
       }
@@ -90,7 +80,7 @@ export default function SignUpModal() {
       window.confirmationResult = confirmationResult;
      
       }).catch((error)=>{
-      console.log(error)
+    
       })
      }
 
@@ -122,7 +112,7 @@ export default function SignUpModal() {
           setToken(user.accessToken)
           
         }).catch((error)=>{
-          console.log(error)
+        
         })
      }
      

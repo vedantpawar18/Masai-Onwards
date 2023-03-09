@@ -3,43 +3,30 @@ import { Box, Center } from "@chakra-ui/layout"
 import {
   Button, Flex, FormControl,
   FormLabel, Heading,
-  HStack, Input, Link, Modal, ModalBody,
-  ModalCloseButton, ModalContent, ModalFooter,
-  ModalHeader, ModalOverlay, PinInput,
-  PinInputField, Stack, Text, useDisclosure
+  HStack, Input, Link, Modal,
+  ModalCloseButton, ModalContent,
+  ModalOverlay, 
+  Stack, Text, useDisclosure
 } from "@chakra-ui/react"
 import { useEffect, useState } from "react";
 import { FcGoogle } from "react-icons/fc"
-import popup_image from "../images/popup_image.jpg";
-import validator from 'validator';
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { auth } from "../firebase"
-import PrivateRoute from "./PrivateRoute";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { emailData, verifyEmailData } from "../redux/action";
-import { m } from "framer-motion";
+
 export default function SignInWithOtp() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [showPassword, setShowPassword] = useState(false);
   const [count, setCount] = useState(30);
   const [disable, setDisable] = useState(true);
   const [emailError, setEmailError] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-  const [errorPhone, setErrorPhone] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
   const [token, setToken] = useState('');
-  const [nameError, setNameError] = useState('');
   const [flag, setFlag] = useState(false);
   const countryCode = "+91";
   const [phoneNumberOrEmail, setPhoneNumberOrEmail] = useState(countryCode);
   const [expandForm, setExpandForm] = useState(false)
   const [getOtp, setGetOtp] = useState('');
-  const [otp, setOtp] = useState("");
-  const [minutes, setMinutes] = useState(1);
-  const [seconds, setSeconds] = useState(30);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const tokenCheck = useSelector((store) => store.auth.auth);

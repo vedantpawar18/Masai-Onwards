@@ -35,15 +35,14 @@ import Navbar from './Navbar';
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [value, setValue] = useState("");
-    const [name, setName] = useState("")
+ 
     const [token, setToken] = useState("")
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const  auth_token = useSelector((store)=>store.auth.auth);
-    // const  signin_email = useSelector((store)=>store.auth.auth.email);
+
+   
     const  tokenCheck = useSelector((store)=>store.auth.auth);
-    let navigate_token = localStorage.getItem("accessToken");
-    const  loginError = useSelector((store)=>store.auth.auth)
+   
    
    
 

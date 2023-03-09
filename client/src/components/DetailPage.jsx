@@ -20,26 +20,16 @@ import {
     Image,
 } from "@chakra-ui/react";
 import {
-   
     FiMenu,
-
     FiChevronDown,
 } from "react-icons/fi";
-
 import { SlGraduation } from "react-icons/sl";
 import { AiOutlineTrophy } from "react-icons/ai";
 import { MdEventAvailable } from "react-icons/md";
 import { BsBook } from "react-icons/bs";
 import Avatar from 'react-avatar';
-// import masai_logo from "../images/masai_logo.png";
-import AR from "../images/AR.png";
-
-
 import { Box } from "@chakra-ui/layout";
 import customer_care_icon from "../images/customer_care_icon.jpg";
-
-// import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
 import DetailPageComponent from "./DetailPageComponent";
 
 const LinkItems = [
@@ -50,16 +40,14 @@ const LinkItems = [
 ];
 export default function DetailPage() {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const navigate = useNavigate()
-    
-	const { id } = useParams();
 
-	
+
+
 
 
 
     return (
-        
+
         <Box minH="100vh" >
             <SidebarContent
                 onClose={() => onClose}
@@ -78,14 +66,14 @@ export default function DetailPage() {
                     <SidebarContent onClose={onClose} />
                 </DrawerContent>
             </Drawer>
-            {/* mobilenav */}
+        
             <MobileNav onOpen={onOpen} />
             <Box ml={{ base: 0, md: 60 }} p="4">
 
-                {/* //-----------------------------------// */}
+            
 
-           <DetailPageComponent/>
-               
+                <DetailPageComponent />
+
             </Box>
         </Box>
     );
@@ -93,50 +81,50 @@ export default function DetailPage() {
 const SidebarContent = ({ onClose, ...rest }) => {
     return (
         <>
-       
-        <Box
-            transition="3s ease"
-            bg={useColorModeValue("white", "gray.900")}
-            borderRight="1px"
-            borderRightColor={useColorModeValue("gray.200", "gray.700")}
-            w={{ base: "full", md: 60 }}
-            pos="fixed"
-            h="full"
-            {...rest}
-        >
-            <Flex h="20"  alignItems="center" mx="8" justifyContent="space-between">
-                <Image src={"masai_logo"} />
-                <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
-            </Flex>
-            {LinkItems.map((link) => (
-                <NavItem key={link.name} icon={link.icon}>
-                    {link.name}
-                </NavItem>
-            ))}
-  <Box  marginLeft={"10%"} marginTop={"50px"}  textAlign="start" >
-<HStack gap={"25px"}>
-<Text fontSize={"14px"}>Referral Program</Text>
-<Box borderRadius={"7px"} width={"50px"} bg={"red.100"} >
-<Text textAlign={"center"} fontSize={"14px"} color={"red"}>NEW</Text>
-</Box>
-</HStack>
-<Text marginTop={"15px"} fontSize={"14px"}>
-Documents
-</Text>
-<Text marginTop={"15px"} fontSize={"14px"}>ISA</Text>
-<Text marginTop={"15px"} fontSize={"14px"}>FAQ</Text>
-<HStack marginTop={"20px"}>
-    <Box >
-    <Image src={customer_care_icon} h="50px" w="50px" />
-    </Box>
-    <Box>
-    <Text fontSize={"14px"} fontWeight={"bold"} color={"#6E71CC"}>🟢 Speak to our Team</Text>
-    <Text fontSize={"14px"}>Book a slot  </Text>
-    </Box>
-</HStack>
-   </Box>
-        </Box>
-              </>
+
+            <Box
+                transition="3s ease"
+                bg={useColorModeValue("white", "gray.900")}
+                borderRight="1px"
+                borderRightColor={useColorModeValue("gray.200", "gray.700")}
+                w={{ base: "full", md: 60 }}
+                pos="fixed"
+                h="full"
+                {...rest}
+            >
+                <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
+                    <Image src={"masai_logo"} />
+                    <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
+                </Flex>
+                {LinkItems.map((link) => (
+                    <NavItem key={link.name} icon={link.icon}>
+                        {link.name}
+                    </NavItem>
+                ))}
+                <Box marginLeft={"10%"} marginTop={"50px"} textAlign="start" >
+                    <HStack gap={"25px"}>
+                        <Text fontSize={"14px"}>Referral Program</Text>
+                        <Box borderRadius={"7px"} width={"50px"} bg={"red.100"} >
+                            <Text textAlign={"center"} fontSize={"14px"} color={"red"}>NEW</Text>
+                        </Box>
+                    </HStack>
+                    <Text marginTop={"15px"} fontSize={"14px"}>
+                        Documents
+                    </Text>
+                    <Text marginTop={"15px"} fontSize={"14px"}>ISA</Text>
+                    <Text marginTop={"15px"} fontSize={"14px"}>FAQ</Text>
+                    <HStack marginTop={"20px"}>
+                        <Box >
+                            <Image src={customer_care_icon} h="50px" w="50px" />
+                        </Box>
+                        <Box>
+                            <Text fontSize={"14px"} fontWeight={"bold"} color={"#6E71CC"}>🟢 Speak to our Team</Text>
+                            <Text fontSize={"14px"}>Book a slot  </Text>
+                        </Box>
+                    </HStack>
+                </Box>
+            </Box>
+        </>
     );
 };
 const NavItem = ({ icon, children, ...rest }) => {
@@ -178,13 +166,13 @@ const NavItem = ({ icon, children, ...rest }) => {
 const MobileNav = ({ onOpen, ...rest }) => {
 
 
-const userName = localStorage.getItem("displayName")
+    const userName = localStorage.getItem("displayName")
 
-const handleLogout = ()=>{
-	
-	localStorage.clear();
-	window.location.reload()
-}
+    const handleLogout = () => {
+
+        localStorage.clear();
+        window.location.reload()
+    }
 
     return (
         <Flex
@@ -207,7 +195,7 @@ const handleLogout = ()=>{
             />
             <HStack spacing={{ base: "0", md: "6" }}>
                 <Flex alignItems={"center"}>
-                   <Menu>
+                    <Menu>
                         <MenuButton
                             py={2}
                             transition="all 0.3s"
@@ -222,7 +210,7 @@ const handleLogout = ()=>{
                                     height={"20px"}
                                     borderRadius={"50%"}
                                 /> */}
-                                <Avatar  size={"25px"}
+                                <Avatar size={"25px"}
                                     round="20px"
                                     textSizeRatio={"60px"} name={userName} />
                                 <VStack
@@ -232,22 +220,22 @@ const handleLogout = ()=>{
                                     ml="2"
                                 >
                                     <Text fontSize="sm">{userName}</Text>
-									</VStack>
-								<Box display={{ base: "none", md: "flex" }}>
-									<FiChevronDown />
-								</Box>
-							</HStack>
-						</MenuButton>
-						<MenuList
-							bg={useColorModeValue("white", "gray.900")}
-							borderColor={useColorModeValue("gray.200", "gray.700")}
-						>
-							<MenuItem>Profile</MenuItem>
-						
-							<MenuDivider />
-							<MenuItem onClick={handleLogout}>Sign out</MenuItem>
-						</MenuList>
-					</Menu>
+                                </VStack>
+                                <Box display={{ base: "none", md: "flex" }}>
+                                    <FiChevronDown />
+                                </Box>
+                            </HStack>
+                        </MenuButton>
+                        <MenuList
+                            bg={useColorModeValue("white", "gray.900")}
+                            borderColor={useColorModeValue("gray.200", "gray.700")}
+                        >
+                            <MenuItem>Profile</MenuItem>
+
+                            <MenuDivider />
+                            <MenuItem onClick={handleLogout}>Sign out</MenuItem>
+                        </MenuList>
+                    </Menu>
                 </Flex>
             </HStack>
         </Flex>

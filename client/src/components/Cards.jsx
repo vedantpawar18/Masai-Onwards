@@ -14,16 +14,15 @@ import { IoIosLaptop } from "react-icons/io";
 import { BsCalendar2Date } from "react-icons/bs";
 import card_image from "../images/card_image.jpg";
 import { GridItem } from "@chakra-ui/layout";
-import { useEffect, useState } from "react";
-import ScoreScreen from "./ScoreScreen";
-import ApplyModel from "./ApplyModel";
+import { useEffect } from "react";
+
 import { getData } from "../redux/data/action";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 
 export default function Cards() {
 	const [isLargerThan800] = useMediaQuery("(max-width: 800px)");
-	const [apply, setApply] = useState(false);
+
 	const navigate = useNavigate();
 
 	const data = useSelector((store) => store.data.data.courses)||[];

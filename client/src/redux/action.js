@@ -33,14 +33,14 @@ export const VERIFY_EMAIL_AUTH_FAILURE = "VERIFY_EMAIL_AUTH_FAILURE";
 
 export const signInAuthRequest = () => {
   return {
-    type: SIGNIN_AUTH_REQUEST,
+    type: SIGNIN_AUTH_REQUEST
   };
 };
 
 export const signInAuthSuccess = (auth) => {
   return {
-    type: SIGNIN_AUTH_SUCCESS,
-    payload: auth,
+    type:SIGNIN_AUTH_SUCCESS,
+    payload:auth
   };
 };
 
@@ -53,14 +53,14 @@ export const signInAuthFailure = (error) => {
 
 export const postDataRequest = () => {
   return {
-    type: POST_AUTH_REQUEST,
+    type: POST_AUTH_REQUEST
   };
 };
 
 export const postDataSuccess = (auth) => {
   return {
-    type: POST_AUTH_SUCCESS,
-    payload: auth,
+    type:POST_AUTH_SUCCESS,
+    payload:auth
   };
 };
 
@@ -80,7 +80,7 @@ export const googleDataRequest = () => {
 export const googleDataSuccess = (auth) => {
   return {
     type: GOOGLE_AUTH_SUCCESS,
-    payload: auth,
+    payload:auth
   };
 };
 
@@ -93,14 +93,14 @@ export const googleDataFailure = (error) => {
 
 export const phoneDataRequest = () => {
   return {
-    type: PHONE_AUTH_REQUEST,
+    type: PHONE_AUTH_REQUEST
   };
 };
 
 export const phoneDataSuccess = (auth) => {
   return {
     type: PHONE_AUTH_SUCCESS,
-    payload: auth,
+    payload:auth
   };
 };
 
@@ -113,14 +113,14 @@ export const phoneDataFailure = (error) => {
 
 export const verifyDataRequest = () => {
   return {
-    type: VERIFY_AUTH_REQUEST
+    type:VERIFY_AUTH_REQUEST
   };
 };
 
 export const verifyDataSuccess = (auth) => {
   return {
     type: VERIFY_AUTH_SUCCESS,
-    payload: auth,
+    payload: auth
   };
 };
 
@@ -141,7 +141,7 @@ export const emailDataRequest = () => {
 export const emailDataSuccess = (auth) => {
   return {
     type: EMAIL_AUTH_SUCCESS,
-    payload: auth,
+    payload: auth
   };
 };
 
@@ -161,7 +161,7 @@ export const verifyEmailDataRequest = () => {
 export const verifyEmailDataSuccess = (auth) => {
   return {
     type: VERIFY_EMAIL_AUTH_SUCCESS,
-    payload: auth,
+    payload: auth
   };
 };
 
@@ -181,12 +181,11 @@ export const signInAuth = (data) => (dispatch) => {
   dispatch(signInAuthRequest());
   return axios({
     method: "POST",
-    url: "https://lazy-ruby-leopard-kilt.cyclic.app/auth/signin",
-    data,
+    url:"https://lazy-ruby-leopard-kilt.cyclic.app/auth/signin",
+    data
   })
     .then((res) => {
       dispatch(signInAuthSuccess(res.data));
-   
       if(res.data.token.primaryToken){
         localStorage.setItem("accessToken",res.data.token.primaryToken);
         localStorage.setItem("displayName",res.data.token.fullName);
@@ -253,7 +252,7 @@ export const verifyData = (data) => (dispatch) => {
 
   return axios({
     method: "POST",
-    url: "https://lazy-ruby-leopard-kilt.cyclic.app/user/verify",
+    url:"https://lazy-ruby-leopard-kilt.cyclic.app/user/verify",
     data
   })
     .then((res) => {
@@ -283,8 +282,8 @@ export const emailData = (data) => (dispatch) => {
 
   return axios({
     method: "POST",
-    url: "https://lazy-ruby-leopard-kilt.cyclic.app/auth/signin",
-    data,
+    url:"https://lazy-ruby-leopard-kilt.cyclic.app/auth/signin",
+    data
   })
     .then((res) => {
      
@@ -308,7 +307,7 @@ export const verifyEmailData = (data) => (dispatch) => {
 
   return axios({
     method: "POST",
-    url: "https://lazy-ruby-leopard-kilt.cyclic.app/auth/verifyotp",
+    url:"https://lazy-ruby-leopard-kilt.cyclic.app/auth/verifyotp",
     data,
   })
     .then((res) => {
