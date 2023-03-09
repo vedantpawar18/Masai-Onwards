@@ -20,16 +20,17 @@ import {
   
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
-import Model3 from './Model3';
+import Model3 from './SignInWithOtp';
 import { useNavigate } from 'react-router-dom';
 import { signInWithPopup } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { auth, provider } from '../firebase';
-import PrivateRoute from './PrivateRoute';
-import { useDispatch, useSelector } from 'react-redux';
-import { googleAuth } from '../redux/action';
 
-const Links = ['Dashboard', 'Projects', 'Team'];
+import { useDispatch, useSelector } from 'react-redux';
+import {  googleAuth, verifyData } from '../redux/action';
+import SignUpModal from './SignUpModal';
+
+
 
 
 export default function Navbar() {
@@ -39,27 +40,46 @@ export default function Navbar() {
   const [userEmail, setUserEmail] = useState("");
   const [name, setName] = useState("")
   const [token, setToken] = useState("")
+  const [check, setCheck] = useState("")
+  const [tokenName, setTokenName] = useState("")
+  const [tokenEmail, setTokenEmail] = useState("")
   const dispatch = useDispatch()
   const token2 = useSelector((store)=>store.auth.auth);
   const user_name = localStorage.getItem("displayName")||name
   const user_email = localStorage.getItem("email")||userEmail
   const access_token = localStorage.getItem("accessToken");
-console.log("user_name",user_name)
+
   
   const handleClick = ()=>{
+
+
+
       signInWithPopup(auth,provider).then((data)=>{
           setValue(data.user.email);
-          console.log("data",data.user.accessToken);
           setToken(data.user.accessToken);
           localStorage.setItem("accessToken",data.user.accessToken);
+          setCheck(data)
           dispatch(googleAuth(data.user.accessToken));
           localStorage.setItem("displayName",data.user.displayName);
+          setTokenName(data.user.displayName)
           localStorage.setItem("email",data.user.email);
+          setTokenEmail(data.user.email)
           setUserEmail(data.user.email);
           setName(data.user.displayName);
       }) 
-   
       
+      
+     if(token){
+      
+        let data = {
+          email:tokenEmail,
+          fullName:tokenName
+       }
+       dispatch(verifyData(data))
+     }
+    
+  
+
   }
   
   useEffect(()=>{
@@ -67,7 +87,9 @@ console.log("user_name",user_name)
   localStorage.getItem("displayName")
   },[user_name,user_email])
 
-  // console.log("name",name)
+
+
+
 
 
   return (
@@ -216,7 +238,7 @@ console.log("user_name",user_name)
                     </GridItem>
                     
                     <GridItem marginLeft={"-100px"} > 
-                    <Text fontSize={"14px"}>Sign-up with phone number</Text>
+                   <SignUpModal/>
                     </GridItem>
                    </Grid>
 
@@ -245,12 +267,14 @@ console.log("user_name",user_name)
 
 
 
+                   {access_token&&<>
 
-                   <Grid gridTemplateColumns={"repeat(2, 1fr)"}>
+
+                    <Grid gridTemplateColumns={"repeat(2, 1fr)"}>
                     <GridItem marginRight="100px" >
                     <Image src={"https://www.pngitem.com/pimgs/m/78-786293_1240-x-1240-0-avatar-profile-icon-png.png"} border={"1px solid"} w="30px" h="30px" borderRadius="50%" alt="icon" />
                     </GridItem>
-                    
+                  
                     <GridItem marginLeft={"-100px"} > 
                     <Text fontWeight="bold">{user_name}</Text>
                     <Text fontSize={"12px"}>{user_email}</Text>
@@ -259,6 +283,10 @@ console.log("user_name",user_name)
                   
                
                   <Button bg="blue.400" onClick={()=>navigate("/dashboard")}>Continue as {user_name}</Button>
+
+
+                    </>}
+                 
                     <Text fontSize={"16px"}>To create your account, google will share your name, 
                         email address and profile picture with coding Ninjas, 
                         see coding Ninja's privecy policy and terms and service </Text>

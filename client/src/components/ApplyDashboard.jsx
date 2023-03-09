@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from "react";
+import React from "react";
 import {
     IconButton,
     CloseButton,
@@ -12,8 +12,6 @@ import {
     DrawerContent,
     Text,
     useDisclosure,
-    BoxProps,
-    FlexProps,
     Menu,
     MenuButton,
     MenuDivider,
@@ -22,45 +20,42 @@ import {
     Image,
 } from "@chakra-ui/react";
 import {
-    FiHome,
-    FiTrendingUp,
-    FiCompass,
-    FiStar,
-    FiSettings,
+   
     FiMenu,
-    FiBell,
+
     FiChevronDown,
 } from "react-icons/fi";
-import { IconType } from "react-icons";
+
 import { SlGraduation } from "react-icons/sl";
 import { AiOutlineTrophy } from "react-icons/ai";
 import { MdEventAvailable } from "react-icons/md";
 import { BsBook } from "react-icons/bs";
-import { ReactText } from "react";
+import Avatar from 'react-avatar';
 import masai_logo from "../images/masai_logo.png";
-import AR from "../images/AR.png";
-import Cards from "./Cards";
-import FailAlertBar from "./FailAlertBar";
-import PassAlertBar from "./PassAlertBar";
+
+
+
 import { Box } from "@chakra-ui/layout";
 import customer_care_icon from "../images/customer_care_icon.jpg";
-import ScoreScreen from "./ScoreScreen";
-import Avatar from 'react-avatar';
+
+// import { useSelector } from "react-redux";
+
+
+import ApplyPage from "./ApplyPage";
+
 const LinkItems = [
     { name: "Courses", icon: SlGraduation },
     { name: "Contests", icon: AiOutlineTrophy },
     { name: "Events", icon: MdEventAvailable },
     { name: "Self Learning", icon: BsBook },
 ];
-export default function ScoreDashboard() {
+export default function ApplyDashboard() {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [apply, setApply] = useState(false);
-
-const handleClick = ()=>{
-
-}
 
 
+
+	
+	
 
 
     return (
@@ -86,7 +81,10 @@ const handleClick = ()=>{
             {/* mobilenav */}
             <MobileNav onOpen={onOpen} />
             <Box ml={{ base: 0, md: 60 }} p="4">
-            <ScoreScreen  />
+
+                {/* //-----------------------------------// */}
+
+          <ApplyPage/>
                
             </Box>
         </Box>
@@ -107,7 +105,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
             {...rest}
         >
             <Flex h="20"  alignItems="center" mx="8" justifyContent="space-between">
-                <Image src={masai_logo} alt="masai_logo" />
+                <Image src={masai_logo} />
                 <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
             </Flex>
             {LinkItems.map((link) => (
@@ -176,15 +174,17 @@ const NavItem = ({ icon, children, ...rest }) => {
         </Link>
     );
 };
+
 const MobileNav = ({ onOpen, ...rest }) => {
 
-    const userName = localStorage.getItem("displayName");
 
-    const handleLogout = ()=>{
+const userName = localStorage.getItem("displayName")
+
+const handleLogout = ()=>{
 	
-        localStorage.clear();
-        window.location.reload()
-    }
+	localStorage.clear();
+	window.location.reload()
+}
 
     return (
         <Flex

@@ -4,22 +4,20 @@ import { FcGoogle } from 'react-icons/fc';
 import {
     Button,
     Flex,
-    FormControl,
-    FormLabel,
+   
     Heading,
-    Input,
+   
     Link,
     Stack,
     Text,
-    InputRightElement,
-    InputGroup,
+    
     Box,
-    HStack,
+  
     List,
     ListItem,
     ListIcon,
     useMediaQuery,
-    useColorModeValue,
+   
   } from '@chakra-ui/react';
 import { useState } from 'react';
 import Navbar from './Navbar';

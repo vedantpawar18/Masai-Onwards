@@ -1,106 +1,161 @@
-import { EmailIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons"
+
 import { Box, Center } from "@chakra-ui/layout"
-import { Button, Flex, FormControl, FormLabel, Heading, HStack, Image, Input, InputGroup, InputRightElement, Link, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, PinInput, PinInputField, Stack, Text, useDisclosure } from "@chakra-ui/react"
+import { 
+   Button, Flex, 
+   FormControl, FormLabel,
+   Heading, HStack,
+   Input, Link,
+   Modal, ModalCloseButton,
+   ModalContent, ModalOverlay,
+   Stack, Text, useDisclosure } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { FcGoogle } from "react-icons/fc"
-import popup_image from "../images/popup_image.jpg";
-import validator from 'validator';
 import {RecaptchaVerifier, signInWithPhoneNumber} from "firebase/auth";
 import {auth} from "../firebase"
-import PrivateRoute from "./PrivateRoute";
 import { useNavigate } from "react-router-dom";
-export default function Model3() {
-    const { isOpen, onOpen, onClose } = useDisclosure()
-    const [showPassword, setShowPassword] = useState(false);
- 
-    const [emailError, setEmailError] = useState('')
-    const [errorMessage, setErrorMessage] = useState('')
-    const [errorPhone, setErrorPhone] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [name, setName] = useState('')
-    const [token, setToken] = useState('')
-    const [nameError, setNameError] = useState('')
-
+import { useDispatch, useSelector } from "react-redux";
+import {  postData, verifyData } from "../redux/action";
+export default function SignUpModal() {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [disable, setDisable] = useState(false)
+    const [count, setCount] = useState(30)
+    const [emailError, setEmailError] = useState('');
+    const [name, setName] = useState('');
+    const [postNumber, setPostNumber] = useState('');
+    const [token, setToken] = useState('');
+    const [flag,setFlag] = useState(false);
     const countryCode = "+91";
-    const [phoneNumber, setPhoneNumber] = useState(countryCode);
-    const [expandForm, setExpandForm] = useState(false)
+    const [phoneNumberOrEmail, setPhoneNumberOrEmail] = useState(countryCode);
+    const [expandForm, setExpandForm] = useState(false);
     const [getOtp, setGetOtp] = useState('');
-    const navigate = useNavigate()
-    // const [token, setToken] = useState('')
-    console.log(phoneNumber)
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const tokenCheck = useSelector((store)=>store.auth.auth);
+    
     const genarateRecaptcha = ()=>{
       window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {
-     
         'callback': (response) => {
-       
         }
       }, auth)
     }
     
     
     const requestOtp = ()=>{
-      let num = `+91${phoneNumber}`;
-      localStorage.setItem('num', num);
-      if(num.length>=12){
-         
-          genarateRecaptcha();
-          let appVerifier = window.recaptchaVerifier;
-          signInWithPhoneNumber(auth,num,appVerifier)
-          .then(confirmationResult=>{
-               window.confirmationResult = confirmationResult;
-               console.log("confirmationResult.verificationId",confirmationResult.verificationId)
-               setExpandForm(confirmationResult);
-          }).catch((error)=>{
-             console.log(error)
-          })
+      setCount(30);
+      setDisable(true);
+      if(phoneNumberOrEmail.includes("@")){
         
+          let data = {
+            fullName:name,
+            email:phoneNumberOrEmail
+          }
+          dispatch(verifyData(data));
+           setFlag(true);
+           setExpandForm(true);
+
+      }else{
+
+        let num = `+91${phoneNumberOrEmail}`;
+        setPostNumber(num)
+        localStorage.setItem('num', num);
+        if(num.length>=12){
+            genarateRecaptcha();
+            let appVerifier = window.recaptchaVerifier;
+            signInWithPhoneNumber(auth,num,appVerifier)
+            .then(confirmationResult=>{
+                 window.confirmationResult = confirmationResult;
+                 setExpandForm(confirmationResult);
+            }).catch((error)=>{
+             
+            })
+         } 
       }
     }
     
     const resendOtp = ()=>{
       let num = localStorage.getItem('num');
+      let appVerifier = window.recaptchaVerifier;
+      signInWithPhoneNumber(auth,num,appVerifier)
+      .then(confirmationResult=>{
+      window.confirmationResult = confirmationResult;
+     
+      }).catch((error)=>{
     
-       let appVerifier = window.recaptchaVerifier;
-       signInWithPhoneNumber(auth,num,appVerifier)
-       .then(confirmationResult=>{
-            window.confirmationResult = confirmationResult;
-            console.log("confirmationResult",confirmationResult)
-       }).catch((error)=>{
-          console.log(error)
-       })
+      })
      }
 
 
     
     const verifyOtp = (e)=>{
+     if(flag){
       let otp = e.target.value;
-    setGetOtp(otp);
-    console.log(getOtp)
-    if(otp.length===6){
-      let confirmationResult = window.confirmationResult;
-      confirmationResult.confirm(otp).then((result)=>{
-        const user = result.user;
-        console.log("user",user.accessToken)
-        localStorage.setItem("accessToken",user.accessToken)
-        setToken(user.accessToken)
-        navigate("/dashboard")
-      }).catch((error)=>{
-        console.log(error)
-      })
-    }
+      setGetOtp(otp);
+    
+      let data = {
+        email:phoneNumberOrEmail,
+        otp:otp,
+        fullName:name
+      }
+
+      dispatch(postData(data))
+    
+     }else{
+      let otp = e.target.value;
+      setGetOtp(otp);
+     
+      if(otp.length===6){
+        let confirmationResult = window.confirmationResult;
+        confirmationResult.confirm(otp).then((result)=>{
+          const user = result.user;
         
+      
+          setToken(user.accessToken)
+          
+        }).catch((error)=>{
+        
+        })
+     }
+     
+    }
+ 
+ 
 
     }
     
 
-    // useEffect(() => {
-    //   const timer = setTimeout(() => {
-    //     console.log('This will run after 1 second!')
-    //   }, 1000);
-    //   return () => clearTimeout(timer);
-    // }, []);
+    useEffect(() => {
+      if(expandForm){
+        const timer = setTimeout(() => {
+          setCount(count-1)
+          if(count===0){
+            setDisable(false);
+            setCount(0);
+          }
+        }, 1000);
+      }
+      
+  
+    }, [count,expandForm]);
 
+
+    const handleNavigate = ()=>{
+
+
+      if(token){
+        let data = {
+         mob:postNumber,
+         fullName:name
+        }
+        dispatch(postData(data))
+       }
+
+       if(tokenCheck!==undefined){
+        navigate("/dashboard");
+      }
+   
+    }
+   
+  
 
 
     return (
@@ -108,11 +163,12 @@ export default function Model3() {
 
       {expandForm?<>
 
-      {/* <PrivateRoute token={token} /> */}
+        {/* <PrivateRoute token={token} /> */}
 
-        <Text onClick={onOpen}>Sign-in with phone number</Text>
+        {/* <Text onClick={onOpen}>Sign-in with phone number</Text> */}
         
         <Text onClick={onOpen} fontSize={"14px"}>Sign-up to prepleaf phone</Text>
+
   <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
     <ModalOverlay />
     <ModalContent>
@@ -272,11 +328,24 @@ export default function Model3() {
             Verify your OTP
           </Heading>
         </Center>
-        <Center
-          fontSize={{ base: 'sm', sm: 'md' }}
-          color={('gray.800')}>
-          We have sent code to your mobile number
-        </Center>
+        {flag?<>
+                <Center
+                  fontSize={{ base: 'sm', sm: 'md' }}
+                  color={('gray.800')}>
+                  We have sent code to your email Id
+                </Center>
+              
+              </>
+              :
+              <>
+              <Center
+                  fontSize={{ base: 'sm', sm: 'md' }}
+                  color={('gray.800')}>
+                  We have sent code to your number
+                </Center>
+              
+              </>
+              }
         <Center
           fontSize={{ base: 'sm', sm: 'md' }}
           fontWeight="bold"
@@ -284,15 +353,20 @@ export default function Model3() {
           {}
         </Center>
         <FormControl >
+        <FormLabel textAlign={"right"}> {count && <Text textAlign={"right"} fontWeight={"light"} color={"#CCCCCC"} fontSize={"14px"}>Resend otp in {count} second</Text>}</FormLabel>
           <Center>
             <HStack>
-           
-              <Input placeholder="Enter your otp here" value={getOtp} onChange={verifyOtp}/>
+          
+              <Input placeholder="Enter your otp here" w={"330px"} value={getOtp} onChange={verifyOtp} />
             </HStack>
+           
           </Center>
+        <Center>
+         
+        </Center>
         </FormControl>
-        <Button onClick={resendOtp}>
-          Resend
+        <Button onClick={resendOtp} isDisabled={disable}>
+                  Resend
         </Button>
         <Stack spacing={6}>
           <Button
@@ -300,7 +374,7 @@ export default function Model3() {
             color={'white'}
             _hover={{
               bg: 'blue.500',
-            }}>
+            }} onClick={handleNavigate}>
             Verify
           </Button>
         </Stack>
@@ -462,9 +536,15 @@ export default function Model3() {
       
       
       </HStack>
+      <FormControl id="name" >
+        <FormLabel>Name</FormLabel>
+        <Input  placeholder='Enter your name' onChange={(e)=>setName(e.target.value)}/>
+        <Text color={"red"} fontSize={"10px"} textAlign={"left"}>{emailError}</Text>
+      </FormControl>
+
       <FormControl id="email" >
         <FormLabel>Phone Number</FormLabel>
-        <Input  placeholder='Enter your mobile number' onChange={(e)=>setPhoneNumber(e.target.value)}/>
+        <Input  placeholder='Enter your mobile number or email id' onChange={(e)=>setPhoneNumberOrEmail(e.target.value)}/>
         <Text color={"red"} fontSize={"10px"} textAlign={"left"}>{emailError}</Text>
         <Box id="recaptcha-container">
 

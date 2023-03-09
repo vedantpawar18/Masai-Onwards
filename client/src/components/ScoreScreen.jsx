@@ -1,13 +1,16 @@
 import { Box, Heading, Text} from "@chakra-ui/layout";
 import {   HStack, Input, Select } from "@chakra-ui/react";
-import { Button, ButtonGroup } from '@chakra-ui/react'
+import { Button } from '@chakra-ui/react'
 import React, { useState } from "react";
-import circle from "../images/circle.png";
+import { useDispatch } from "react-redux";
+
+import { scoreData } from "../redux/data/action";
 import Cards from "./Cards";
+import FailAlertBar from "./FailAlertBar";
 import PassAlertBar from "./PassAlertBar";
 import ScoreCard from "./ScoreCard";
 export default function ScoreScreen() {
-
+	const userName = localStorage.getItem("displayName")
 	const [main, setMain] = useState(true);
 	const [fail, setFail] = useState(false);
 	const [pass, setPass] = useState(false);
@@ -16,9 +19,9 @@ export default function ScoreScreen() {
 	const [communication , setCommunication ] = useState("")
 	 const [credibility , setCredibility ] = useState("")
 	 const [status, setStatus] = useState([]);
-
-
-
+    const dispatch = useDispatch()
+	const id = localStorage.getItem("courseId")
+	const token = localStorage.getItem("accessToken")
 
 
 	// const data = [
@@ -51,6 +54,16 @@ export default function ScoreScreen() {
                      "status":"Passed",
 					 "color":"green"
 				}
+				let data = {
+					courseId:id,
+					congAbilityScore:cognitive,
+					MetTestScore:mettl,
+					communicationScore:communication,
+					credibilityScore:credibility,
+					status:"pass"
+				}
+				dispatch(scoreData(data,token))
+				// courseId, congAbilityScore, MetTestScore, communicationScore, credibilityScore, status
 				setStatus(passData)
 			   }else{
 				setMain(false)
@@ -62,15 +75,26 @@ export default function ScoreScreen() {
 					"credibility":credibility,
                      "status":"Not cleared",
 					 "color":"red"
+					//  courseId, congAbilityScore, MetTestScore, communicationScore, credibilityScore, status
 				}
-				setStatus(failData)
 
+				let data = {
+					courseId:id,
+					congAbilityScore:cognitive,
+					MetTestScore:mettl,
+					communicationScore:communication,
+					credibilityScore:credibility,
+					status:"fail"
+				}
+				
+				dispatch(scoreData(data,token))
+				setStatus(failData)
+				
 			   }
 		}
       
 	}
 
-console.log("statuzzzzzzzzzz",status)
 
 
 	return (
@@ -88,7 +112,7 @@ console.log("statuzzzzzzzzzz",status)
 					fontWeight={"700"}
 					fontSize={"20px"}
 				>
-					Hi Abishek 👋
+					Hi {userName} 👋
 				</Text>
 				<Text
 					textAlign={"left"}
@@ -207,73 +231,3 @@ console.log("statuzzzzzzzzzz",status)
 		</Box>
 	);
 }
-
-
-
-const FailAlertBar = () => {
-	return (
-		<>
-			<Box
-				bg="white"
-				w="900px"
-				height={"136px"}
-				marginTop={"80px"}
-				// border="1px solid red"
-				marginLeft={"24px"}
-				color="white"
-				display={"flex"}
-              
-			>
-				<Box width={"70%"} color={"black"} textAlign={"start"}   p={4}>
-					<Text
-						fontFamily={"Poppins"}
-						fontWeight={"700"}
-						fontSize={"24px"}
-						fontStyle={"normal"}
-					>
-						Better luck next time
-					</Text>
-					<Text
-						fontFamily="Open Sans"
-						fontWeight={"400"}
-						fontSize={"14px"}
-						fontStyle={"normal"}
-						color={"#544D4F"}
-					>
-						You could not clear MSAT for Full Stack Web Development, starting 24
-						Jan 2020. You can try our other courses, contests and events.
-					</Text>
-				</Box>
-				<Box
-					width={"30%"}
-                    // border="1px solid red"
-                    height={"130px"}
-					backgroundPosition="center"
-		bgSize={"contain"}
-					backgroundRepeat="no-repeat"
-					backgroundImage={`url(${circle})`}
-                   
-				></Box>
-
-
-{/* <Box
-				bg="white"
-				w="1120px"
-				height={"136px"}
-				marginTop={"80px"}
-				
-                backgroundPosition="center"
-                bgSize="contain"
-                backgroundRepeat="no-repeat"
-                backgroundImage={`url(${failPic})`}
-				marginLeft={"24px"}
-				color="white"
-				display={"flex"}
-      
-			>
-				
-			</Box> */}
-			</Box>
-		</>
-	);
-};

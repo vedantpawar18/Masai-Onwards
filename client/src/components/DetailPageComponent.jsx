@@ -6,7 +6,8 @@ import {
 	Stack,
 	Icon,
 	SimpleGrid,
-	Flex
+	Flex,
+	Button
 } from "@chakra-ui/react";
 
 import { MdOutlineExposureZero, MdPerson, MdWorkOutline } from "react-icons/md";
@@ -18,19 +19,20 @@ import { BsGlobe } from "react-icons/bs";
 import { AiOutlineClockCircle } from "react-icons/ai";
 import { SlCalender } from "react-icons/sl";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ApplyModel from "./ApplyModel";
 
 
 export default function DetailComponent() {
-	const data = useSelector((store) => store.data.data);
+	const navigate = useNavigate()
+   
+	const data = useSelector((store) => store.data.data.courses)||[];
 	const { id } = useParams();
-	console.log("params", id);
-
+	
 	const filter = data.filter((item) => {
 		return item._id === id;
 	});
-	console.log("filter", filter);
+
 	
 
 	const Feature = ({ title, text, icon }) => {
@@ -247,7 +249,7 @@ export default function DetailComponent() {
 					<Box marginTop="30px" marginBottom={"30px"} textAlign={"right"} marginRight={"40px"} >
 
 						
-				<ApplyModel/>
+				<Button bg={"#3470E4"} color={"white"} onClick={()=>navigate("/applydashboard")}>Apply Now</Button>
 					</Box>
 					
 				</>

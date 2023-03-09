@@ -5,8 +5,10 @@ import home_page_bg from "../images/landing_page.jpg";
 import "./landingPage.css"
 import Navbar from './Navbar';
 function LandingPage() {
-    const [isLargerThan800] = useMediaQuery('(min-width: 800px)')
-    const navigate = useNavigate();
+  const [isLargerThan800] = useMediaQuery('(min-width: 800px)')
+  const navigate = useNavigate();
+
+   
   return (
     <>
     <Navbar/>
@@ -41,7 +43,11 @@ function LandingPage() {
          Tenetur iusto maxime dolor minima eligendi exercitationem 
          possimus, praesentium animi ut ducimus quasi dicta 
          veritatis nostrum assumenda ipsam</Text>
-      <Button marginTop={"30px"} color={"white"} bg={"#2a3a8a"}>
+      <Button 
+      marginTop={"30px"} 
+      onClick={()=>navigate("/dashboard")}
+      color={"white"} 
+      bg={"#2a3a8a"}>
    Apply for free
    </Button>
 
