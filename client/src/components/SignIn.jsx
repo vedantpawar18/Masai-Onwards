@@ -19,7 +19,7 @@ import {
     ListIcon,
     useMediaQuery
   } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import {  useEffect, useState } from 'react';
 import validator from 'validator';
 import {  useDispatch, useSelector } from 'react-redux';
 import { googleAuth, signInAuth } from '../redux/action';
@@ -35,16 +35,20 @@ import Navbar from './Navbar';
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [value, setValue] = useState("");
-    const [name, setName] = useState("")
+ 
     const [token, setToken] = useState("")
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const  auth_token = useSelector((store)=>store.auth.auth);
-    const  signin_email = useSelector((store)=>store.auth.auth.email);
-    const  full_name = useSelector((store)=>store.auth.auth.full_name);
-    let navigate_token = localStorage.getItem("accessToken")
+
+   
+    const  tokenCheck = useSelector((store)=>store.auth.auth);
+   
+   
+   
+
+
 const handleClick = ()=>{
-     console.log("clicked")
+    
    let emailFlag = false;
    let passFlag = false;
   
@@ -64,35 +68,18 @@ const handleClick = ()=>{
         setErrorMessage('Weak Password')
       }
       if(emailFlag&&passFlag){
-        console.log("check flags", emailFlag, passFlag)
-        console.log("check tokenzzzzzz",auth_token.Primarytoken)
+      
         
       let data = {
         email:email,
         password:password
       }
-   
            dispatch(signInAuth(data))
-
-
-      }
-      // console.log("check tokenzzzzzz",auth_token)
-      if(auth_token.Primarytoken){
-        navigate("/dashboard")
-       }   
-       
+      }      
 }
 
 
 
-// useEffect(()=>{
-// if(auth_token!==undefined){
-//   localStorage.setItem("accessToken",auth_token)
-//   localStorage.setItem("displayName",full_name)
-//   localStorage.setItem("email",signin_email)
-  
-// }
-// },[auth_token,signin_email,full_name])
 
 
 
@@ -101,7 +88,7 @@ const handleGoogle = ()=>{
   signInWithPopup(auth,provider).then((data)=>{
       setValue(data.user.email)
     
-      console.log("data",data.user.accessToken);
+     
       setToken(data.user.accessToken)
       localStorage.setItem("accessToken",data.user.accessToken)
          dispatch(googleAuth(data.user.accessToken))
@@ -111,13 +98,17 @@ const handleGoogle = ()=>{
   }) 
 }
 
+
 useEffect(()=>{
 
-    setValue(localStorage.getItem("email"))
-    setName(localStorage.getItem("displayName"))
- 
+  if(tokenCheck){
+    if(tokenCheck.token.primaryToken!==undefined){
+      navigate("/dashboard");
+    }
+  
+   }   
 
-},[name,value])
+},[navigate,tokenCheck])
 
 
 
@@ -201,7 +192,7 @@ useEffect(()=>{
             </HStack>
             <FormControl id="email" >
               <FormLabel>Email</FormLabel>
-              <Input type="email" placeholder='name@mail.com' onChange={(e)=>setEmail(e.target.value)}/>
+              <Input type="email" value={email} placeholder='name@mail.com' onChange={(e)=>setEmail(e.target.value)}/>
               <Text color={"red"} fontSize={"10px"} textAlign={"left"}>{emailError}</Text>
             </FormControl>
             <FormControl id="password" >
@@ -214,7 +205,7 @@ useEffect(()=>{
                 <Link color={"blue"}>Forgot password?</Link>
               </Stack>
               <InputGroup>
-                <Input placeholder='To keep your profile safe' onChange={(e)=>setPassword(e.target.value)} type={showPassword ? 'text' : 'password'} />
+                <Input placeholder='To keep your profile safe' value={password} onChange={(e)=>setPassword(e.target.value)} type={showPassword ? 'text' : 'password'} />
             
                 <InputRightElement h={'full'}>
                 
@@ -232,8 +223,9 @@ useEffect(()=>{
               <Stack  direction={{ base: 'column', sm: 'row' }}
                 align={'start'}
                 justify={'space-between'}>
-              <FormLabel fontWeight={'light'}>Minimum 8 characters</FormLabel>
               <FormLabel color={'red'} fontSize={"10px"} fontWeight={'light'}>{errorMessage}</FormLabel>
+              <FormLabel fontWeight={'light'}>Minimum 8 characters</FormLabel>
+            
               </Stack>
             </FormControl>
             <Stack spacing={10} pt={2}>
@@ -266,7 +258,7 @@ useEffect(()=>{
             </Stack>
             <Stack pt={6}>
               <Text align={'center'}>
-              Don't have an account? <Link color={"blue"} to="/signup">Sign up</Link>
+              Don't have an account? <Link color={"blue"}  to="/signup"><span style={{color:"blue"}}>Sign up</span></Link>
               </Text>
             </Stack>
           </Stack>
@@ -287,23 +279,11 @@ useEffect(()=>{
           Sign In
         </Heading>
         <Stack spacing={4}>
-          <HStack>
-            {/* <Box>
-              <FormControl id="name" >
-                <FormLabel>Name</FormLabel>
-                <Input type="text" width={"400px"} placeholder={"Enter your name"} />
-              </FormControl>
-            </Box> */}
-            {/* <Box>
-              <FormControl id="lastName">
-                <FormLabel>Last Name</FormLabel>
-                <Input type="text" />
-              </FormControl>
-            </Box> */}
-          </HStack>
+        
           <FormControl id="email" >
             <FormLabel>Email</FormLabel>
-            <Input type="email" placeholder='name@mail.com' onChange={(e)=>setEmail(e.target.value)} />
+            <Input type="email" value={email} placeholder='name@mail.com' onChange={(e)=>setEmail(e.target.value)} />
+            <Text color={"red"} fontSize={"10px"} textAlign={"left"}>{emailError}</Text>
           </FormControl>
           <FormControl id="password" >
            
@@ -315,7 +295,7 @@ useEffect(()=>{
               <Link color={'blue.400'}>Forgot password?</Link>
             </Stack>
             <InputGroup>
-              <Input placeholder='To keep your profile safe' onChange={(e)=>setPassword(e.target.value)} type={showPassword ? 'text' : 'password'} />
+              <Input placeholder='To keep your profile safe' value={password} onChange={(e)=>setPassword(e.target.value)} type={showPassword ? 'text' : 'password'} />
           
               <InputRightElement h={'full'}>
               
@@ -330,7 +310,10 @@ useEffect(()=>{
           
               </InputRightElement>
             </InputGroup>
+            <HStack justify={'space-between'}>
+            <FormLabel color={'red'} fontSize={"10px"} fontWeight={'light'}>{errorMessage}</FormLabel>
             <FormLabel fontWeight={'light'}>Minimum 8 characters</FormLabel>
+            </HStack>
           </FormControl>
           <Stack spacing={10} pt={2}>
            
@@ -351,7 +334,7 @@ useEffect(()=>{
       w={'full'}
       maxW={'md'}
       variant={'outline'}
-      width={"300px"}
+      onClick={handleGoogle}
       leftIcon={<FcGoogle />}>
       <Center>
         <Text fontSize={"12px"}>CONTINUE WITH GOOGLE</Text>
@@ -361,7 +344,7 @@ useEffect(()=>{
           </Stack>
           <Stack pt={6}>
             <Text align={'center'}>
-             Don't have an account? <Link color={"blue"}  to="/signup">Sign up</Link>
+             Don't have an account? <Link color={"blue"}  to="/signup"><span style={{color:"blue"}}>Sign up</span></Link>
             </Text>
           </Stack>
         </Stack>

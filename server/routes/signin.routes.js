@@ -30,63 +30,98 @@ authController.use("/signin", apiLimiter);
 //<-------------------------------   APT for sign in   ------------------------------->
 
 authController.post("/signin", async (req, res) => {
-  const { email, password } = req.body;
-  const valideEmail = validateEmail(email);
-  if (valideEmail) {
-    const user = await UserModel.findOne({ email });
-    if (user && password) {
+  const { email, password, mobile } = req.body;
+  if(email)
+  {
+    const validEmail = validateEmail(email);
+  if (validEmail) {
+    const user= await UserModel.findOne({ email });
+    if (user&& password) {
       const hash = user.password;
-      if (user && password) {
+      if (user&& hash) {
         const verification = await bcrypt.compare(password, hash);
         if (verification) {
-          res.send(
-            generateToken({
-              email: user.email,
-              fullName: user.fullName,
-              mobile: user.mobile,
-            })
-          );
-        } else if (user && !verification)
+          const token =generateToken({
+            email: user.email,
+            fullName: user.fullName,
+            mobile: user.mob,
+          });
+        res.status(200).send({msg: "Signed in successfully",email:user.email,mobile:user.mob,fullName:user.fullName,token})
+        } else if (user&& !verification)
           res.status(401).send({ msg: "Please enter a valid password." });
       }
+    } else if (user && !user.password) {
+      res.status(200).send({
+        msg: "Password is not associated with your email address, Please try with OTP.",
+      });
     } else if (user) {
       sendMailOtp(email, customEmailMessage, user?.fullName);
       res.status(200).send({
         msg: "OTP sent successfully, Please check your email for OTP.",
       });
     } else
-      res.status(401).send({
+      res.status(404).send({
         msg: "The account you mentioned does not exist. Please try with correct email address.",
       });
   } else res.status(401).send({ msg: "Please enter a valid email address." });
+}
+else if(mobile)
+{
+  if(mobile.length!=10 || mobile[0]==0)
+  res.status(401).send({msg:"Please Enter 10 digit valid mobile number"});
+  else{
+    const user=await UserModel.findOne({mob:mobile});
+    if(user && password && !user.password)
+    {
+      res.status(200).send({
+        msg: "Password is not associated with your mobile number, Please try with OTP.",
+      });
+    }
+    else if(!user)
+    {
+      res.status(404).send({msg:"There is no account associated with this mobile number"})
+      
+    }
+    else
+   {
+    const token =generateToken({
+      email: user.email,
+      fullName: user.fullName,
+      mobile: user.mob,
+    });
+    res.status(200).send({msg: "Signed in successfully",email:user.email,mobile:user.mob,fullName:user.fullName,token})
+  }
+  }
+}
 });
 
 //<--------------------    API to verify otp sent on email ----------------------->
 authController.post("/verifyotp", async (req, res) => {
   const { email, otp } = req.body;
-  const user = await OtpModel.findOne({ email });
-  if (user && user.otp == otp) {
-    const userDetails = await UserModel.findOne({ email });
-    if (userDetails)
-      res.send(
-        generateToken({
-          email: userDetails.email,
-          fullName: userDetails.fullName,
-          mobile: userDetails.mobile,
-        })
-      );
-  } else res.status(401).send({ msg: "Please enter a valid 6 digit OTP." });
+  const userOtp= await OtpModel.findOne({ email });
+  if (userOtp && userOtp.otp == otp) {
+    const user = await UserModel.findOne({ email });
+    if (user){
+      const token =generateToken({
+        email: user.email,
+        fullName: user.fullName,
+        mobile: user.mob,
+      });
+      res.status(200).send({msg: "Signed in successfully",email:user.email,mobile:user.mob,fullName:user.fullName,token})
+    }
+  }
+  else 
+  res.status(401).send({ msg: "Please enter a valid 6 digit OTP." });
 });
 
 authController.post("/forget", async (req, res) => {
   let { email } = req.body;
-  const user = await UserModel.findOne({ email });
+  const user= await UserModel.findOne({ email });
   if (user) {
     try {
       sendMailOtp(email, customEmailMessage2, user?.fullName);
       res.status(200).send({ msg: "your otp for reset password is sended" });
     } catch (err) {
-      console.log(err);
       res.status(401).send("something went wrong! try again");
     }
   } else {

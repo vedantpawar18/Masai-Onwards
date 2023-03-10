@@ -19,7 +19,7 @@ import {
     MenuList,
     Image,
 } from "@chakra-ui/react";
-
+import Avatar from 'react-avatar';
 import {
 
     FiMenu,
@@ -33,7 +33,6 @@ import { MdEventAvailable } from "react-icons/md";
 import { BsBook } from "react-icons/bs";
 
 import masai_logo from "../images/masai_logo.png";
-
 import AR from "../images/AR.png";
 import Cards from "./Cards";
 
@@ -208,14 +207,17 @@ const handleLogout = ()=>{
                             _focus={{ boxShadow: "none" }}
                         >
                             <HStack>
-                                <Image
+                                {/* <Image
                                     size={"sm"}
                                     backgroundColor={"brown"}
                                     src={AR}
                                     width={"20px"}
                                     height={"20px"}
                                     borderRadius={"50%"}
-                                />
+                                /> */}
+                                <Avatar  size={"25px"}
+                                    round="20px"
+                                    textSizeRatio={"60px"} name={userName} />
                                 <VStack
                                     display={{ base: "none", md: "flex" }}
                                     alignItems="flex-start"

@@ -1,5 +1,5 @@
 import { Box, Heading } from '@chakra-ui/layout'
-import { Button, Input } from '@chakra-ui/react'
+import { Button } from '@chakra-ui/react'
 import React from 'react'
 
 function Home() {

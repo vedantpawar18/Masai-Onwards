@@ -21,7 +21,7 @@ import {
   import validator from 'validator';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { postData, verifyData } from '../redux/action';
+import {  verifyData } from '../redux/action';
 import { Link, useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
   
@@ -34,10 +34,9 @@ import Navbar from './Navbar';
     const [password, setPassword] = useState('')
     const [name, setName] = useState('')
     const [nameError, setNameError] = useState('')
+    const [user, setUser] = useState('')
     const dispatch = useDispatch()
-    const  auth_token = useSelector((store)=>store.auth.auth.token)
-    const  save_locally = useSelector((store)=>store.auth.auth);
-    const navigate_token = localStorage.getItem("accessToken")
+    const  auth_token = useSelector((store)=>store.auth.auth)
    
     const navigate = useNavigate()
 const handleClick = ()=>{
@@ -50,7 +49,7 @@ const handleClick = ()=>{
       setEmailError('');
       emailFlag = true;
     } else {
-      setEmailError('Enter valid Email!')
+      setEmailError('Enter valid Email!');
     }
     if (validator.isStrongPassword(password, {
         minLength: 8, minLowercase: 0,
@@ -59,25 +58,21 @@ const handleClick = ()=>{
         setErrorMessage('')
         passFlag = true;
       } else {
-        setErrorMessage('Weak Password')
+        setErrorMessage('Weak Password');
       }
 
       if (validator.isStrongPassword(name, {
         minLength: 3, minLowercase: 1,
         minUppercase: 1, minNumbers: 0, minSymbols: 0
       })) {
-        setNameError('')
+        setNameError('');
         nameFlag = true;
       } else {
-        setNameError('Enter valid name')
+        setNameError('Enter valid name');
       }
 
-      // let data = {
-      //   email,
-      //   password,
-      //   name
-      // }
-      // console.log("data signup",data)
+    
+      
      if(emailFlag&&passFlag&&nameFlag){
 
       let data = {
@@ -85,35 +80,34 @@ const handleClick = ()=>{
         password:password,
         fullName:name
       }
-      // console.log("data signup",data)
       
-      dispatch(verifyData(data))
+     
+      
+      dispatch(verifyData(data));
      }
  
     
-    // console.log("authhhh token",navigate_token)
-    
+ 
+
    
 }
 
-// console.log("token signup check",navigate_token)
+
 
 
 
 
 useEffect(()=>{
-if(auth_token!==undefined){
-    localStorage.setItem("accessToken",auth_token.Primarytoken);
-    localStorage.setItem("email",save_locally.email);
-    localStorage.setItem("displayName",save_locally.userName);
+if(auth_token){
+  if(auth_token.token.primaryToken!==undefined){
     navigate("/dashboard")
+  }
 }
-
+if(auth_token==="User already exists"){
+  setUser('User already exist please sign in')
+}
 },[auth_token,navigate])
 
-
-// console.log("save data check",navigate_token)
-console.log("Save locally",save_locally)  
 
 
     return (
@@ -174,7 +168,7 @@ console.log("Save locally",save_locally)
               <Box>
                 <FormControl id="name" >
                   <FormLabel>Name</FormLabel>
-                  <Input type="text" width={"400px"} onChange={(e)=>setName(e.target.value)} placeholder={"Enter your name"} />
+                  <Input type="text" width={"400px"} value={name} onChange={(e)=>setName(e.target.value)} placeholder={"Enter your name"} />
                   <Text color={"red"} fontSize={"10px"} textAlign={"left"}>{nameError}</Text>
                 </FormControl>
               </Box>
@@ -187,13 +181,13 @@ console.log("Save locally",save_locally)
             </HStack>
             <FormControl id="email" >
               <FormLabel>Email address</FormLabel>
-              <Input type="email" placeholder='name@mail.com' onChange={(e)=>setEmail(e.target.value)}/>
+              <Input type="email" value={email} placeholder='name@mail.com' onChange={(e)=>setEmail(e.target.value)}/>
               <Text color={"red"} fontSize={"10px"} textAlign={"left"}>{emailError}</Text>
             </FormControl>
             <FormControl id="password" >
               <FormLabel>Password</FormLabel>
               <InputGroup>
-                <Input placeholder='To keep your profile safe' onChange={(e)=>setPassword(e.target.value)} type={showPassword ? 'text' : 'password'} />
+                <Input placeholder='To keep your profile safe' value={password} onChange={(e)=>setPassword(e.target.value)} type={showPassword ? 'text' : 'password'} />
               
                 <InputRightElement h={'full'}>
                 
@@ -215,8 +209,9 @@ console.log("Save locally",save_locally)
             <FormLabel color={'red'} fontSize={"10px"} fontWeight={'light'}>{errorMessage}</FormLabel>
             </Stack>
             </FormControl>
+            {user&&<Text color={"red"} fontSize={"12px"}>{user}</Text>}
             <Stack spacing={10} pt={2}>
-                <Text>By signing up, I accept the Prepleaf <Link color={'blue.400'}>Terms of Service</Link>and acknowledge the  <Link color={'blue.400'}>Privacy Policy.</Link></Text>
+                <Text>By signing up, I accept the Prepleaf <Link color={'blue.400'}>Terms of Service</Link> and acknowledge the  <Link color={'blue.400'}>Privacy Policy.</Link></Text>
               <Button
                 loadingText="Submitting"
                 size="lg"
@@ -230,7 +225,7 @@ console.log("Save locally",save_locally)
             </Stack>
             <Stack pt={6}>
               <Text align={'center'}>
-                Already have an account? <Link color={'blue.400'} to="/signin">Sign in</Link>
+              Already have an account? <Link color={'blue.400'} to="/signin"><span style={{color:"blue"}}>Sign in</span></Link>
               </Text>
             </Stack>
           </Stack>
@@ -249,28 +244,24 @@ console.log("Save locally",save_locally)
           Sign up
         </Heading>
         <Stack spacing={4}>
-          <HStack>
+         
             <Box>
               <FormControl id="name" >
                 <FormLabel>Name</FormLabel>
-                <Input type="text" width={"280px"} placeholder={"Enter your name"} onChange={(e)=>setName(e.target.value)} />
+                <Input type="text" value={name} placeholder={"Enter your name"} onChange={(e)=>setName(e.target.value)} />
+                <Text color={"red"} fontSize={"10px"} textAlign={"left"}>{nameError}</Text>
               </FormControl>
             </Box>
-            {/* <Box>
-              <FormControl id="lastName">
-                <FormLabel>Last Name</FormLabel>
-                <Input type="text" />
-              </FormControl>
-            </Box> */}
-          </HStack>
+          
           <FormControl id="email" >
             <FormLabel>Email address</FormLabel>
-            <Input type="email" placeholder='name@mail.com' onChange={(e)=>setEmail(e.target.value)}/>
+            <Input type="email" value={email} placeholder='name@mail.com' onChange={(e)=>setEmail(e.target.value)}/>
+            <Text color={"red"} fontSize={"10px"} textAlign={"left"}>{emailError}</Text>
           </FormControl>
           <FormControl id="password" >
             <FormLabel>Password</FormLabel>
             <InputGroup>
-              <Input placeholder='To keep your profile safe' onChange={(e)=>setPassword(e.target.value)} type={showPassword ? 'text' : 'password'} />
+              <Input placeholder='To keep your profile safe' value={password} onChange={(e)=>setPassword(e.target.value)} type={showPassword ? 'text' : 'password'} />
           
               <InputRightElement h={'full'}>
               
@@ -288,12 +279,17 @@ console.log("Save locally",save_locally)
             <Stack direction={{ base: 'column', sm: 'row' }}
                 align={'start'}
                 justify={'space-between'}>
+                  <Flex gap={"25px"}  justify={'space-between'}>
+                  <FormLabel color={'red'} fontSize={"10px"} fontWeight={'light'}>{errorMessage}</FormLabel>
             <FormLabel fontWeight={'light'}>Minimum 8 characters</FormLabel>
-            <FormLabel color={'red'} fontSize={"10px"} fontWeight={'light'}>{errorMessage}</FormLabel>
+          
+            </Flex>
             </Stack>
+           
           </FormControl>
+          {user&&<Text color={"red"} fontSize={"12px"}>{user}</Text>}
           <Stack spacing={10} pt={2}>
-              <Text>By signing up, I accept the Prepleaf <Link color={'blue.400'}>Terms of Service</Link>and acknowledge the  <Link color={'blue.400'}>Privacy Policy.</Link></Text>
+              <Text>By signing up, I accept the Prepleaf <Link color={'blue.400'}>Terms of Service</Link> and acknowledge the  <Link color={'blue.400'}>Privacy Policy.</Link></Text>
             <Button
               loadingText="Submitting"
               size="lg"
@@ -307,7 +303,7 @@ console.log("Save locally",save_locally)
           </Stack>
           <Stack pt={6}>
             <Text align={'center'}>
-              Already have an account? <Link color={'blue.400'} to="/signin">Sign in</Link>
+              Already have an account? <Link color={'blue.400'} to="/signin"><span style={{color:"blue"}}>Sign in</span></Link>
             </Text>
           </Stack>
         </Stack>

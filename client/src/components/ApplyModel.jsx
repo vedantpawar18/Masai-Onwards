@@ -9,19 +9,14 @@ import {
 	ModalCloseButton,
 	ModalContent,
 	ModalFooter,
-
 	ModalOverlay,
 	Select,
 	useDisclosure,
-
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
-
 export default function ApplyModel() {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [flag, setFlag] = useState(false);
-	const [submit,setSubmit]=useState(false)
-
 	const initialRef = useRef(null);
 	const finalRef = useRef(null);
 	const handleYear = (e) => {
@@ -32,12 +27,7 @@ export default function ApplyModel() {
 		}
 	};
 
-
 	let num = localStorage.getItem('num');
-
-
-
-
 
 	return (
 		<>
