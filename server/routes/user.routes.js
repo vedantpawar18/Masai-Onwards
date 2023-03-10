@@ -1,11 +1,12 @@
 const {Router} = require("express")
-const {UserModel} = require("../models/User.model")
+const {UserModel,GoogleAuthUserModel} = require("../models/User.model")
 const userController = Router();
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken");
 const OTPModel = require("../models/Otp.model");
 require("dotenv").config();
-const {validateEmail,generateToken, validateUserName, sendMailOtp, decryptToken }= require("../util/emailotp")
+const {validateEmail,generateToken, validateUserName, sendMailOtp, decryptToken }= require("../util/emailotp");
+const { auth } = require("firebase-admin");
 const customEmailMessage = "sign in with masai portal.";
 
 
@@ -100,8 +101,7 @@ userController.post("/verify", async(req,res)=>{
               decryptToken(token.primaryToken)
                res.status(200).json({msg : "Signup successful at email password",token, email:email, mobNumb:mob, userName:fullName})
            }
-           catch(err){
-               console.log(err)
+           catch(err){ 
                res.status(400).send("Something went wrong, plz try again")
            }
           
@@ -144,8 +144,7 @@ userController.post("/verify", async(req,res)=>{
             decryptToken(token.primaryToken)
             res.status(200).json({msg : "Signup successful at email password",token, email:email, mobNumb:mob, userName:fullName})
         }
-        catch(err){
-            console.log(err)
+        catch(err){ 
             res.status(400).send("Something went wrong, plz try again")
         }
        
@@ -153,6 +152,52 @@ userController.post("/verify", async(req,res)=>{
     }
 
  }
+})
+
+userController.post("/signup-google-auth", async(req,res)=>{
+  const {email, fullName, mob } = req.body;
+
+  const userNormalDb=await UserModel.find({ email });
+  const userGauthDb=await GoogleAuthUserModel.find({ email });
+
+  let status=""
+  let msg= ""
+  let token=""
+
+  if(!userGauthDb[0]){
+    const user = new GoogleAuthUserModel({
+      email,
+      fullName
+  })
+  await user.save();
+  msg="User saved to the user data base"
+  status=200
+  }
+  if(!userNormalDb[0]){
+    const user = new UserModel({
+      email,
+      fullName
+  })
+  await user.save();
+  msg="User saved to the google auth data base and user data base"
+  status=200
+  }
+  else {
+    try{
+      msg="Sign Up successful"
+      status=200
+    }
+    catch(err){ 
+      msg="Something went wrong while signup with google auth"
+      status=400 
+    }
+  } 
+  token =await generateToken({
+    email:email,
+    fullName:fullName,
+    mobile:mob,
+  })
+  res.status(status).json({msg : msg,token, email:email, mobNumb:mob, userName:fullName})
 })
 
 // email, username and mobile number stored to db after otp verification
