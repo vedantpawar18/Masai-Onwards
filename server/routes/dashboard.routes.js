@@ -27,8 +27,8 @@ dashboardController.get("/dashboard-details", async (req, res) => {
     const mediums = await MediumsModel.find({});
 
     const user = await UserModel.find({ $or: [{ email:email }, { mob: mobNumb }] });
-
-    if(!user){
+     
+    if(!user[0]){
         return res.status(404).send("User doesn't exists.")
     }
     const userId =((user[0]._id))
