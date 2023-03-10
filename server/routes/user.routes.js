@@ -6,7 +6,6 @@ const jwt = require("jsonwebtoken");
 const OTPModel = require("../models/Otp.model");
 require("dotenv").config();
 const {validateEmail,generateToken, validateUserName, sendMailOtp, decryptToken }= require("../util/emailotp");
-const { auth } = require("firebase-admin");
 const customEmailMessage = "sign in with masai portal.";
 
 
