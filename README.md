@@ -81,11 +81,7 @@ N/A
 
 ## Feedback: 
 If you have any feedback, any suggestion please reach out to us at 
-surajguptabnp14c@gmail.com,
-shubhammrakhonde@gmail.com, 
-micgupta01@gmail.com,
-aniruddha87@live.com,
-rk6093720@gmail.com,
+surajguptabnp14c@gmail.com
 
 
 
