@@ -57,30 +57,28 @@ authController.post("/signin", async (req, res) => {
           } else if (user && !verification)
             res.status(401).send({ msg: "Please enter a valid password." });
         }
+      } else if (authUser) {
+        const token = generateToken({
+          email: authUser.email,
+          fullName: authUser.fullName,
+        });
+        res
+          .status(200)
+          .send({
+            msg: "Signed in successfully",
+            email: user.email,
+            fullName: user.fullName,
+            token
+          });
       } else if (user && !user.password) {
         res.status(200).send({
           msg: "Password is not associated with your email address, Please try with OTP.",
         });
       } else if (user) {
-        if (authUser) {
-          const token = generateToken({
-            email: authUser.email,
-            fullName: authUser.fullName,
-          });
-          res
-            .status(200)
-            .send({
-              msg: "Signed in successfully",
-              email: user.email,
-              fullName: user.fullName,
-              token,
-            });
-        } else {
           sendMailOtp(email, customEmailMessage, user?.fullName);
           res.status(200).send({
             msg: "OTP sent successfully, Please check your email for OTP.",
           });
-        }
       } else
         res.status(404).send({
           msg: "The account you mentioned does not exist. Please try with correct email address.",
