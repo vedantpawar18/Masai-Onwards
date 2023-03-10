@@ -215,7 +215,7 @@ export default function ScoreScreen() {
 		
 			<FailAlertBar/>
 			<ScoreCard status={status}/>
-			<Cards />
+			
 			
 			</>
 			
