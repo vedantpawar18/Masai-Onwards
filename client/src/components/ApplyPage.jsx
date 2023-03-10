@@ -1,34 +1,43 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
-
+	
 	Box,
 	ButtonGroup,
 	Button,
+	Heading,
 	Flex,
 	FormControl,
+
 	FormLabel,
 	Input,
 	Select,
+
 	RadioGroup,
 	Radio,
 	Checkbox,
+	ChakraProvider,
 	useMediaQuery,
 } from "@chakra-ui/react";
 import validator from 'validator' 
+import { useToast } from "@chakra-ui/react";
 import { HStack, Stack, Text } from "@chakra-ui/layout";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { profileData } from "../redux/data/action";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import Theme from "./Theme";
+
+import '@fontsource/poppins/400.css'
+import '@fontsource/open-sans/700.css'
+
 
 export default function ApplyPage() {
 	const [show, setShow] = React.useState(false);
 	const handleClick = () => setShow(!show);
 
-	let user_email = localStorage.getItem("email");
-	let user_name = localStorage.getItem("displayName");
-	let user_mobile = localStorage.getItem("mobile");
-	const [name, setName] = useState(user_name);
-	const [email, setEmail] = useState(user_email);
+	let userEmail = localStorage.getItem("email");
+	let userName = localStorage.getItem("displayName");
+	const [name, setName] = useState(userName);
+	const [email, setEmail] = useState(userEmail);
 	const [number, setNumber] = useState("");
 	const [dateOfBirth, setDateOfBirth] = useState("");
 	const [passOutYear, setPassOutYear] = useState("");
@@ -40,15 +49,24 @@ export default function ApplyPage() {
 	const [workingStatus, setWorkingStatus] = useState("");
 	const [emailError,setEmailError] = useState('')
 	const [validNumber, setValidNumber] = useState(true);
-	const [update, setUpdate] = useState("");
+	const [flag, setFlag] = useState(true)
+	const [update, setUpdate] = useState([]);
 	const navigate = useNavigate();
     const dispatch = useDispatch()
-	const [isLargerThan800] = useMediaQuery("(max-width: 800px)");
+	const toast = useToast();
+	const [step, setStep] = useState(1);
+	const [progress, setProgress] = useState(33.33);
 	const [ageNow, setAgeNow] = useState("");
 	const token = localStorage.getItem("accessToken")
 
-   
-   
+	let formData = JSON.parse(localStorage.getItem("formData") )|| []
+	const [isLargerThan800] = useMediaQuery("(max-width: 800px)");
+	// const data = useSelector((store) => store.data.data.courses)||[];
+	// const { id } = useParams();
+	// const filter = data.filter((item) => {
+	// 	return item._id === id;
+	// });
+
 	const calculate_age = () => {
 		var today = new Date();
 		var birthDate = new Date(dateOfBirth);
@@ -62,6 +80,28 @@ export default function ApplyPage() {
 		setAgeNow(age_now);
 	
 		if(age_now>=18&&age_now<=25&&passOutYear!=="NA"&&passOutYear!==""){
+			navigate("/score")
+	     }else{
+			alert("Not eligible for the course")
+			navigate("/dashboard")
+		 }
+		
+	};
+	const handleSubmit = () => {
+		
+		
+		calculate_age();
+	
+		const isValidPhoneNumber = validator.isMobilePhone(number)
+		setValidNumber(isValidPhoneNumber)
+		if (validator.isEmail(email)) {
+		   setEmailError('');
+		  
+		 } else {
+		   setEmailError('Enter valid Email!');
+		 }
+
+		
 			let data = { 
 				fullName:name ,
 				emailId:email,
@@ -76,53 +116,53 @@ export default function ApplyPage() {
 				receiveUpdates:update,
 				courseStartDate:courseStartsOn
 			};
-
-		
 			dispatch(profileData(data,token))
-			navigate("/score")
-	     }else{
-			alert("Not eligible for the course")
-			navigate("/dashboard")
-		 }
-		
-	};
-	const handleSubmit = () => {
-       
-		calculate_age();
-		let emailFlag = false
-		const isValidPhoneNumber = validator.isMobilePhone(number)
-		setValidNumber(isValidPhoneNumber)
-		if (validator.isEmail(email)) {
-		   setEmailError('');
-		   emailFlag = true;
-		 } else {
-		   setEmailError('Enter valid Email!');
-		 }
-	
+
 	};
 
+	const handleChange = (e)=>{
+	
+		if(name!==""&&email!==""&&number!==""&&
+		dateOfBirth!==""&&permission!==""
+		&&passOutYear!==""&&graduationYear!==""
+		&&gender!==""&&workingStatus!==""&&update){
+			setFlag(false)
+		}else{
+			setFlag(true)
+		}
+   
+	}
+
+const handleUpdate = (e)=>{
+	e.preventDefault()
+	const option = e.target.value;
+	let newOption = [...update];
+	if(update.includes(option)){
+		newOption.splice(newOption.indexOf(option))
+	}else{
+		newOption.push(option)
+	}
+	setUpdate(newOption)
+}
 
 
 
 	return (
-		<>
-			{isLargerThan800?
-			<>
-<Box p={6} as="form">
-				<Text
-					w="100%"
+		<ChakraProvider theme={Theme}>
+			{ isLargerThan800? <Box p={6} as="form" onChange={handleChange}>
+				<Heading
 					textAlign={"start"}
-					fontFamily={"Poppins"}
+				
 					fontStyle={"normal"}
 					fontWeight={"700"}
 					fontSize={"20px"}
 					lineHeight={"28px"}
+					mt={"1%"}
 				>
-					Profile Details
-				</Text>
+					Profile Details 
+				</Heading>
 				<Text
 					textAlign={"start"}
-					fontFamily={"Open Sans"}
 					fontStyle={"normal"}
 					fontWeight={"600"}
 					fontSize={"14px"}
@@ -130,14 +170,14 @@ export default function ApplyPage() {
 					mt={"1%"}
 				>
 					Course:
-					<span color={"rgba(52, 112, 228, 1)"}>
+					<span style={{ color: "rgba(52, 112, 228, 1)" }}>
 						{" "}
-						Full Stack Web Development (Full Time)
+						Full Stack Web Development{" "}
+						<span style={{ color: "rgba(26, 159, 189, 1)" }}>(Full Time)</span>
 					</span>
 				</Text>
 				<Text
 					textAlign={"start"}
-					fontFamily={"Open Sans"}
 					fontStyle={"normal"}
 					fontWeight={"600"}
 					fontSize={"14px"}
@@ -148,7 +188,6 @@ export default function ApplyPage() {
 				</Text>
 				<Text
 					textAlign={"start"}
-					fontFamily={"Open Sans"}
 					fontStyle={"normal"}
 					fontWeight={"400"}
 					fontSize={"16px"}
@@ -158,82 +197,73 @@ export default function ApplyPage() {
 				>
 					Please submit your details to take Masai School Admission Test (MSAT).
 				</Text>
+				
+			
+			
+					<FormControl mr="5%" mt="2%">
+						<FormLabel
+							htmlFor="first-name"
+	
+							fontStyle={"normal"}
+							fontWeight={"600"}
+							fontSize={"14px"}
+							lineHeight={"24px"}
+						>
+							Name *
+						</FormLabel>
+						<Input
+							placeholder="Full name"
+							value={userName}
+	
+							fontStyle={"normal"}
+							fontWeight={"400"}
+							fontSize={"16px"}
+							lineHeight={"24px"}
+							onChange={() => setName(userName)}
+						/>
+					</FormControl>
 
+					<FormControl mt="2%">
+						<FormLabel
+							htmlFor="email"
+	
+							fontStyle={"normal"}
+							fontWeight={"600"}
+							fontSize={"14px"}
+							lineHeight={"24px"}
+						>
+							Email *
+						</FormLabel>
+						<Input
+							id="email"
+							placeholder="Email"
+							value={userEmail}
+	
+							fontStyle={"normal"}
+							fontWeight={"400"}
+							fontSize={"16px"}
+							lineHeight={"24px"}
+                            onChange={() => setEmail(userEmail)}
+						/>
+						<FormLabel
+							htmlFor="email"
+	
+							fontStyle={"normal"}
+							fontWeight={"600"}
+							color={"red"}
+							fontSize={"10px"}
+							lineHeight={"24px"}
+						>
+							{emailError}
+						</FormLabel>
+						
+					</FormControl>
+			
 				
 					<FormControl mr="5%" mt="2%">
 						<FormLabel
-							htmlFor="first-name"
-							fontFamily={"Open Sans"}
-							fontStyle={"normal"}
-							fontWeight={"600"}
-							fontSize={"14px"}
-							lineHeight={"24px"}
-						>
-							Name *
-						</FormLabel>
-						<Input
-							placeholder="Full name"
-							value={user_name}
-							fontFamily={"Open Sans"}
-							fontStyle={"normal"}
-							fontWeight={"400"}
-							fontSize={"16px"}
-							lineHeight={"24px"}
-							onChange={() => setName(user_name)}
-						/>
-					</FormControl>
-
-					<FormControl mt="2%">
-						<FormLabel
-							htmlFor="email"
-							fontFamily={"Open Sans"}
-							fontStyle={"normal"}
-							fontWeight={"600"}
-							fontSize={"14px"}
-							lineHeight={"24px"}
-						>
-							Email *
-						</FormLabel>
-						{user_email!=="undefined"&&<Input
-							id="email"
-							placeholder="Email"
-							value={user_email}
-							fontFamily={"Open Sans"}
-							fontStyle={"normal"}
-							fontWeight={"400"}
-							fontSize={"16px"}
-							lineHeight={"24px"}
-                            onChange={() => setEmail(user_email)}
-						/>}
-						{user_email==="undefined"&&<Input
-							id="email"
-							placeholder="Email"
-							fontFamily={"Open Sans"}
-							fontStyle={"normal"}
-							fontWeight={"400"}
-							fontSize={"16px"}
-							lineHeight={"24px"}
-                            onChange={() => setEmail(user_email)}
-						/>}
-						<FormLabel
-							htmlFor="email"
-							fontFamily={"Open Sans"}
-							fontStyle={"normal"}
-							fontWeight={"600"}
-							color={"red"}
-							fontSize={"10px"}
-							lineHeight={"24px"}
-						>
-							{emailError}
-						</FormLabel>
-						
-					</FormControl>
-			
-		
-					<FormControl mr="5%" mt="2%">
-						<FormLabel
 							htmlFor="number"
-							fontFamily={"Open Sans"}
+	
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"14px"}
@@ -241,20 +271,18 @@ export default function ApplyPage() {
 						>
 							Mobile Number *
 						</FormLabel>
-						
-					        <Input
+						<Input
 							id="mobile-number"
-							fontFamily={"Open Sans"}
+	
 							fontStyle={"normal"}
 							fontWeight={"400"}
 							fontSize={"16px"}
-							placeholder="Mobile number"
 							lineHeight={"24px"}
-                            onClick={(e)=>setNumber(e.target.value)}
+                            onChange={(e)=>setNumber(e.target.value)}
 						/>
 						{!validNumber&&<FormLabel
 							htmlFor="email"
-							fontFamily={"Open Sans"}
+	
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							color={"red"}
@@ -268,7 +296,7 @@ export default function ApplyPage() {
 					<FormControl mt="2%">
 						<FormLabel
 							htmlFor="date"
-							fontFamily={"Open Sans"}
+	
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"14px"}
@@ -280,20 +308,18 @@ export default function ApplyPage() {
 							id="date"
 							type="date"
 							onChange={(e) => setDateOfBirth(e.target.value)}
-							fontFamily={"Open Sans"}
+							color={"grey"}
 							fontStyle={"normal"}
 							fontWeight={"400"}
 							fontSize={"16px"}
 							lineHeight={"24px"}
-                            onClick={(e)=>setDateOfBirth(e.target.value)}
 						/>
 					</FormControl>
-		
 			
 					<FormControl mr="5%" mt="2%">
 						<FormLabel
 							htmlFor="number"
-							fontFamily={"Open Sans"}
+	
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"14px"}
@@ -305,12 +331,12 @@ export default function ApplyPage() {
 						</FormLabel>
 						<Select
 							placeholder="Select year"
-							fontFamily={"Open Sans"}
+							color={"grey"}
 							fontStyle={"normal"}
 							fontWeight={"400"}
 							fontSize={"14px"}
 							lineHeight={"24px"}
-                            onClick={(e)=>setPassOutYear(e.target.value)}
+                            onChange={(e)=>setPassOutYear(e.target.value)}
 						>
 							<option value="NA">NA</option>
 							<option value="2023">2023</option>
@@ -330,7 +356,7 @@ export default function ApplyPage() {
 					<FormControl mt="2%">
 						<FormLabel
 							htmlFor="date"
-							fontFamily={"Open Sans"}
+	
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"14px"}
@@ -341,12 +367,12 @@ export default function ApplyPage() {
 						</FormLabel>
 						<Select
 							placeholder="Select year"
-							fontFamily={"Open Sans"}
+							color={"grey"}
 							fontStyle={"normal"}
 							fontWeight={"400"}
-							fontSize={"16px"}
+							fontSize={"14px"}
 							lineHeight={"24px"}
-                            onClick={(e)=>setGraduationYear(e.target.value)}
+                            onChange={(e)=>setGraduationYear(e.target.value)}
 						>
 							<option value="NA">NA</option>
 							<option value="2027">2027</option>
@@ -365,12 +391,12 @@ export default function ApplyPage() {
 						
 						</Select>
 					</FormControl>
-			
+				
 
-		
-					<FormControl mr="5%" mt="2%" onChange={(e)=>setPermission(e.target.value)}>
+				
+					<FormControl mr="5%" mt="2%" onChange={(e)=>setPermission(e.target.value)} >
 						<FormLabel
-							fontFamily={"Open Sans"}
+	
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"14px"}
@@ -382,7 +408,7 @@ export default function ApplyPage() {
 						<RadioGroup   >
 							<HStack
 								spacing="24px"
-								fontFamily={"Open Sans"}
+		
 								fontStyle={"normal"}
 								fontWeight={"400"}
 								fontSize={"16px"}
@@ -395,10 +421,10 @@ export default function ApplyPage() {
 						</RadioGroup>
 					</FormControl>
 
-					<FormControl mt="2%">
+					<FormControl mt="2%" onChange={(e)=>setGender(e.target.value)}> 
 						<FormLabel
 							htmlFor="date"
-							fontFamily={"Open Sans"}
+	
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"14px"}
@@ -408,12 +434,12 @@ export default function ApplyPage() {
 						</FormLabel>
 						<RadioGroup
 							
-							fontFamily={"Open Sans"}
+	
 							fontStyle={"normal"}
 							fontWeight={"400"}
 							fontSize={"16px"}
 							lineHeight={"24px"}
-                            onClick={(e)=>setGender(e.target.value)}
+                            
 						>
 							<HStack spacing="24px">
 								<Radio value="Male">Male</Radio>
@@ -423,11 +449,11 @@ export default function ApplyPage() {
 						</RadioGroup>
 					</FormControl>
 			
-		
+				
 					<FormControl mr="5%" mt="2%">
 						<FormLabel
 							htmlFor="number"
-							fontFamily={"Open Sans"}
+	
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"14px"}
@@ -438,20 +464,19 @@ export default function ApplyPage() {
 						<Input
 							id="mobile-number"
 							placeholder="Enter referral code"
-							fontFamily={"Open Sans"}
+	
 							fontStyle={"normal"}
 							fontWeight={"400"}
 							fontSize={"16px"}
 							lineHeight={"24px"}
-						
-                            onClick={(e)=>setReferral(e.target.value)}
+                            onChange={(e)=>setReferral(e.target.value)}
 						/>
 					</FormControl>
 
 					<FormControl mt="2%">
 						<FormLabel
 							htmlFor="date"
-							fontFamily={"Open Sans"}
+	
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"14px"}
@@ -462,23 +487,22 @@ export default function ApplyPage() {
 						</FormLabel>
 						<Select
 							placeholder="Select your current working status"
-							fontFamily={"Open Sans"}
+							color={"grey"}
 							fontStyle={"normal"}
 							fontWeight={"400"}
 							fontSize={"16px"}
 							lineHeight={"24px"}
-							value={workingStatus}
-                            onClick={(e)=>setWorkingStatus(e.target.value)}
+                            onChange={(e)=>setWorkingStatus(e.target.value)}
 						>
 							<option value="working">Working</option>
 							<option value="not working">Not working</option>
 						</Select>
 					</FormControl>
-			
-				<FormControl mt="2%" onChange={(e)=>setUpdate(e.target.value)}>
+				
+				<FormControl mt="2%" onChange={handleUpdate}>
 					<FormLabel
 						htmlFor="date"
-						fontFamily={"Open Sans"}
+
 						fontStyle={"normal"}
 						fontWeight={"600"}
 						fontSize={"14px"}
@@ -490,18 +514,19 @@ export default function ApplyPage() {
 					<Stack
 						spacing={5}
 						direction="row"
-						fontFamily={"Open Sans"}
+
 						fontStyle={"normal"}
 						fontWeight={"400"}
 						fontSize={"16px"}
 						lineHeight={"24px"}
 					>
-						<Checkbox value="Masai newsletter">Masai newsletter </Checkbox>
+						<Checkbox value="Masai newsletter" >Masai newsletter </Checkbox>
 						<Checkbox value="Email updates">Email updates</Checkbox>
-						<Checkbox value=">Whatsapp updates">Whatsapp updates</Checkbox>
+						<Checkbox value="Whatsapp updates">Whatsapp updates</Checkbox>
 						<Checkbox value="Automated calls">Automated calls</Checkbox>
 					</Stack>
 				</FormControl>
+				
 				<br />
 				<br />
 				<hr />
@@ -513,7 +538,7 @@ export default function ApplyPage() {
 					marginRight={"40px"}
 				>
 					<Flex
-						w={"20%"}
+						
 						gap={"4%"}
 						alignContent={"flex-end"}
 						justifyContent={"space-between"}
@@ -527,30 +552,31 @@ export default function ApplyPage() {
 							variant="solid"
 							color={"white"}
 							onClick={handleSubmit}
+							isDisabled={flag}
 						>
 							SUBMIT
 						</Button>
+						
 					</Flex>
+				
 				</ButtonGroup>
-			</Box>
-			</>:
+				
+			</Box>:
 			
-
-<Box p={6} as="form">
-				<Text
-					w="100%"
+			<Box p={6} as="form" onChange={handleChange}>
+				<Heading
 					textAlign={"start"}
-					fontFamily={"Poppins"}
+				
 					fontStyle={"normal"}
 					fontWeight={"700"}
 					fontSize={"20px"}
 					lineHeight={"28px"}
+					mt={"1%"}
 				>
 					Profile Details
-				</Text>
+				</Heading>
 				<Text
 					textAlign={"start"}
-					fontFamily={"Open Sans"}
 					fontStyle={"normal"}
 					fontWeight={"600"}
 					fontSize={"14px"}
@@ -558,14 +584,14 @@ export default function ApplyPage() {
 					mt={"1%"}
 				>
 					Course:
-					<span color={"rgba(52, 112, 228, 1)"}>
+					<span style={{ color: "rgba(52, 112, 228, 1)" }}>
 						{" "}
-						Full Stack Web Development (Full Time)
+						Full Stack Web Development{" "}
+						<span style={{ color: "rgba(26, 159, 189, 1)" }}>(Full Time)</span>
 					</span>
 				</Text>
 				<Text
 					textAlign={"start"}
-					fontFamily={"Open Sans"}
 					fontStyle={"normal"}
 					fontWeight={"600"}
 					fontSize={"14px"}
@@ -576,7 +602,6 @@ export default function ApplyPage() {
 				</Text>
 				<Text
 					textAlign={"start"}
-					fontFamily={"Open Sans"}
 					fontStyle={"normal"}
 					fontWeight={"400"}
 					fontSize={"16px"}
@@ -586,12 +611,13 @@ export default function ApplyPage() {
 				>
 					Please submit your details to take Masai School Admission Test (MSAT).
 				</Text>
-
+				
 				<Flex>
+			
 					<FormControl mr="5%" mt="2%">
 						<FormLabel
 							htmlFor="first-name"
-							fontFamily={"Open Sans"}
+	
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"14px"}
@@ -601,20 +627,20 @@ export default function ApplyPage() {
 						</FormLabel>
 						<Input
 							placeholder="Full name"
-							value={user_name}
-							fontFamily={"Open Sans"}
+							value={userName}
+	
 							fontStyle={"normal"}
 							fontWeight={"400"}
 							fontSize={"16px"}
 							lineHeight={"24px"}
-							onChange={() => setName(user_name)}
+							onChange={() => setName(userName)}
 						/>
 					</FormControl>
 
 					<FormControl mt="2%">
 						<FormLabel
 							htmlFor="email"
-							fontFamily={"Open Sans"}
+	
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"14px"}
@@ -622,30 +648,20 @@ export default function ApplyPage() {
 						>
 							Email *
 						</FormLabel>
-						{user_email!=="undefined"&&<Input
+						<Input
 							id="email"
 							placeholder="Email"
-							value={user_email}
-							fontFamily={"Open Sans"}
+							value={userEmail}
+	
 							fontStyle={"normal"}
 							fontWeight={"400"}
 							fontSize={"16px"}
 							lineHeight={"24px"}
-                            onChange={() => setEmail(user_email)}
-						/>}
-						{user_email==="undefined"&&<Input
-							id="email"
-							placeholder="Email"
-							fontFamily={"Open Sans"}
-							fontStyle={"normal"}
-							fontWeight={"400"}
-							fontSize={"16px"}
-							lineHeight={"24px"}
-                            onChange={() => setEmail(user_email)}
-						/>}
+                            onChange={() => setEmail(userEmail)}
+						/>
 						<FormLabel
 							htmlFor="email"
-							fontFamily={"Open Sans"}
+	
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							color={"red"}
@@ -661,7 +677,7 @@ export default function ApplyPage() {
 					<FormControl mr="5%" mt="2%">
 						<FormLabel
 							htmlFor="number"
-							fontFamily={"Open Sans"}
+	
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"14px"}
@@ -669,20 +685,18 @@ export default function ApplyPage() {
 						>
 							Mobile Number *
 						</FormLabel>
-						
-					        <Input
+						<Input
 							id="mobile-number"
-							fontFamily={"Open Sans"}
+	
 							fontStyle={"normal"}
 							fontWeight={"400"}
 							fontSize={"16px"}
-							placeholder="Mobile number"
 							lineHeight={"24px"}
-                            onClick={(e)=>setNumber(e.target.value)}
+                            onChange={(e)=>setNumber(e.target.value)}
 						/>
 						{!validNumber&&<FormLabel
 							htmlFor="email"
-							fontFamily={"Open Sans"}
+	
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							color={"red"}
@@ -696,7 +710,7 @@ export default function ApplyPage() {
 					<FormControl mt="2%">
 						<FormLabel
 							htmlFor="date"
-							fontFamily={"Open Sans"}
+	
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"14px"}
@@ -708,12 +722,11 @@ export default function ApplyPage() {
 							id="date"
 							type="date"
 							onChange={(e) => setDateOfBirth(e.target.value)}
-							fontFamily={"Open Sans"}
+							color={"grey"}
 							fontStyle={"normal"}
 							fontWeight={"400"}
 							fontSize={"16px"}
 							lineHeight={"24px"}
-                            onClick={(e)=>setDateOfBirth(e.target.value)}
 						/>
 					</FormControl>
 				</Flex>
@@ -721,7 +734,7 @@ export default function ApplyPage() {
 					<FormControl mr="5%" mt="2%">
 						<FormLabel
 							htmlFor="number"
-							fontFamily={"Open Sans"}
+	
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"14px"}
@@ -733,12 +746,12 @@ export default function ApplyPage() {
 						</FormLabel>
 						<Select
 							placeholder="Select year"
-							fontFamily={"Open Sans"}
+							color={"grey"}
 							fontStyle={"normal"}
 							fontWeight={"400"}
 							fontSize={"14px"}
 							lineHeight={"24px"}
-                            onClick={(e)=>setPassOutYear(e.target.value)}
+                            onChange={(e)=>setPassOutYear(e.target.value)}
 						>
 							<option value="NA">NA</option>
 							<option value="2023">2023</option>
@@ -758,7 +771,7 @@ export default function ApplyPage() {
 					<FormControl mt="2%">
 						<FormLabel
 							htmlFor="date"
-							fontFamily={"Open Sans"}
+	
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"14px"}
@@ -769,12 +782,12 @@ export default function ApplyPage() {
 						</FormLabel>
 						<Select
 							placeholder="Select year"
-							fontFamily={"Open Sans"}
+							color={"grey"}
 							fontStyle={"normal"}
 							fontWeight={"400"}
-							fontSize={"16px"}
+							fontSize={"14px"}
 							lineHeight={"24px"}
-                            onClick={(e)=>setGraduationYear(e.target.value)}
+                            onChange={(e)=>setGraduationYear(e.target.value)}
 						>
 							<option value="NA">NA</option>
 							<option value="2027">2027</option>
@@ -796,9 +809,9 @@ export default function ApplyPage() {
 				</Flex>
 
 				<Flex>
-					<FormControl mr="5%" mt="2%" onChange={(e)=>setPermission(e.target.value)}>
+					<FormControl mr="5%" mt="2%" onChange={(e)=>setPermission(e.target.value)} >
 						<FormLabel
-							fontFamily={"Open Sans"}
+	
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"14px"}
@@ -810,7 +823,7 @@ export default function ApplyPage() {
 						<RadioGroup   >
 							<HStack
 								spacing="24px"
-								fontFamily={"Open Sans"}
+		
 								fontStyle={"normal"}
 								fontWeight={"400"}
 								fontSize={"16px"}
@@ -823,10 +836,10 @@ export default function ApplyPage() {
 						</RadioGroup>
 					</FormControl>
 
-					<FormControl mt="2%">
+					<FormControl mt="2%" onChange={(e)=>setGender(e.target.value)}> 
 						<FormLabel
 							htmlFor="date"
-							fontFamily={"Open Sans"}
+	
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"14px"}
@@ -836,12 +849,12 @@ export default function ApplyPage() {
 						</FormLabel>
 						<RadioGroup
 							
-							fontFamily={"Open Sans"}
+	
 							fontStyle={"normal"}
 							fontWeight={"400"}
 							fontSize={"16px"}
 							lineHeight={"24px"}
-                            onClick={(e)=>setGender(e.target.value)}
+                            
 						>
 							<HStack spacing="24px">
 								<Radio value="Male">Male</Radio>
@@ -855,7 +868,7 @@ export default function ApplyPage() {
 					<FormControl mr="5%" mt="2%">
 						<FormLabel
 							htmlFor="number"
-							fontFamily={"Open Sans"}
+	
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"14px"}
@@ -866,20 +879,19 @@ export default function ApplyPage() {
 						<Input
 							id="mobile-number"
 							placeholder="Enter referral code"
-							fontFamily={"Open Sans"}
+	
 							fontStyle={"normal"}
 							fontWeight={"400"}
 							fontSize={"16px"}
 							lineHeight={"24px"}
-						
-                            onClick={(e)=>setReferral(e.target.value)}
+                            onChange={(e)=>setReferral(e.target.value)}
 						/>
 					</FormControl>
 
 					<FormControl mt="2%">
 						<FormLabel
 							htmlFor="date"
-							fontFamily={"Open Sans"}
+	
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"14px"}
@@ -890,23 +902,22 @@ export default function ApplyPage() {
 						</FormLabel>
 						<Select
 							placeholder="Select your current working status"
-							fontFamily={"Open Sans"}
+							color={"grey"}
 							fontStyle={"normal"}
 							fontWeight={"400"}
 							fontSize={"16px"}
 							lineHeight={"24px"}
-							value={workingStatus}
-                            onClick={(e)=>setWorkingStatus(e.target.value)}
+                            onChange={(e)=>setWorkingStatus(e.target.value)}
 						>
 							<option value="working">Working</option>
 							<option value="not working">Not working</option>
 						</Select>
 					</FormControl>
 				</Flex>
-				<FormControl mt="2%" onChange={(e)=>setUpdate(e.target.value)}>
+				<FormControl mt="2%" onChange={handleUpdate}>
 					<FormLabel
 						htmlFor="date"
-						fontFamily={"Open Sans"}
+
 						fontStyle={"normal"}
 						fontWeight={"600"}
 						fontSize={"14px"}
@@ -918,18 +929,19 @@ export default function ApplyPage() {
 					<Stack
 						spacing={5}
 						direction="row"
-						fontFamily={"Open Sans"}
+
 						fontStyle={"normal"}
 						fontWeight={"400"}
 						fontSize={"16px"}
 						lineHeight={"24px"}
 					>
-						<Checkbox value="Masai newsletter">Masai newsletter </Checkbox>
+						<Checkbox value="Masai newsletter" >Masai newsletter </Checkbox>
 						<Checkbox value="Email updates">Email updates</Checkbox>
-						<Checkbox value=">Whatsapp updates">Whatsapp updates</Checkbox>
+						<Checkbox value="Whatsapp updates">Whatsapp updates</Checkbox>
 						<Checkbox value="Automated calls">Automated calls</Checkbox>
 					</Stack>
 				</FormControl>
+				
 				<br />
 				<br />
 				<hr />
@@ -955,14 +967,21 @@ export default function ApplyPage() {
 							variant="solid"
 							color={"white"}
 							onClick={handleSubmit}
+							isDisabled={flag}
 						>
 							SUBMIT
 						</Button>
+						
 					</Flex>
+				
 				</ButtonGroup>
+				
 			</Box>
-
+			
+			
+			
 			}
-		</>
+			
+		</ChakraProvider>
 	);
 }

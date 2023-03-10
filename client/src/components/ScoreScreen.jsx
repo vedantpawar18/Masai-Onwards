@@ -25,63 +25,70 @@ export default function ScoreScreen() {
 	const token = localStorage.getItem("accessToken")
 
 
-
 	const handleClick = ()=>{
 
 		if(cognitive===""||mettl===""||communication===""||credibility===""){
 			alert("Enter score")
-		}else{
-			if(Number(cognitive)>=6&&Number(mettl)>=6.5&&Number(communication)>=6&&credibility!=="low"){
-				setMain(false)
-				setPass(true)
-				let passData = {
-					"cognitive":cognitive,
-					"mettl":mettl,
-					"communication":communication,
-					"credibility":credibility,
-                     "status":"Passed",
-					 "color":"green"
-				}
-				let data = {
-					courseId:id,
-					congAbilityScore:cognitive,
-					MetTestScore:mettl,
-					communicationScore:communication,
-					credibilityScore:credibility,
-					status:"pass"
-				}
-				dispatch(scoreData(data,token))
-				
-				setStatus(passData)
-			   }else{
-				setMain(false)
-				setFail(true)
-				let failData = {
-					"cognitive":cognitive,
-					"mettl":mettl,
-					"communication":communication,
-					"credibility":credibility,
-                     "status":"Not cleared",
-					 "color":"red"
-				
-				}
-				let data = {
-					courseId:id,
-					congAbilityScore:cognitive,
-					MetTestScore:mettl,
-					communicationScore:communication,
-					credibilityScore:credibility,
-					status:"fail"
-				}
-				dispatch(scoreData(data,token))
-				setStatus(failData)
-				
-			   }
+		}
+		else if(cognitive>10||mettl>10||communication>10||credibility>10){
+			alert("Enter valid score")
+		}
+		else if(cognitive<0||mettl<0||communication<0||credibility<0){
+			alert("Enter valid score")
+		}
+		else{
+			if(cognitive!==""&&mettl!==""&&communication!==""&&credibility!==""){
+				if(Number(cognitive)>=6&&Number(mettl)>=6.5&&Number(communication)>=6&&credibility!=="low"){
+					setMain(false)
+					setPass(true)
+					let passData = {
+						"cognitive":cognitive,
+						"mettl":mettl,
+						"communication":communication,
+						"credibility":credibility,
+						 "status":"Passed",
+						 "color":"green"
+					}
+					let data = {
+						courseId:id,
+						congAbilityScore:cognitive,
+						MetTestScore:mettl,
+						communicationScore:communication,
+						credibilityScore:credibility,
+						status:"pass"
+					}
+					dispatch(scoreData(data,token))
+					
+					setStatus(passData)
+				   }else{
+					setMain(false)
+					setFail(true)
+					let failData = {
+						"cognitive":cognitive,
+						"mettl":mettl,
+						"communication":communication,
+						"credibility":credibility,
+						 "status":"Not cleared",
+						 "color":"red"
+					
+					}
+					let data = {
+						courseId:id,
+						congAbilityScore:cognitive,
+						MetTestScore:mettl,
+						communicationScore:communication,
+						credibilityScore:credibility,
+						status:"fail"
+					}
+					dispatch(scoreData(data,token))
+					setStatus(failData)
+					
+				   }
+			}
+			
 		}
       
 	}
-
-
 
 	return (
 		<ChakraProvider theme={theme}>
@@ -116,7 +123,7 @@ export default function ScoreScreen() {
                 
 				<hr width="100%" />
 			</Box>
-			<Box alignSelf={"auto"} marginBottom={"100px"}>
+			<Box alignSelf={"auto"} marginBottom={"100px"} as="form"  >
 				<Heading
 					textAlign={"left"}
 					fontStyle={"normal"}
@@ -135,10 +142,10 @@ export default function ScoreScreen() {
 					>
 						Cognitive Ability
 					</Text>{" "}
-					<Box borderRadius={"10px"} height={"42px"}  width={"140px"} border="2px solid #d1cfd0  " >
+					<Box borderRadius={"10px"} height={"42px"}  width={"140px"} border="2px solid #d1cfd0" >
 						
 						
-						<Input border={"transparent"} textAlign="center" placeholder="-/10" _placeholder={{color: 'black' ,fontSize:"24px", textAlign:"center"}}   onChange={(e)=>setCognitive(e.target.value)} />
+						<Input  border={"transparent"} textAlign="center" placeholder="-/10" _placeholder={{color: 'black' ,fontSize:"24px", textAlign:"center"}}   onChange={(e)=>setCognitive(e.target.value)} />
 					</Box>
 				</HStack>
 				<HStack marginTop={"20px"} gap={"100px"}>
@@ -187,7 +194,7 @@ export default function ScoreScreen() {
 		
 			<FailAlertBar/>
 			<ScoreCard status={status}/>
-			
+			<Cards/>
 			
 			</>
 			

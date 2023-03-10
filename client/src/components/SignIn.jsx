@@ -102,7 +102,7 @@ const handleGoogle = ()=>{
 useEffect(()=>{
 
   if(tokenCheck){
-    if(tokenCheck.token.primaryToken!==undefined){
+    if(tokenCheck!==undefined){
       navigate("/dashboard");
     }
   

@@ -16,8 +16,7 @@ import { BsCalendar2Date } from "react-icons/bs";
 import card_image from "../images/card_image.jpg";
 import { GridItem } from "@chakra-ui/layout";
 import { useEffect, useState } from "react";
-import ScoreScreen from "./ScoreScreen";
-import ApplyModel from "./ApplyModel";
+
 import { getData } from "../redux/data/action";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
@@ -25,27 +24,57 @@ import Theme from "./Theme";
 
 export default function Cards() {
 	const [isLargerThan800] = useMediaQuery("(max-width: 800px)");
-	const [apply, setApply] = useState(false);
+	const [fail, setFail] = useState([]);
+	const [dataArray, setdataArray] = useState([]);
 	const navigate = useNavigate();
-
-	const data = useSelector((store) => store.data.data.courses) || [];
 	const dispatch = useDispatch();
+
 	const token = localStorage.getItem("accessToken");
 
 	useEffect(() => {
+		
 		dispatch(getData(token));
 	}, [dispatch, token]);
+
+	const data = useSelector((store) => store.data.data) || [];
+	const data2 = useSelector((store) => store.data.data) ||[]
+	
+let dataA = [];
+useEffect(()=>{
+if(data && data.length!==0 ){
+    dataA = data.courses
+
+	setdataArray(dataA)
+}
+},[data])
+
+
+let failCourseArr = [];
+	useEffect(() => {
+     
+	   if(data2 && data2.length !== 0){
+failCourseArr = data2.userFormDetails[0].coursesFailed.map((course) => { return course.courseId} );
+
+setFail(failCourseArr)
+	   }
+	},[data2])
+
+
+
 
 	const handleApply = (id) => {
 		localStorage.setItem("courseId", id);
 		navigate("/applydashboard");
 	};
+
 	return (
 		<ChakraProvider theme={Theme}>
 			{isLargerThan800 ? (
 				<>
 					<Grid gridTemplateColumns={"repeat(1, 1fr)"} gap={"12px"}>
-						{data.map((item) => (
+	                   
+						{dataArray.filter(item => !fail.includes(item._id)).map((item) => (
+							// fail.indexOf(item._id) === -1? <><h2>{item._id}</h2></>:
 							<GridItem
 								w={"343"}
 								h={"540"}
@@ -55,6 +84,7 @@ export default function Cards() {
 								overflow={"hidden"}
 								border={"1px solid #D9D9D9"}
 							>
+								<h3>{item._id}</h3>
 								<Box
 									h={"210px"}
 									bg={`url(${card_image})`}
@@ -178,7 +208,9 @@ export default function Cards() {
 			) : (
 				<>
 					<Grid gridTemplateColumns={"repeat(3, 1fr)"} gap={"5px"}>
-						{data.map((item) => (
+						{dataArray.filter(item => !fail.includes(item._id)).map((item) => (
+							<>
+							{/* {failCourseArr.indexOf(item._id) !== -1? <><h2>{item._id}</h2></>:<>{item._id}</>} */}
 							<GridItem
 								border={"1px solid #D9D9D9"}
 								w={"350px"}
@@ -188,6 +220,7 @@ export default function Cards() {
 								p={3}
 								overflow={"hidden"}
 							>
+							
 								<Box
 									h={"210px"}
 									bg={`url(${card_image})`}
@@ -335,6 +368,7 @@ export default function Cards() {
 									</HStack>
 								</Stack>
 							</GridItem>
+							</>
 						))}
 					</Grid>
 				</>

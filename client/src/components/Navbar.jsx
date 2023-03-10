@@ -27,7 +27,7 @@ import { useEffect, useState } from 'react';
 import { auth, provider } from '../firebase';
 
 import { useDispatch, useSelector } from 'react-redux';
-import {  googleAuth, verifyData } from '../redux/action';
+import {  googleAuth, googleSignUpData, verifyData } from '../redux/action';
 import SignUpModal from './SignUpModal';
 
 
@@ -55,12 +55,12 @@ export default function Navbar() {
       signInWithPopup(auth,provider).then((data)=>{
           setValue(data.user.email);
           setToken(data.user.accessToken);
-          localStorage.setItem("accessToken",data.user.accessToken);
+          // localStorage.setItem("accessToken",data.user.accessToken);
           setCheck(data)
           dispatch(googleAuth(data.user.accessToken));
-          localStorage.setItem("displayName",data.user.displayName);
+          // localStorage.setItem("displayName",data.user.displayName);
           setTokenName(data.user.displayName)
-          localStorage.setItem("email",data.user.email);
+          // localStorage.setItem("email",data.user.email);
           setTokenEmail(data.user.email)
           setUserEmail(data.user.email);
           setName(data.user.displayName);
@@ -73,7 +73,7 @@ export default function Navbar() {
           email:tokenEmail,
           fullName:tokenName
        }
-       dispatch(verifyData(data))
+       dispatch(googleSignUpData(data))
      }
     
   

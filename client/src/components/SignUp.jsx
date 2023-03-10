@@ -37,7 +37,7 @@ import Navbar from './Navbar';
     const [user, setUser] = useState('')
     const dispatch = useDispatch()
     const  auth_token = useSelector((store)=>store.auth.auth)
-   
+   console.log("auth_token",auth_token)
     const navigate = useNavigate()
 const handleClick = ()=>{
      
@@ -99,7 +99,7 @@ const handleClick = ()=>{
 
 useEffect(()=>{
 if(auth_token){
-  if(auth_token.token.primaryToken!==undefined){
+  if(auth_token!==undefined){
     navigate("/dashboard")
   }
 }

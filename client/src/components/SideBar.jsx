@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	IconButton,
 	CloseButton,
@@ -35,6 +35,10 @@ import Cards from "./Cards";
 import { Box } from "@chakra-ui/layout";
 
 import Speak_to_our_Team from "../images/Speak_to_our_Team.png";
+import { useDispatch, useSelector } from "react-redux";
+import PassAlertBar from "./PassAlertBar";
+import FailAlertBar from "./FailAlertBar";
+import { getData } from "../redux/data/action";
 const LinkItems = [
 	{ name: "Courses", icon: SlGraduation },
 	{ name: "Contests", icon: AiOutlineTrophy },
@@ -42,9 +46,36 @@ const LinkItems = [
 	{ name: "Self Learning", icon: BsBook },
 ];
 export default function SideBar() {
+	// const data = useSelector((store) => store?.data?.data?.userFormDetails[0]?.coursesApplied[0]?.status)||[];
+	// const data = useSelector((store) => store)
+	// console.log("data store",data)
 	const { isOpen, onOpen, onClose } = useDisclosure();
+    const token = localStorage.getItem("accessToken");
+	// console.log("status",data)
 
+	const [status,setStatus] = useState(null)
+    const dispatch = useDispatch()
+	
+// console.log("data",data)
+// const statusCheck = ()=>{
+// 	if(data){
 
+// 	}
+// }
+
+useEffect(()=>{
+	console.log("working")
+	dispatch(getData(token))
+	// const courseStatus = data.userFormDetails[0].coursesApplied[0].status||[]
+	// 	setStatus(courseStatus)
+},[dispatch,token])
+// console.log("status",courseStatus)
+	// const courseStatus = data.userFormDetails[0].coursesApplied[0].status||[]
+	// console.log("status",courseStatus)
+
+	
+    // console.log("status checker",data.userFormDetails[0].coursesApplied[0].status)
+    console.log("status",status)
 	return (
 		<Box minH="100vh">
 			<SidebarContent
@@ -78,7 +109,10 @@ export default function SideBar() {
 				>
 					Masai School Courses
 				</Heading>
-				<Cards />
+				{/* {status===null&&<Cards />} */}
+				<Cards/>
+				{status==="pass"&&<PassAlertBar/>}
+				{status==="fail"&&<FailAlertBar/>}
 			</Box>
 		</Box>
 	);
