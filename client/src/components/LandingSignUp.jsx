@@ -1,30 +1,23 @@
-import { CheckCircleIcon, ViewIcon, ViewOffIcon,CheckIcon, EmailIcon } from '@chakra-ui/icons';
+import { CheckCircleIcon, EmailIcon } from '@chakra-ui/icons';
 import { Center } from '@chakra-ui/layout';
 import { FcGoogle } from 'react-icons/fc';
 import {
     Button,
     Flex,
-   
     Heading,
-   
     Link,
     Stack,
     Text,
-    
     Box,
-  
     List,
     ListItem,
     ListIcon,
-    useMediaQuery,
-   
+    useMediaQuery
   } from '@chakra-ui/react';
-import { useState } from 'react';
-import Navbar from './Navbar';
-  
+import Navbar from './Navbar'; 
   export default function LandingSignUp() {
-    const [showPassword, setShowPassword] = useState(false);
-    const [isLargerThan800] = useMediaQuery('(min-width: 800px)')
+  const [isLargerThan800] = useMediaQuery('(min-width: 800px)')
+  
     return (
         <>
           <Navbar/>

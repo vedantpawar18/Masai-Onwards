@@ -47,13 +47,10 @@ export default function Navbar() {
   const token2 = useSelector((store)=>store.auth.auth);
   const user_name = localStorage.getItem("displayName")||name
   const user_email = localStorage.getItem("email")||userEmail
-  const user_mobile = localStorage.getItem("mobile")
   const access_token = localStorage.getItem("accessToken");
 
-  
+
   const handleClick = ()=>{
-
-
 
       signInWithPopup(auth,provider).then((data)=>{
           setValue(data.user.email);
@@ -86,8 +83,8 @@ export default function Navbar() {
   useEffect(()=>{
   localStorage.getItem("email")
   localStorage.getItem("displayName")
-  localStorage.getItem("mobile")
-  },[user_name,user_email,user_mobile])
+
+  },[user_name,user_email])
 
 
 
@@ -97,7 +94,6 @@ export default function Navbar() {
   return (
     <>
 
-   {/* <PrivateRoute token={token} />  */}
 
       <Box bg={useColorModeValue('white.100', 'gray.900')} px={4}   height="88px">
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
@@ -168,20 +164,10 @@ export default function Navbar() {
   <option value='option1'>Option 1</option>
   <option value='option2'>Option 2</option>
   <option value='option3'>Option 3</option>
-</Select>
-
-          
+</Select>         
 <Select placeholder='FAQ' border="transparent" w={"80px"}>
 
 </Select>
-
-{/* <Text>COURSES</Text>
-
-<Text>COURSES</Text>
-<Text>COURSES</Text>
-<Text>COURSES</Text>
-<Text>COURSES</Text> */}
-
 
             </HStack>
           </HStack>
@@ -201,16 +187,7 @@ export default function Navbar() {
                 <MenuItem width={"300px"} h={"440px"}>
                   
                  <Stack>
-                   {/* <Grid gridTemplateColumns={"repeat(2, 1fr)"}>
-                    <GridItem marginRight="100px" >
-                    <Image src={"https://pixlok.com/wp-content/uploads/2021/04/Google-Icon-PNG.jpg"} border={"1px solid"} w="30px" h="30px" borderRadius="50%" alt="icon" />
-                    </GridItem>
-                    
-                    <GridItem marginLeft={"-100px"} > 
-                    <Text fontSize={"14px"}>Sign-in to prepleaf with google</Text>
-                    </GridItem>
-                   </Grid> */}
-
+                  
                    <Grid gridTemplateColumns={"repeat(2, 1fr)"} onClick={handleClick}>
                     <GridItem marginRight="100px" >
                     <Image src={"https://pixlok.com/wp-content/uploads/2021/04/Google-Icon-PNG.jpg"} border={"1px solid"} w="30px" h="30px" borderRadius="50%" alt="icon" />
@@ -280,7 +257,7 @@ export default function Navbar() {
                     <GridItem marginLeft={"-100px"} > 
                     <Text fontWeight="bold">{user_name}</Text>
                     {user_email!=="undefined"&&<Text fontSize={"12px"}>{user_email}</Text>}
-                    {user_mobile!=="undefined"&&<Text fontSize={"12px"}>{user_mobile}</Text>}
+
                     </GridItem>
                    </Grid>
                   

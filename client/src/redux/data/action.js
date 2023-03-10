@@ -151,7 +151,7 @@ export const scoreData = (data,token) => (dispatch) => {
     data
   })
     .then((res) => {
-      
+     
       dispatch(scoreDataSuccess());
      
      

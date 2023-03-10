@@ -1,14 +1,15 @@
 import { Box, Heading, Text} from "@chakra-ui/layout";
-import {   HStack, Input, Select } from "@chakra-ui/react";
-import { Button } from '@chakra-ui/react'
+import {   ChakraProvider, HStack, Input, Select } from "@chakra-ui/react";
+import { Button, ButtonGroup } from '@chakra-ui/react'
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-
+import circle from "../images/circle.png";
 import { scoreData } from "../redux/data/action";
 import Cards from "./Cards";
 import FailAlertBar from "./FailAlertBar";
 import PassAlertBar from "./PassAlertBar";
 import ScoreCard from "./ScoreCard";
+import theme from "./Theme"
 export default function ScoreScreen() {
 	const userName = localStorage.getItem("displayName")
 	const [main, setMain] = useState(true);
@@ -22,19 +23,6 @@ export default function ScoreScreen() {
     const dispatch = useDispatch()
 	const id = localStorage.getItem("courseId")
 	const token = localStorage.getItem("accessToken")
-
-
-	// const data = [
-	// 	{"score":10}
-	// ]
-	
-	// const handleSubmit = ()=>{
-	// 	for(let i=0; i<data.length; i++){
-	// 		 if(data[i].score>5){
-	// 		   setStatus(true)
-	// 		 }
-	// 	}
-	// }
 
 
 
@@ -63,7 +51,7 @@ export default function ScoreScreen() {
 					status:"pass"
 				}
 				dispatch(scoreData(data,token))
-				// courseId, congAbilityScore, MetTestScore, communicationScore, credibilityScore, status
+				
 				setStatus(passData)
 			   }else{
 				setMain(false)
@@ -75,9 +63,8 @@ export default function ScoreScreen() {
 					"credibility":credibility,
                      "status":"Not cleared",
 					 "color":"red"
-					//  courseId, congAbilityScore, MetTestScore, communicationScore, credibilityScore, status
+				
 				}
-
 				let data = {
 					courseId:id,
 					congAbilityScore:cognitive,
@@ -86,7 +73,6 @@ export default function ScoreScreen() {
 					credibilityScore:credibility,
 					status:"fail"
 				}
-				
 				dispatch(scoreData(data,token))
 				setStatus(failData)
 				
@@ -98,25 +84,25 @@ export default function ScoreScreen() {
 
 
 	return (
+		<ChakraProvider theme={theme}>
+		
 		<Box padding="40px"  height={"620px"}>
 
 		
 			{main && <>
 				<Box marginBottom={"20px"} >
                 <Box>
-                <Text
+                <Heading
 					textAlign={"left"}
 					color={"#957AD8"}
-					fontFamily={"Poppins"}
 					fontStyle={"normal"}
 					fontWeight={"700"}
 					fontSize={"20px"}
 				>
 					Hi {userName} 👋
-				</Text>
+				</Heading>
 				<Text
 					textAlign={"left"}
-					fontFamily={"Open Sans"}
 					fontStyle={"normal"}
 					fontWeight={"400"}
 					fontSize={"16px"}
@@ -133,7 +119,6 @@ export default function ScoreScreen() {
 			<Box alignSelf={"auto"} marginBottom={"100px"}>
 				<Heading
 					textAlign={"left"}
-					fontFamily={"Poppins"}
 					fontStyle={"normal"}
 					fontWeight={"700"}
 					fontSize={"24px"}
@@ -142,61 +127,48 @@ export default function ScoreScreen() {
 				</Heading>
 				<HStack marginTop={"20px"} gap={"94px"} >
 					<Text
-						fontFamily={"Open Sans"}
+						
 						fontStyle={"normal"}
-						fontWeight={"530"}
-						fontSize={"23px"}
+						fontWeight={"600"}
+						fontSize={"24px"}
                         
 					>
 						Cognitive Ability
 					</Text>{" "}
-					<Box borderRadius={"5px"}   width={"120px"} border="1px solid #d1cfd0  ">
-						{/* <Text
-							fontFamily={"Open Sans"}
-							fontStyle={"normal"}
-							fontWeight={"530"}
-							fontSize={"23px"}
-                           
-                            
-						>
-							-/10
-						</Text> */}
-						<Input placeholder="-/10" onChange={(e)=>setCognitive(e.target.value)} />
+					<Box borderRadius={"10px"} height={"42px"}  width={"140px"} border="2px solid #d1cfd0  " >
+						
+						
+						<Input border={"transparent"} textAlign="center" placeholder="-/10" _placeholder={{color: 'black' ,fontSize:"24px", textAlign:"center"}}   onChange={(e)=>setCognitive(e.target.value)} />
 					</Box>
 				</HStack>
 				<HStack marginTop={"20px"} gap={"100px"}>
-					<Text fontFamily={"Open Sans"}
+					<Text 
 						fontStyle={"normal"}
-						fontWeight={"530"}
-						fontSize={"23px"}>Mettl Text Score</Text>{" "}
-					<Box borderRadius={"5px"} marginLeft={"22px"} width={"120px"} border="1px solid #d1cfd0 " >
-						{/* <Text fontFamily={"Open Sans"}
-							fontStyle={"normal"}
-							fontWeight={"530"}
-							fontSize={"23px"} >-/10</Text> */}
-							<Input placeholder="-/10" onChange={(e)=>setMettl(e.target.value)} />
+						fontWeight={"600"}
+						fontSize={"24px"}>Mettl Text Score</Text>{" "}
+					<Box borderRadius={"10px"} height={"42px"} marginLeft={"22px"} width={"140px"} border="2px solid #d1cfd0 " >
+						
+							<Input border={"transparent"} textAlign="center" placeholder="-/10" _placeholder={{color: 'black' ,fontSize:"24px",textAlign:"center"}} onChange={(e)=>setMettl(e.target.value)}  />
 					</Box>
 				</HStack>
-				<HStack marginTop={"20px"} gap={"50px"}>
-					<Text fontFamily={"Open Sans"}
+				<HStack marginTop={"20px"} gap={"41px"}>
+					<Text 
 						fontStyle={"normal"}
-						fontWeight={"530"}
-						fontSize={"23px"}>Communication Skills</Text>{" "}
-					<Box borderRadius={"5px"} width={"120px"} border="1px solid #d1cfd0 ">
-						<Input placeholder="-/10" onChange={(e)=>setCommunication(e.target.value)} />
-						{/* <Text fontFamily={"Open Sans"}
-							fontStyle={"normal"}
-							fontWeight={"530"}
-							fontSize={"23px"}>-/10</Text> */}
+						fontWeight={"600"}
+						fontSize={"24px"}>Communication Skills</Text>{" "}
+					<Box borderRadius={"10px"} width={"140px"} height={"42px"} border="2px solid #d1cfd0 ">
+						<Input border={"transparent"} textAlign="center" placeholder="-/10" _placeholder={{color: 'black' ,fontSize:"24px",textAlign:"center"}} onChange={(e)=>setCommunication(e.target.value)} />
+					
 					</Box>
 				</HStack>
-				<HStack marginTop={"20px"} gap={"95px"}>
-					<Text fontFamily={"Open Sans"}
+				<HStack marginTop={"20px"} gap={"98px"} >
+					<Text 
 						fontStyle={"normal"}
-						fontWeight={"530"}
-						fontSize={"23px"}>Credibility Score</Text>
-					<Select width={"120px"} onChange={(e)=>setCredibility(e.target.value)}>
-					<option value="#">score</option>
+						fontWeight={"600"}
+						textAlign="center"
+						fontSize={"24px"}>Credibility Score</Text>
+					<Select width={"140px"} onChange={(e)=>setCredibility(e.target.value)} borderRadius={"10px"} height={"42px"} border="2px solid #d1cfd0 " textAlign="center" fontSize={"24px"} >
+					   <option value="#">score</option>
 						<option value="low">Low</option>
 						<option value="high">High</option>
 						<option value="medium">Medium</option>
@@ -229,5 +201,7 @@ export default function ScoreScreen() {
 			</>
 			}
 		</Box>
+		</ChakraProvider>
+		
 	);
 }

@@ -71,12 +71,12 @@ export default function DetailComponent() {
 						/>
 					</Heading>
 
-					<Container maxW={"6xl"}>
-						<Stack
+					<Container maxW={"6xl"} >
+						<Stack 
 							as={Box}
 							textAlign={"center"}
 							spacing={{ base: 8, md: 14 }}
-							py={{ base: 20, md: 36 }}
+							py={{ base: 15, md: 30 }}
 						>
 							<Heading
 								fontWeight={700}
@@ -258,5 +258,3 @@ export default function DetailComponent() {
 	);
 }
 
-
-// ------------------------------------ //

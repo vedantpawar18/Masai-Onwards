@@ -304,7 +304,7 @@ export const emailData = (data) => (dispatch) => {
 
 
 export const verifyEmailData = (data) => (dispatch) => {
-console.log("post verify otp",data)
+
   dispatch(verifyEmailDataRequest());
 
   return axios({
@@ -313,7 +313,7 @@ console.log("post verify otp",data)
     data
   })
     .then((res) => {
-      console.log("res",res.data)
+    
       dispatch(verifyEmailDataSuccess(res.data.token.primaryToken));
       if(res.data.token.primaryToken){
         localStorage.setItem("accessToken", res.data.token.primaryToken);

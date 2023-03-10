@@ -12,8 +12,7 @@ import {
     DrawerContent,
     Text,
     useDisclosure,
-    BoxProps,
-    FlexProps,
+   
     Menu,
     MenuButton,
     MenuDivider,

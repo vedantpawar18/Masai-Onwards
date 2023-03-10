@@ -45,24 +45,6 @@ const FailAlertBar = () => {
                    
 				></Box>
 
-
-{/* <Box
-				bg="white"
-				w="1120px"
-				height={"136px"}
-				marginTop={"80px"}
-				
-                backgroundPosition="center"
-                bgSize="contain"
-                backgroundRepeat="no-repeat"
-                backgroundImage={`url(${failPic})`}
-				marginLeft={"24px"}
-				color="white"
-				display={"flex"}
-      
-			>
-				
-			</Box> */}
 			</Box>
 		</>
 	);

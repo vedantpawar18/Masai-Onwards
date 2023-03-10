@@ -1,13 +1,14 @@
 import { Box, Text } from "@chakra-ui/layout";
 import React from "react";
-import { Flex, Grid, GridItem, Heading, Image, useMediaQuery } from "@chakra-ui/react";
+import { ChakraProvider, Flex, Grid, GridItem, Heading, Image, useMediaQuery } from "@chakra-ui/react";
+import Theme from "./Theme";
 // import vector from "../images/vector.png";
 
 const ScoreCard = ({ status }) => {
   const [isLargerThan800] = useMediaQuery("(max-width: 800px)");
 
 	return (
-		<>
+		<ChakraProvider theme={Theme}>
 			<Box marginTop={"30px"} marginBottom={"30px"}>
 				<Heading fontSize={"20px"} textAlign={"left"}>
 					Score Details
@@ -61,7 +62,7 @@ const ScoreCard = ({ status }) => {
 						</Box>
 						<Text
 							color={`${status.color}`}
-							fontFamily={"Open Sans"}
+							
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"16px"}
@@ -69,14 +70,7 @@ const ScoreCard = ({ status }) => {
 							{status.status}
 						</Text>
 					</Box>
-					<Text
-						fontFamily={"Open Sans"}
-						fontStyle={"normal"}
-						fontWeight={"600"}
-						fontSize={"16px"}
-					>
-						Cognitive Ability{" "}
-					</Text>
+				
 					<Text color={" #544D4F"}>Marks : {status.cognitive}/10 </Text>
 				</Box>
 
@@ -120,7 +114,7 @@ const ScoreCard = ({ status }) => {
 						</Box>
 						<Text
 							color={`${status.color}`}
-							fontFamily={"Open Sans"}
+							
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"16px"}
@@ -129,7 +123,7 @@ const ScoreCard = ({ status }) => {
 						</Text>
 					</Box>
 					<Text
-						fontFamily={"Open Sans"}
+						
 						fontStyle={"normal"}
 						fontWeight={"600"}
 						fontSize={"16px"}
@@ -182,7 +176,7 @@ const ScoreCard = ({ status }) => {
 						</Box>
 						<Text
 							color={`${status.color}`}
-							fontFamily={"Open Sans"}
+							
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"16px"}
@@ -191,7 +185,7 @@ const ScoreCard = ({ status }) => {
 						</Text>
 					</Box>
 					<Text
-						fontFamily={"Open Sans"}
+						
 						fontStyle={"normal"}
 						fontWeight={"600"}
 						fontSize={"16px"}
@@ -244,7 +238,7 @@ const ScoreCard = ({ status }) => {
 						</Box>
 						<Text
 							color={`${status.color}`}
-							fontFamily={"Open Sans"}
+							
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"16px"}
@@ -253,7 +247,7 @@ const ScoreCard = ({ status }) => {
 						</Text>
 					</Box>
 					<Text
-						fontFamily={"Open Sans"}
+						
 						fontStyle={"normal"}
 						fontWeight={"600"}
 						fontSize={"16px"}
@@ -322,7 +316,7 @@ const ScoreCard = ({ status }) => {
 						</Box>
 						<Text
 							color={`${status.color}`}
-							fontFamily={"Open Sans"}
+							
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"16px"}
@@ -331,7 +325,7 @@ const ScoreCard = ({ status }) => {
 						</Text>
 					</Box>
 					<Text
-						fontFamily={"Open Sans"}
+						
 						fontStyle={"normal"}
 						fontWeight={"600"}
 						fontSize={"16px"}
@@ -381,7 +375,7 @@ const ScoreCard = ({ status }) => {
 						</Box>
 						<Text
 							color={`${status.color}`}
-							fontFamily={"Open Sans"}
+							
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"16px"}
@@ -390,7 +384,7 @@ const ScoreCard = ({ status }) => {
 						</Text>
 					</Box>
 					<Text
-						fontFamily={"Open Sans"}
+						
 						fontStyle={"normal"}
 						fontWeight={"600"}
 						fontSize={"16px"}
@@ -440,7 +434,7 @@ const ScoreCard = ({ status }) => {
 						</Box>
 						<Text
 							color={`${status.color}`}
-							fontFamily={"Open Sans"}
+							
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"16px"}
@@ -449,7 +443,7 @@ const ScoreCard = ({ status }) => {
 						</Text>
 					</Box>
 					<Text
-						fontFamily={"Open Sans"}
+						
 						fontStyle={"normal"}
 						fontWeight={"600"}
 						fontSize={"16px"}
@@ -500,7 +494,7 @@ const ScoreCard = ({ status }) => {
 						</Box>
 						<Text
 							color={`${status.color}`}
-							fontFamily={"Open Sans"}
+							
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"16px"}
@@ -509,7 +503,7 @@ const ScoreCard = ({ status }) => {
 						</Text>
 					</Box>
 					<Text
-						fontFamily={"Open Sans"}
+						
 						fontStyle={"normal"}
 						fontWeight={"600"}
 						fontSize={"16px"}
@@ -521,7 +515,7 @@ const ScoreCard = ({ status }) => {
 					</Text>
 				</Box>
 			</Flex>}
-		</>
+		</ChakraProvider>
 	);
 };
 
