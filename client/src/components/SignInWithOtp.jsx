@@ -43,7 +43,7 @@ export default function SignInWithOtp() {
 
     if (phoneNumberOrEmail.includes("@")) {
       let data = {
-        email: phoneNumberOrEmail
+        email:phoneNumberOrEmail
       }
       dispatch(emailData(data));
       setFlag(true);
@@ -93,7 +93,6 @@ export default function SignInWithOtp() {
         email: phoneNumberOrEmail,
         otp: otp
       }
-
       dispatch(verifyEmailData(data))
 
     } else {
@@ -142,15 +141,12 @@ export default function SignInWithOtp() {
       dispatch(emailData(data))
      
     } 
-  }
-
-  useEffect(()=>{
     if(tokenCheck){
    
       navigate("/dashboard");
     
   }
-  },[tokenCheck,navigate])
+  }
 
 
   return (

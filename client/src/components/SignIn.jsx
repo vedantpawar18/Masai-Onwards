@@ -202,7 +202,7 @@ useEffect(()=>{
                 align={'start'}
                 justify={'space-between'}>
                 <FormLabel>Password</FormLabel>
-                <Link color={"blue"}>Forgot password?</Link>
+                <Link color={"blue"} to="/forgotpassword">Forgot password?</Link>
               </Stack>
               <InputGroup>
                 <Input placeholder='To keep your profile safe' value={password} onChange={(e)=>setPassword(e.target.value)} type={showPassword ? 'text' : 'password'} />
@@ -292,7 +292,7 @@ useEffect(()=>{
               align={'start'}
               justify={'space-between'}>
               <FormLabel>Password</FormLabel>
-              <Link color={'blue.400'}>Forgot password?</Link>
+              <Link color={'blue.400'} to="/forgotpage">Forgot password?</Link>
             </Stack>
             <InputGroup>
               <Input placeholder='To keep your profile safe' value={password} onChange={(e)=>setPassword(e.target.value)} type={showPassword ? 'text' : 'password'} />

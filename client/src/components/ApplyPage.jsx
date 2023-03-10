@@ -25,6 +25,7 @@ export default function ApplyPage() {
 
 	let user_email = localStorage.getItem("email");
 	let user_name = localStorage.getItem("displayName");
+	let user_mobile = localStorage.getItem("mobile");
 	const [name, setName] = useState(user_name);
 	const [email, setEmail] = useState(user_email);
 	const [number, setNumber] = useState("");
@@ -96,45 +97,7 @@ export default function ApplyPage() {
 		 } else {
 		   setEmailError('Enter valid Email!');
 		 }
-
-
-
-
-		// let data = { 
-		// 	fullName:"Arunraj" ,
-		// 	emailId:"arunrajshanker6@gmail.com",
-		// 	mob:"7356230040",
-		// 	dateOfBirth:"2/4/2002",
-		// 	readyToWork:"yes",
-		// 	twelthDiplomaCompletion:"3/4/2019",
-		// 	yearOfGraduation:"2/3/2022",
-		// 	gender:"male",
-		// 	referralCode:"AHSO2837",
-		// 	workingStatus:"working",
-		// 	receiveUpdates:["whatsapp","email"],
-		// 	courseStartDate:"4/3/2023"
-		// };
-
-		// // ["whatsapp","email"]
-		// dispatch(profileData(data,token))
-
-
-
-
-
-		// mob ,
-        // fullName,
-        // emailId,
-        // gender,
-        // workingStatus,
-        // receiveUpdates,
-        // dateOfBirth ,
-        // twelthDiplomaCompletion ,
-        // courseStartDate ,
-        // yearOfGraduation ,
-        // referralCode ,
-        // readyToWork
-       
+	
 	};
 
 
@@ -228,7 +191,7 @@ export default function ApplyPage() {
 						>
 							Email *
 						</FormLabel>
-						<Input
+						{user_email!=="undefined"&&<Input
 							id="email"
 							placeholder="Email"
 							value={user_email}
@@ -238,7 +201,17 @@ export default function ApplyPage() {
 							fontSize={"16px"}
 							lineHeight={"24px"}
                             onChange={() => setEmail(user_email)}
-						/>
+						/>}
+						{user_email==="undefined"&&<Input
+							id="email"
+							placeholder="Email"
+							fontFamily={"Open Sans"}
+							fontStyle={"normal"}
+							fontWeight={"400"}
+							fontSize={"16px"}
+							lineHeight={"24px"}
+                            onChange={() => setEmail(user_email)}
+						/>}
 						<FormLabel
 							htmlFor="email"
 							fontFamily={"Open Sans"}
@@ -265,15 +238,27 @@ export default function ApplyPage() {
 						>
 							Mobile Number *
 						</FormLabel>
-						<Input
+						{user_mobile!=="undefined"&&null&&<Input
+							id="mobile-number"
+							fontFamily={"Open Sans"}
+							fontStyle={"normal"}
+							fontWeight={"400"}
+							value={user_mobile}
+							fontSize={"16px"}
+							placeholder="Mobile number"
+							lineHeight={"24px"}
+                            onClick={(e)=>setNumber(e.target.value)}
+						/>}
+						{user_mobile==="undefined"&&<Input
 							id="mobile-number"
 							fontFamily={"Open Sans"}
 							fontStyle={"normal"}
 							fontWeight={"400"}
 							fontSize={"16px"}
+							placeholder="Mobile number"
 							lineHeight={"24px"}
                             onClick={(e)=>setNumber(e.target.value)}
-						/>
+						/>}
 						{!validNumber&&<FormLabel
 							htmlFor="email"
 							fontFamily={"Open Sans"}

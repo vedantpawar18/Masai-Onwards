@@ -47,6 +47,7 @@ export default function Navbar() {
   const token2 = useSelector((store)=>store.auth.auth);
   const user_name = localStorage.getItem("displayName")||name
   const user_email = localStorage.getItem("email")||userEmail
+  const user_mobile = localStorage.getItem("mobile")
   const access_token = localStorage.getItem("accessToken");
 
   
@@ -85,7 +86,8 @@ export default function Navbar() {
   useEffect(()=>{
   localStorage.getItem("email")
   localStorage.getItem("displayName")
-  },[user_name,user_email])
+  localStorage.getItem("mobile")
+  },[user_name,user_email,user_mobile])
 
 
 
@@ -277,7 +279,8 @@ export default function Navbar() {
                   
                     <GridItem marginLeft={"-100px"} > 
                     <Text fontWeight="bold">{user_name}</Text>
-                    <Text fontSize={"12px"}>{user_email}</Text>
+                    {user_email!=="undefined"&&<Text fontSize={"12px"}>{user_email}</Text>}
+                    {user_mobile!=="undefined"&&<Text fontSize={"12px"}>{user_mobile}</Text>}
                     </GridItem>
                    </Grid>
                   

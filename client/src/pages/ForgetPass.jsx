@@ -25,7 +25,7 @@ const ForgetPass = () => {
       /// move further and fetch forget password API
 
       axios
-        .post("http://localhost:8080/auth/forget", { email: email })
+        .post("https://lazy-ruby-leopard-kilt.cyclic.app/auth/forget", { email: email })
         .then((res) => {
           if (res.status === 200) {
             toast({
@@ -35,7 +35,7 @@ const ForgetPass = () => {
               duration: 9000,
               isClosable: true,
             })
-            navigate("/user/reset")
+            navigate("/resetpassword")
           }
         })
         .catch((err) => {

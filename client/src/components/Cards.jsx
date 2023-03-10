@@ -30,7 +30,6 @@ export default function Cards() {
 	const token = localStorage.getItem("accessToken")
 
 	useEffect(() => {
-		
 		dispatch(getData(token));
 	}, [dispatch,token]);
 

@@ -190,6 +190,7 @@ export const signInAuth = (data) => (dispatch) => {
         localStorage.setItem("accessToken",res.data.token.primaryToken);
         localStorage.setItem("displayName",res.data.token.fullName);
         localStorage.setItem("email",res.data.token.email);
+        localStorage.setItem("mobile",res.data.token.mobile);
       }
 
  
@@ -216,6 +217,7 @@ export const postData = (data) => (dispatch) => {
         localStorage.setItem("accessToken",res.data.token.primaryToken);
         localStorage.setItem("displayName",res.data.userName);
         localStorage.setItem("email",res.data.email);
+        localStorage.setItem("mobile",res.data.token.mobile);
       }
     })
 
@@ -302,22 +304,21 @@ export const emailData = (data) => (dispatch) => {
 
 
 export const verifyEmailData = (data) => (dispatch) => {
-
+console.log("post verify otp",data)
   dispatch(verifyEmailDataRequest());
 
   return axios({
-    method: "POST",
+    method:"POST",
     url:"https://lazy-ruby-leopard-kilt.cyclic.app/auth/verifyotp",
-    data,
+    data
   })
     .then((res) => {
-   
+      console.log("res",res.data)
       dispatch(verifyEmailDataSuccess(res.data.token.primaryToken));
-      if(res.data.primaryToken){
+      if(res.data.token.primaryToken){
         localStorage.setItem("accessToken", res.data.token.primaryToken);
         localStorage.setItem("displayName", res.data.token.fullName);
-        localStorage.setItem("email",data.email);
-       
+        localStorage.setItem("email",res.data.token.email);
       }
     
     })
