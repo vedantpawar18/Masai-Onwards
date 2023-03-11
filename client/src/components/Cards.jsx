@@ -22,23 +22,30 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import Theme from "./Theme";
 
-export default function Cards() {
+
+export default function Cards({status}) {
 	const [isLargerThan800] = useMediaQuery("(max-width: 800px)");
 	const [fail, setFail] = useState([]);
+	const [pass, setPass] = useState([]);
+	const [flag, setFlag] = useState(false)
 	const [dataArray, setdataArray] = useState([]);
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-
+    const [ageNow, setAgeNow] = useState("")
 	const token = localStorage.getItem("accessToken");
-
+   
 	useEffect(() => {
 		
 		dispatch(getData(token));
-	}, [dispatch, token]);
-
+	}, [dispatch, token,status]);
+    
 	const data = useSelector((store) => store.data.data) || [];
-	const data2 = useSelector((store) => store.data.data) ||[]
-	
+
+	console.log("data check",data)
+
+
+
+
 let dataA = [];
 useEffect(()=>{
 if(data && data.length!==0 ){
@@ -52,15 +59,55 @@ if(data && data.length!==0 ){
 let failCourseArr = [];
 	useEffect(() => {
      
-	   if(data2 && data2.length !== 0){
-failCourseArr = data2.userFormDetails[0].coursesFailed.map((course) => { return course.courseId} );
+	   if(data && data.length !== 0){
+failCourseArr = data.userFormDetails[0]?.coursesFailed.map((course) => { return course.courseId} );
 
 setFail(failCourseArr)
 	   }
-	},[data2])
+	},[data])
+
+
+	let passCourseArr = [];
+	useEffect(() => {
+     
+	   if(data && data.length !== 0){
+passCourseArr = data.userFormDetails[0]?.coursesPassed.map((course) => { return course.courseId} );
+
+setPass(passCourseArr)
+	   }
+	},[data])
 
 
 
+
+
+
+
+
+
+
+	useEffect(()=>{
+		let dob = dataArray?.dateOfBirth
+		let passOut = dataArray.twelthDiplomaCompletion
+		var today = new Date();
+			var birthDate = new Date(dob);
+			var age_now = today.getFullYear() - birthDate.getFullYear();
+			var m = today.getMonth() - birthDate.getMonth();
+			if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+				age_now--;
+			}
+			
+			
+			setAgeNow(age_now);
+			if(age_now<18||age_now>25||passOut==="NA"){
+				setFlag(true)
+			  }
+
+
+	},[dataArray])
+	console.log("flaggggg",flag)
+// console.log("pass",pass)
+	// console.log("disable check222",dataArray.filter(item => !fail.includes(item._id)))
 
 	const handleApply = (id) => {
 		localStorage.setItem("courseId", id);
@@ -69,11 +116,12 @@ setFail(failCourseArr)
 
 	return (
 		<ChakraProvider theme={Theme}>
+			
 			{isLargerThan800 ? (
 				<>
 					<Grid gridTemplateColumns={"repeat(1, 1fr)"} gap={"12px"}>
 	                   
-						{dataArray.filter(item => !fail.includes(item._id)).map((item) => (
+						{dataArray.filter(item => !fail?.includes(item._id)).map((item) => (
 							// fail.indexOf(item._id) === -1? <><h2>{item._id}</h2></>:
 							<GridItem
 								w={"343"}
@@ -84,7 +132,7 @@ setFail(failCourseArr)
 								overflow={"hidden"}
 								border={"1px solid #D9D9D9"}
 							>
-								<h3>{item._id}</h3>
+								
 								<Box
 									h={"210px"}
 									bg={`url(${card_image})`}
@@ -196,8 +244,9 @@ setFail(failCourseArr)
 											onClick={() => handleApply(item._id)}
 											bg={"#3470E4"}
 											color={"white"}
+											isDisabled={pass?.includes(item._id)}
 										>
-											Apply Now
+											{pass?.includes(item._id) ? "Already Applied" : "Apply Now"}
 										</Button>
 									</HStack>
 								</Stack>
@@ -208,7 +257,7 @@ setFail(failCourseArr)
 			) : (
 				<>
 					<Grid gridTemplateColumns={"repeat(3, 1fr)"} gap={"5px"}>
-						{dataArray.filter(item => !fail.includes(item._id)).map((item) => (
+						{dataArray.filter(item => !fail?.includes(item._id)).map((item) => (
 							<>
 							{/* {failCourseArr.indexOf(item._id) !== -1? <><h2>{item._id}</h2></>:<>{item._id}</>} */}
 							<GridItem
@@ -362,8 +411,9 @@ setFail(failCourseArr)
 											onClick={() => handleApply(item._id)}
 											bg={"#3470E4"}
 											color={"white"}
+											isDisabled={pass?.includes(item._id)}
 										>
-											Apply Now
+											{pass?.includes(item._id) ? "Already Applied" : "Apply Now"}
 										</Button>
 									</HStack>
 								</Stack>

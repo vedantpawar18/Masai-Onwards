@@ -22,12 +22,13 @@ import validator from 'validator'
 import { useToast } from "@chakra-ui/react";
 import { HStack, Stack, Text } from "@chakra-ui/layout";
 import { useNavigate, useParams } from "react-router-dom";
-import { profileData } from "../redux/data/action";
+import { getData, profileData } from "../redux/data/action";
 import { useDispatch, useSelector } from "react-redux";
 import Theme from "./Theme";
 
 import '@fontsource/poppins/400.css'
 import '@fontsource/open-sans/700.css'
+
 
 
 export default function ApplyPage() {
@@ -56,11 +57,31 @@ export default function ApplyPage() {
 	const toast = useToast();
 	const [step, setStep] = useState(1);
 	const [progress, setProgress] = useState(33.33);
+	const [warning, setWarning] = useState(false)
 	const [ageNow, setAgeNow] = useState("");
+	const [dataArray, setdataArray] = useState([]);
 	const token = localStorage.getItem("accessToken")
-
+	const data = useSelector((store) => store.data.data) || [];
 	let formData = JSON.parse(localStorage.getItem("formData") )|| []
 	const [isLargerThan800] = useMediaQuery("(max-width: 800px)");
+	
+
+	useEffect(() => {
+		dispatch(getData(token));
+	}, [dispatch, token]);
+
+
+     let dataA = []
+	useEffect(()=>{
+		if(data && data.length!==0 ){
+			dataA = data.userFormDetails[0]
+
+		
+			setdataArray(dataA)
+		}
+		},[data])
+
+		console.log("data apply page",dataArray)
 	// const data = useSelector((store) => store.data.data.courses)||[];
 	// const { id } = useParams();
 	// const filter = data.filter((item) => {
@@ -82,26 +103,7 @@ export default function ApplyPage() {
 		if(age_now>=18&&age_now<=25&&passOutYear!=="NA"&&passOutYear!==""){
 			navigate("/score")
 	     }else{
-			alert("Not eligible for the course")
-			navigate("/dashboard")
-		 }
-		
-	};
-	const handleSubmit = () => {
-		
-		
-		calculate_age();
-	
-		const isValidPhoneNumber = validator.isMobilePhone(number)
-		setValidNumber(isValidPhoneNumber)
-		if (validator.isEmail(email)) {
-		   setEmailError('');
-		  
-		 } else {
-		   setEmailError('Enter valid Email!');
-		 }
-
-		
+			
 			let data = { 
 				fullName:name ,
 				emailId:email,
@@ -117,7 +119,53 @@ export default function ApplyPage() {
 				courseStartDate:courseStartsOn
 			};
 			dispatch(profileData(data,token))
+			// alert("Not eligible for the course")
+			toast({
+				title: 'Not eligible.',
+				description: "User not eligible for the course.",
+				status: 'warning',
+				duration: 5000,
+				isClosable: true,
+			  })
+			// navigate("/dashboard")
+		 }
+		
+	};
+	const handleSubmit = () => {
+		
+		
+		
+	
+		const isValidPhoneNumber = validator.isMobilePhone(number)
+		setValidNumber(isValidPhoneNumber)
+		if (validator.isEmail(email)) {
+		   setEmailError('');
+		  
+		 } else {
+		   setEmailError('Enter valid Email!');
+		 }
 
+	let data = { 
+		fullName:name ,
+		emailId:email,
+		mob:number,
+		dateOfBirth:dateOfBirth,
+		readyToWork:permission,
+		twelthDiplomaCompletion:passOutYear,
+		yearOfGraduation:graduationYear,
+		gender:gender,
+		referralCode:referral,
+		workingStatus:workingStatus,
+		receiveUpdates:update,
+		courseStartDate:courseStartsOn
+	};
+	dispatch(profileData(data,token))
+
+
+	calculate_age();
+
+		
+			
 	};
 
 	const handleChange = (e)=>{
@@ -146,6 +194,37 @@ const handleUpdate = (e)=>{
 }
 
 
+const handleNext = ()=>{
+	let dob = dataArray?.dateOfBirth
+	let passOut = dataArray.twelthDiplomaCompletion
+	var today = new Date();
+		var birthDate = new Date(dob);
+		var age_now = today.getFullYear() - birthDate.getFullYear();
+		var m = today.getMonth() - birthDate.getMonth();
+		if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+			age_now--;
+		}
+		
+        
+		setAgeNow(age_now);
+		if(age_now>=18&&age_now<=25&&passOut!=="NA"){
+          navigate("/score")
+		}else{
+			setWarning(true)
+			toast({
+				title: 'Not eligible.',
+				description: "User not eligible for the course.",
+				status: 'warning',
+				duration: 5000,
+				isClosable: true,
+			  })
+      
+		}
+}
+
+
+
+console.log("check",courseStartsOn,workingStatus,referral,gender,graduationYear,passOutYear,permission,dateOfBirth,number)
 
 	return (
 		<ChakraProvider theme={Theme}>
@@ -161,6 +240,7 @@ const handleUpdate = (e)=>{
 				>
 					Profile Details 
 				</Heading>
+				
 				<Text
 					textAlign={"start"}
 					fontStyle={"normal"}
@@ -213,7 +293,7 @@ const handleUpdate = (e)=>{
 						</FormLabel>
 						<Input
 							placeholder="Full name"
-							value={userName}
+							value={userName&&userName}
 	
 							fontStyle={"normal"}
 							fontWeight={"400"}
@@ -237,7 +317,7 @@ const handleUpdate = (e)=>{
 						<Input
 							id="email"
 							placeholder="Email"
-							value={userEmail}
+							value={userEmail&&userEmail}
 	
 							fontStyle={"normal"}
 							fontWeight={"400"}
@@ -273,8 +353,10 @@ const handleUpdate = (e)=>{
 						</FormLabel>
 						<Input
 							id="mobile-number"
-	
+							value={dataArray&&dataArray?.mob}
 							fontStyle={"normal"}
+							placeholder="Mobile number"
+							_placeholder={{color: "grey"}}
 							fontWeight={"400"}
 							fontSize={"16px"}
 							lineHeight={"24px"}
@@ -307,8 +389,9 @@ const handleUpdate = (e)=>{
 						<Input
 							id="date"
 							type="date"
+							value={dataArray&&dataArray?.dateOfBirth}
 							onChange={(e) => setDateOfBirth(e.target.value)}
-							color={"grey"}
+							
 							fontStyle={"normal"}
 							fontWeight={"400"}
 							fontSize={"16px"}
@@ -331,11 +414,12 @@ const handleUpdate = (e)=>{
 						</FormLabel>
 						<Select
 							placeholder="Select year"
-							color={"grey"}
+							_placeholder={{color: "grey"}}
 							fontStyle={"normal"}
 							fontWeight={"400"}
 							fontSize={"14px"}
 							lineHeight={"24px"}
+							value={dataArray&&dataArray?.twelthDiplomaCompletion}
                             onChange={(e)=>setPassOutYear(e.target.value)}
 						>
 							<option value="NA">NA</option>
@@ -367,11 +451,12 @@ const handleUpdate = (e)=>{
 						</FormLabel>
 						<Select
 							placeholder="Select year"
-							color={"grey"}
+							_placeholder={{color: "grey"}}
 							fontStyle={"normal"}
 							fontWeight={"400"}
 							fontSize={"14px"}
 							lineHeight={"24px"}
+							value={dataArray&&dataArray?.yearOfGraduation}
                             onChange={(e)=>setGraduationYear(e.target.value)}
 						>
 							<option value="NA">NA</option>
@@ -405,10 +490,10 @@ const handleUpdate = (e)=>{
 							Are you ready to get employed after completing a course at Masai?
 							*
 						</FormLabel >
-						<RadioGroup   >
+						<RadioGroup   value={dataArray&&dataArray?.readyToWork}  >
 							<HStack
 								spacing="24px"
-		
+		                     
 								fontStyle={"normal"}
 								fontWeight={"400"}
 								fontSize={"16px"}
@@ -421,7 +506,7 @@ const handleUpdate = (e)=>{
 						</RadioGroup>
 					</FormControl>
 
-					<FormControl mt="2%" onChange={(e)=>setGender(e.target.value)}> 
+					<FormControl mt="2%" onChange={(e)=>setGender(e.target.value)} > 
 						<FormLabel
 							htmlFor="date"
 	
@@ -434,7 +519,8 @@ const handleUpdate = (e)=>{
 						</FormLabel>
 						<RadioGroup
 							
-	
+	                        value={dataArray&&dataArray?.gender}
+							
 							fontStyle={"normal"}
 							fontWeight={"400"}
 							fontSize={"16px"}
@@ -464,7 +550,7 @@ const handleUpdate = (e)=>{
 						<Input
 							id="mobile-number"
 							placeholder="Enter referral code"
-	
+	                       
 							fontStyle={"normal"}
 							fontWeight={"400"}
 							fontSize={"16px"}
@@ -487,11 +573,12 @@ const handleUpdate = (e)=>{
 						</FormLabel>
 						<Select
 							placeholder="Select your current working status"
-							color={"grey"}
+							
 							fontStyle={"normal"}
 							fontWeight={"400"}
 							fontSize={"16px"}
 							lineHeight={"24px"}
+							value={dataArray&&dataArray?.workingStatus}
                             onChange={(e)=>setWorkingStatus(e.target.value)}
 						>
 							<option value="working">Working</option>
@@ -514,7 +601,7 @@ const handleUpdate = (e)=>{
 					<Stack
 						spacing={5}
 						direction="row"
-
+                        
 						fontStyle={"normal"}
 						fontWeight={"400"}
 						fontSize={"16px"}
@@ -546,7 +633,16 @@ const handleUpdate = (e)=>{
 						<Button w="7rem" color={"#3470E4"}>
 							CANCEL
 						</Button>
-						<Button
+						{dataArray?.userId?<Button
+							w="7rem"
+							bgColor={"#3470E4"}
+							variant="solid"
+							color={"white"}
+							onClick={handleNext}
+							
+						>
+							Next
+						</Button>:<Button
 							w="7rem"
 							bgColor={"#3470E4"}
 							variant="solid"
@@ -555,7 +651,7 @@ const handleUpdate = (e)=>{
 							isDisabled={flag}
 						>
 							SUBMIT
-						</Button>
+						</Button>}
 						
 					</Flex>
 				
@@ -627,7 +723,7 @@ const handleUpdate = (e)=>{
 						</FormLabel>
 						<Input
 							placeholder="Full name"
-							value={userName}
+							value={userName&&userName}
 	
 							fontStyle={"normal"}
 							fontWeight={"400"}
@@ -651,8 +747,8 @@ const handleUpdate = (e)=>{
 						<Input
 							id="email"
 							placeholder="Email"
-							value={userEmail}
-	
+							value={userEmail&&userEmail}
+	                        
 							fontStyle={"normal"}
 							fontWeight={"400"}
 							fontSize={"16px"}
@@ -677,7 +773,7 @@ const handleUpdate = (e)=>{
 					<FormControl mr="5%" mt="2%">
 						<FormLabel
 							htmlFor="number"
-	
+							
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"14px"}
@@ -687,10 +783,12 @@ const handleUpdate = (e)=>{
 						</FormLabel>
 						<Input
 							id="mobile-number"
-	
+	                        value={dataArray&&dataArray?.mob}
+							placeholder="Mobile number"
 							fontStyle={"normal"}
 							fontWeight={"400"}
 							fontSize={"16px"}
+							_placeholder={{color: "grey"}}
 							lineHeight={"24px"}
                             onChange={(e)=>setNumber(e.target.value)}
 						/>
@@ -721,8 +819,9 @@ const handleUpdate = (e)=>{
 						<Input
 							id="date"
 							type="date"
+							value={dataArray&&dataArray?.dateOfBirth}
 							onChange={(e) => setDateOfBirth(e.target.value)}
-							color={"grey"}
+							
 							fontStyle={"normal"}
 							fontWeight={"400"}
 							fontSize={"16px"}
@@ -746,11 +845,12 @@ const handleUpdate = (e)=>{
 						</FormLabel>
 						<Select
 							placeholder="Select year"
-							color={"grey"}
+							_placeholder={{color: "grey"}}
 							fontStyle={"normal"}
 							fontWeight={"400"}
 							fontSize={"14px"}
 							lineHeight={"24px"}
+							value={dataArray&&dataArray?.twelthDiplomaCompletion}
                             onChange={(e)=>setPassOutYear(e.target.value)}
 						>
 							<option value="NA">NA</option>
@@ -782,11 +882,12 @@ const handleUpdate = (e)=>{
 						</FormLabel>
 						<Select
 							placeholder="Select year"
-							color={"grey"}
+							_placeholder={{color: "grey"}}
 							fontStyle={"normal"}
 							fontWeight={"400"}
 							fontSize={"14px"}
 							lineHeight={"24px"}
+							value={dataArray&&dataArray?.yearOfGraduation}
                             onChange={(e)=>setGraduationYear(e.target.value)}
 						>
 							<option value="NA">NA</option>
@@ -809,7 +910,7 @@ const handleUpdate = (e)=>{
 				</Flex>
 
 				<Flex>
-					<FormControl mr="5%" mt="2%" onChange={(e)=>setPermission(e.target.value)} >
+					<FormControl mr="5%" mt="2%" onChange={(e)=>setPermission(e.target.value)}  >
 						<FormLabel
 	
 							fontStyle={"normal"}
@@ -820,7 +921,7 @@ const handleUpdate = (e)=>{
 							Are you ready to get employed after completing a course at Masai?
 							*
 						</FormLabel >
-						<RadioGroup   >
+						<RadioGroup value={dataArray&&dataArray?.readyToWork}  >
 							<HStack
 								spacing="24px"
 		
@@ -836,7 +937,7 @@ const handleUpdate = (e)=>{
 						</RadioGroup>
 					</FormControl>
 
-					<FormControl mt="2%" onChange={(e)=>setGender(e.target.value)}> 
+					<FormControl mt="2%"  onChange={(e)=>setGender(e.target.value)}> 
 						<FormLabel
 							htmlFor="date"
 	
@@ -848,7 +949,8 @@ const handleUpdate = (e)=>{
 							Gender *
 						</FormLabel>
 						<RadioGroup
-							
+							 value={dataArray&&dataArray?.gender}
+							 
 	
 							fontStyle={"normal"}
 							fontWeight={"400"}
@@ -902,11 +1004,12 @@ const handleUpdate = (e)=>{
 						</FormLabel>
 						<Select
 							placeholder="Select your current working status"
-							color={"grey"}
+							
 							fontStyle={"normal"}
 							fontWeight={"400"}
 							fontSize={"16px"}
 							lineHeight={"24px"}
+							value={dataArray&&dataArray?.workingStatus}
                             onChange={(e)=>setWorkingStatus(e.target.value)}
 						>
 							<option value="working">Working</option>
@@ -961,7 +1064,16 @@ const handleUpdate = (e)=>{
 						<Button w="7rem" color={"#3470E4"}>
 							CANCEL
 						</Button>
-						<Button
+						{dataArray?.userId?<Button
+							w="7rem"
+							bgColor={"#3470E4"}
+							variant="solid"
+							color={"white"}
+							onClick={handleNext}
+							
+						>
+							Next
+						</Button>:<Button
 							w="7rem"
 							bgColor={"#3470E4"}
 							variant="solid"
@@ -970,7 +1082,7 @@ const handleUpdate = (e)=>{
 							isDisabled={flag}
 						>
 							SUBMIT
-						</Button>
+						</Button>}
 						
 					</Flex>
 				
