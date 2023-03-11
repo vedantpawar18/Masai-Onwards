@@ -2,7 +2,7 @@
 Masai is a coding school, where thousands of student enrolling every month. This platform is a clone of Masai Course Platform, we build full fledged website where a student can enroll, give MSAT Test and apply for different-different course provided by masai.
 
 ![home](https://user-images.githubusercontent.com/97525465/224216381-6d4ac7b8-625c-4ec1-b581-22f51f057985.png) 
-# Step to cloneing repo
+# Step to cloning repo
 
 ```bash
 # Clone repository
@@ -14,11 +14,13 @@ Install dependencies via NPM
 # Install dependencies for frontend
 $ cd client
 $ npm install
+$ npm start
 $ cd ..
 
 # Install dependencies for backend
 $ cd client
 $ npm install
+$ npm start
 $ cd ..
 ```
 
@@ -60,8 +62,38 @@ Pratik Dutta (EM/Project Guide)
 ![home](https://img.shields.io/badge/Redux-593D88?style=for-the-badge&logo=redux&logoColor=white)
 ![home](https://img.shields.io/badge/Postman-FF4154?style=for-the-badge&logo=Postman&logoColor=white)
 
+# API :
+### Users
+- POST user/verify
+- POST user/signup
+- POST auth/signin
+- POST auth/verifyotp
+- POST auth/forget
+- POST auth/reset
 
-# Pages and Features: 
+### Dashboard :
+- GET dashboard/dashboard-details
+- POST dashboard/create-course
+- POST dashboard/user-data-collection
+- POST dashboard/user-applied
+- POST dashboard/notification-medium
+
+# Features :
+- User friendly and responsive web design
+- Made with mobile first approach
+- Sign Up with email, mobile or password
+- OTP verification while sign Up
+- Google auth for sign UP
+- Sign In with email, mobile or passsword
+- OTP verification while sign In
+- Google auth for sign In
+- User can apply to the course from the dashboard
+- User Form for each user
+- User can attend MSAT exam
+- Based on the scores received user will be informed if passed or failed
+- All the data will be stored at the data base
+
+# Pages : 
 
 ### Home/Landing Page : 
 ![home](https://user-images.githubusercontent.com/97525465/224216381-6d4ac7b8-625c-4ec1-b581-22f51f057985.png) 
