@@ -28,7 +28,9 @@ export const VERIFY_EMAIL_AUTH_REQUEST = "VERIFY_EMAIL_AUTH_REQUEST";
 export const VERIFY_EMAIL_AUTH_SUCCESS = "VERIFY_EMAIL_AUTH_SUCCESS";
 export const VERIFY_EMAIL_AUTH_FAILURE = "VERIFY_EMAIL_AUTH_FAILURE";
 
-
+export const GOOGLE_SIGNUP_AUTH_REQUEST = "GOOGLE_SIGNUP_AUTH_REQUEST";
+export const GOOGLE_SIGNUP_AUTH_SUCCESS = "GOOGLE_SIGNUP_AUTH_SUCCESS";
+export const GOOGLE_SIGNUP_AUTH_FAILURE = "GOOGLE_SIGNUP_AUTH_FAILURE";
 
 
 export const signInAuthRequest = () => {
@@ -175,6 +177,29 @@ export const verifyEmailDataFailure = (error) => {
 
 
 
+export const googleSignUpRequest = () => {
+  return {
+    type: GOOGLE_SIGNUP_AUTH_REQUEST
+  };
+};
+
+export const googleSignUpSuccess = (auth) => {
+  return {
+    type: GOOGLE_SIGNUP_AUTH_SUCCESS,
+    payload: auth
+  };
+};
+
+export const googleSignUpFailure = (error) => {
+  return {
+    type: GOOGLE_SIGNUP_AUTH_FAILURE,
+    payload:error
+  };
+};
+
+
+
+
 
 
 export const signInAuth = (data) => (dispatch) => {
@@ -188,8 +213,9 @@ export const signInAuth = (data) => (dispatch) => {
       dispatch(signInAuthSuccess(res.data));
       if(res.data.token.primaryToken){
         localStorage.setItem("accessToken",res.data.token.primaryToken);
-        localStorage.setItem("displayName",res.data.token.fullName);
-        localStorage.setItem("email",res.data.token.email);
+        localStorage.setItem("displayName",res.data.fullName);
+        localStorage.setItem("email",res.data.email);
+        localStorage.setItem("mobile",res.data.token.mobile);
       }
 
  
@@ -216,6 +242,7 @@ export const postData = (data) => (dispatch) => {
         localStorage.setItem("accessToken",res.data.token.primaryToken);
         localStorage.setItem("displayName",res.data.userName);
         localStorage.setItem("email",res.data.email);
+        localStorage.setItem("mobile",res.data.token.mobile);
       }
     })
 
@@ -270,8 +297,6 @@ export const verifyData = (data) => (dispatch) => {
       dispatch(verifyDataFailure(error));
       
     });
-
- 
 };
 
 
@@ -306,23 +331,49 @@ export const verifyEmailData = (data) => (dispatch) => {
   dispatch(verifyEmailDataRequest());
 
   return axios({
-    method: "POST",
+    method:"POST",
     url:"https://lazy-ruby-leopard-kilt.cyclic.app/auth/verifyotp",
-    data,
+    data
   })
     .then((res) => {
-   
+    
       dispatch(verifyEmailDataSuccess(res.data.token.primaryToken));
-      if(res.data.primaryToken){
+      if(res.data.token.primaryToken){
         localStorage.setItem("accessToken", res.data.token.primaryToken);
         localStorage.setItem("displayName", res.data.token.fullName);
-        localStorage.setItem("email",data.email);
-       
+        localStorage.setItem("email",res.data.token.email);
       }
     
     })
 
     .catch((error) => {
       dispatch(verifyEmailDataFailure(error));
+    });
+};
+
+
+
+
+export const googleSignUpData = (data) => (dispatch) => {
+
+  dispatch(googleSignUpRequest());
+
+  return axios({
+    method: "POST",
+    url:"https://lazy-ruby-leopard-kilt.cyclic.app/user/signup-google-auth",
+    data
+  })
+    .then((res) => {
+   
+      dispatch(googleSignUpSuccess(res.data.token.primaryToken));
+      if(res.data.token.primaryToken){
+        localStorage.setItem("accessToken",res.data.token.primaryToken);
+        localStorage.setItem("displayName", res.data.userName);
+        localStorage.setItem("email",res.data.email);
+      }
+    })
+
+    .catch((error) => {
+      dispatch(googleSignUpFailure(error));
     });
 };

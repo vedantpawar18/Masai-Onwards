@@ -28,12 +28,14 @@ export default function DetailComponent() {
    
 	const data = useSelector((store) => store.data.data.courses)||[];
 	const { id } = useParams();
-	
 	const filter = data.filter((item) => {
 		return item._id === id;
 	});
 
-	
+	const handleApply = (id) => {
+		localStorage.setItem("courseId", id);
+		navigate("/applydashboard");
+	};
 
 	const Feature = ({ title, text, icon }) => {
 		return (
@@ -71,12 +73,12 @@ export default function DetailComponent() {
 						/>
 					</Heading>
 
-					<Container maxW={"6xl"}>
-						<Stack
+					<Container maxW={"6xl"} >
+						<Stack 
 							as={Box}
 							textAlign={"center"}
 							spacing={{ base: 8, md: 14 }}
-							py={{ base: 20, md: 36 }}
+							py={{ base: 15, md: 30 }}
 						>
 							<Heading
 								fontWeight={700}
@@ -249,7 +251,7 @@ export default function DetailComponent() {
 					<Box marginTop="30px" marginBottom={"30px"} textAlign={"right"} marginRight={"40px"} >
 
 						
-				<Button bg={"#3470E4"} color={"white"} onClick={()=>navigate("/applydashboard")}>Apply Now</Button>
+				<Button bg={"#3470E4"} color={"white"} onClick={()=>handleApply(item._id)}>Apply Now</Button>
 					</Box>
 					
 				</>
@@ -258,5 +260,3 @@ export default function DetailComponent() {
 	);
 }
 
-
-// ------------------------------------ //

@@ -25,6 +25,12 @@ import {
     EMAIL_AUTH_REQUEST,
     EMAIL_AUTH_SUCCESS,
     EMAIL_AUTH_FAILURE,
+    VERIFY_EMAIL_AUTH_REQUEST,
+    VERIFY_EMAIL_AUTH_SUCCESS,
+    VERIFY_EMAIL_AUTH_FAILURE,
+    GOOGLE_SIGNUP_AUTH_REQUEST,
+    GOOGLE_SIGNUP_AUTH_SUCCESS,
+    GOOGLE_SIGNUP_AUTH_FAILURE,
     
 } from "./action"
 
@@ -182,6 +188,50 @@ export const authReducer = (state = initState, action) => {
                         isError: true,
                         error:action.payload
                     })
+                    case VERIFY_EMAIL_AUTH_REQUEST:
+                        return ({
+                            ...state,
+                            isLoading: true,
+                            isError: false
+                        })
+            
+                    case VERIFY_EMAIL_AUTH_SUCCESS:
+                        return ({
+                            ...state,
+                            isLoading: false,
+                            isError: false,
+                            auth: action.payload
+                        })
+            
+                    case VERIFY_EMAIL_AUTH_FAILURE:
+                        return ({
+                            ...state,
+                            isLoading: false,
+                            isError: true,
+                            error:action.payload
+                        })
+                        case GOOGLE_SIGNUP_AUTH_REQUEST:
+                            return ({
+                                ...state,
+                                isLoading: true,
+                                isError: false
+                            })
+                
+                        case GOOGLE_SIGNUP_AUTH_SUCCESS:
+                            return ({
+                                ...state,
+                                isLoading: false,
+                                isError: false,
+                                auth: action.payload
+                            })
+                
+                        case GOOGLE_SIGNUP_AUTH_FAILURE:
+                            return ({
+                                ...state,
+                                isLoading: false,
+                                isError: true,
+                                error:action.payload
+                            })
 
 
         default:

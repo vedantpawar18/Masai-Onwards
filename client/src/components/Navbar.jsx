@@ -27,7 +27,7 @@ import { useEffect, useState } from 'react';
 import { auth, provider } from '../firebase';
 
 import { useDispatch, useSelector } from 'react-redux';
-import {  googleAuth, verifyData } from '../redux/action';
+import {  googleAuth, googleSignUpData, verifyData } from '../redux/action';
 import SignUpModal from './SignUpModal';
 
 
@@ -49,20 +49,18 @@ export default function Navbar() {
   const user_email = localStorage.getItem("email")||userEmail
   const access_token = localStorage.getItem("accessToken");
 
-  
+
   const handleClick = ()=>{
-
-
 
       signInWithPopup(auth,provider).then((data)=>{
           setValue(data.user.email);
           setToken(data.user.accessToken);
-          localStorage.setItem("accessToken",data.user.accessToken);
+          // localStorage.setItem("accessToken",data.user.accessToken);
           setCheck(data)
           dispatch(googleAuth(data.user.accessToken));
-          localStorage.setItem("displayName",data.user.displayName);
+          // localStorage.setItem("displayName",data.user.displayName);
           setTokenName(data.user.displayName)
-          localStorage.setItem("email",data.user.email);
+          // localStorage.setItem("email",data.user.email);
           setTokenEmail(data.user.email)
           setUserEmail(data.user.email);
           setName(data.user.displayName);
@@ -75,7 +73,7 @@ export default function Navbar() {
           email:tokenEmail,
           fullName:tokenName
        }
-       dispatch(verifyData(data))
+       dispatch(googleSignUpData(data))
      }
     
   
@@ -85,6 +83,7 @@ export default function Navbar() {
   useEffect(()=>{
   localStorage.getItem("email")
   localStorage.getItem("displayName")
+
   },[user_name,user_email])
 
 
@@ -95,7 +94,6 @@ export default function Navbar() {
   return (
     <>
 
-   {/* <PrivateRoute token={token} />  */}
 
       <Box bg={useColorModeValue('white.100', 'gray.900')} px={4}   height="88px">
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
@@ -166,20 +164,10 @@ export default function Navbar() {
   <option value='option1'>Option 1</option>
   <option value='option2'>Option 2</option>
   <option value='option3'>Option 3</option>
-</Select>
-
-          
+</Select>         
 <Select placeholder='FAQ' border="transparent" w={"80px"}>
 
 </Select>
-
-{/* <Text>COURSES</Text>
-
-<Text>COURSES</Text>
-<Text>COURSES</Text>
-<Text>COURSES</Text>
-<Text>COURSES</Text> */}
-
 
             </HStack>
           </HStack>
@@ -199,16 +187,7 @@ export default function Navbar() {
                 <MenuItem width={"300px"} h={"440px"}>
                   
                  <Stack>
-                   {/* <Grid gridTemplateColumns={"repeat(2, 1fr)"}>
-                    <GridItem marginRight="100px" >
-                    <Image src={"https://pixlok.com/wp-content/uploads/2021/04/Google-Icon-PNG.jpg"} border={"1px solid"} w="30px" h="30px" borderRadius="50%" alt="icon" />
-                    </GridItem>
-                    
-                    <GridItem marginLeft={"-100px"} > 
-                    <Text fontSize={"14px"}>Sign-in to prepleaf with google</Text>
-                    </GridItem>
-                   </Grid> */}
-
+                  
                    <Grid gridTemplateColumns={"repeat(2, 1fr)"} onClick={handleClick}>
                     <GridItem marginRight="100px" >
                     <Image src={"https://pixlok.com/wp-content/uploads/2021/04/Google-Icon-PNG.jpg"} border={"1px solid"} w="30px" h="30px" borderRadius="50%" alt="icon" />
@@ -277,7 +256,8 @@ export default function Navbar() {
                   
                     <GridItem marginLeft={"-100px"} > 
                     <Text fontWeight="bold">{user_name}</Text>
-                    <Text fontSize={"12px"}>{user_email}</Text>
+                    {user_email!=="undefined"&&<Text fontSize={"12px"}>{user_email}</Text>}
+
                     </GridItem>
                    </Grid>
                   

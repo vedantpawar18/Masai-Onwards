@@ -1,26 +1,28 @@
-import { Box, Text } from "@chakra-ui/layout";
+import { Box, Stack, Text } from "@chakra-ui/layout";
 import React from "react";
-import { Flex, Grid, GridItem, Heading, Image, useMediaQuery } from "@chakra-ui/react";
+import {
+	ChakraProvider,
+	Flex,
+	Grid,
+	GridItem,
+	Heading,
+	Image,
+	useMediaQuery,
+} from "@chakra-ui/react";
+import Theme from "./Theme";
 // import vector from "../images/vector.png";
 
 const ScoreCard = ({ status }) => {
-  const [isLargerThan800] = useMediaQuery("(max-width: 800px)");
-
 	return (
-		<>
+		<ChakraProvider theme={Theme}>
 			<Box marginTop={"30px"} marginBottom={"30px"}>
 				<Heading fontSize={"20px"} textAlign={"left"}>
 					Score Details
 				</Heading>
 				<Text textAlign={"left"}>Here are your score details </Text>
 			</Box>
-			{isLargerThan800? <>
-      
-        <Grid gap="20px" gridTemplateColumns={"repeat(1,1fr)"} marginBottom={"40px"}>
 
-
-          <GridItem>
-            <Flex>
+			<Stack direction={{ base: "column", md: "row" }}>
 				<Box
 					width={"264px"}
 					height={"156px"}
@@ -61,7 +63,6 @@ const ScoreCard = ({ status }) => {
 						</Box>
 						<Text
 							color={`${status.color}`}
-							fontFamily={"Open Sans"}
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"16px"}
@@ -69,12 +70,7 @@ const ScoreCard = ({ status }) => {
 							{status.status}
 						</Text>
 					</Box>
-					<Text
-						fontFamily={"Open Sans"}
-						fontStyle={"normal"}
-						fontWeight={"600"}
-						fontSize={"16px"}
-					>
+					<Text fontStyle={"normal"} fontWeight={"600"} fontSize={"16px"}>
 						Cognitive Ability{" "}
 					</Text>
 					<Text color={" #544D4F"}>Marks : {status.cognitive}/10 </Text>
@@ -120,7 +116,6 @@ const ScoreCard = ({ status }) => {
 						</Box>
 						<Text
 							color={`${status.color}`}
-							fontFamily={"Open Sans"}
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"16px"}
@@ -128,20 +123,12 @@ const ScoreCard = ({ status }) => {
 							{status.status}
 						</Text>
 					</Box>
-					<Text
-						fontFamily={"Open Sans"}
-						fontStyle={"normal"}
-						fontWeight={"600"}
-						fontSize={"16px"}
-					>
+					<Text fontStyle={"normal"} fontWeight={"600"} fontSize={"16px"}>
 						Mettl Test Score{" "}
 					</Text>
 					<Text color={" #544D4F"}>Marks : {status.mettl}/10 </Text>
 				</Box>
-        </Flex>
-        </GridItem>
-        <GridItem>
-        <Flex>
+
 				<Box
 					width={"264px"}
 					height={"156px"}
@@ -182,7 +169,6 @@ const ScoreCard = ({ status }) => {
 						</Box>
 						<Text
 							color={`${status.color}`}
-							fontFamily={"Open Sans"}
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"16px"}
@@ -190,20 +176,13 @@ const ScoreCard = ({ status }) => {
 							{status.status}
 						</Text>
 					</Box>
-					<Text
-						fontFamily={"Open Sans"}
-						fontStyle={"normal"}
-						fontWeight={"600"}
-						fontSize={"16px"}
-					>
+					<Text fontStyle={"normal"} fontWeight={"600"} fontSize={"16px"}>
 						{" "}
 						Communication Skills{" "}
 					</Text>
 					<Text color={" #544D4F"}>Marks : {status.communication}/10 </Text>
 				</Box>
 
-
-      
 				<Box
 					width={"264px"}
 					height={"156px"}
@@ -244,7 +223,6 @@ const ScoreCard = ({ status }) => {
 						</Box>
 						<Text
 							color={`${status.color}`}
-							fontFamily={"Open Sans"}
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"16px"}
@@ -252,23 +230,16 @@ const ScoreCard = ({ status }) => {
 							{status.status}
 						</Text>
 					</Box>
-					<Text
-						fontFamily={"Open Sans"}
-						fontStyle={"normal"}
-						fontWeight={"600"}
-						fontSize={"16px"}
-					>
+					<Text fontStyle={"normal"} fontWeight={"600"} fontSize={"16px"}>
 						Credibility Score{" "}
 					</Text>
 					<Text color={" #544D4F"}>
-						Application failed due to credibility score
+						{status.credibility==="low"  ? "You have successfully passed the credibility test":"You have successfully passed the credibility test"}
 					</Text>
 				</Box>
-        </Flex>
-        </GridItem>
-			</Grid>
-      
-      </> :
+			</Stack>
+
+			{/* </> :
       
       
       
@@ -322,7 +293,7 @@ const ScoreCard = ({ status }) => {
 						</Box>
 						<Text
 							color={`${status.color}`}
-							fontFamily={"Open Sans"}
+							
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"16px"}
@@ -331,7 +302,7 @@ const ScoreCard = ({ status }) => {
 						</Text>
 					</Box>
 					<Text
-						fontFamily={"Open Sans"}
+						
 						fontStyle={"normal"}
 						fontWeight={"600"}
 						fontSize={"16px"}
@@ -381,7 +352,7 @@ const ScoreCard = ({ status }) => {
 						</Box>
 						<Text
 							color={`${status.color}`}
-							fontFamily={"Open Sans"}
+							
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"16px"}
@@ -390,7 +361,7 @@ const ScoreCard = ({ status }) => {
 						</Text>
 					</Box>
 					<Text
-						fontFamily={"Open Sans"}
+						
 						fontStyle={"normal"}
 						fontWeight={"600"}
 						fontSize={"16px"}
@@ -440,7 +411,7 @@ const ScoreCard = ({ status }) => {
 						</Box>
 						<Text
 							color={`${status.color}`}
-							fontFamily={"Open Sans"}
+							
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"16px"}
@@ -449,7 +420,7 @@ const ScoreCard = ({ status }) => {
 						</Text>
 					</Box>
 					<Text
-						fontFamily={"Open Sans"}
+						
 						fontStyle={"normal"}
 						fontWeight={"600"}
 						fontSize={"16px"}
@@ -500,7 +471,7 @@ const ScoreCard = ({ status }) => {
 						</Box>
 						<Text
 							color={`${status.color}`}
-							fontFamily={"Open Sans"}
+							
 							fontStyle={"normal"}
 							fontWeight={"600"}
 							fontSize={"16px"}
@@ -509,7 +480,7 @@ const ScoreCard = ({ status }) => {
 						</Text>
 					</Box>
 					<Text
-						fontFamily={"Open Sans"}
+						
 						fontStyle={"normal"}
 						fontWeight={"600"}
 						fontSize={"16px"}
@@ -520,8 +491,8 @@ const ScoreCard = ({ status }) => {
 						Application failed due to credibility score
 					</Text>
 				</Box>
-			</Flex>}
-		</>
+			</Flex>} */}
+		</ChakraProvider>
 	);
 };
 

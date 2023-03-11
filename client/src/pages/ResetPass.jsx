@@ -15,6 +15,7 @@ import {
 import { AiFillCheckCircle } from "react-icons/ai";
 import validator from "validator";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const ResetPass = () => {
   const [isDisable, setDis] = useState(true);
@@ -24,6 +25,7 @@ const ResetPass = () => {
   const [otp, setOtp] = useState();
   const [confirmPass, setConfirmPass] = useState("");
   const [invalidOtp, setInvalid] = useState(false);
+  const navigate = useNavigate()
   const toast = useToast();
 
   const handleReset = () => {
@@ -39,7 +41,7 @@ const ResetPass = () => {
           otp: otp,
           password: password,
         };
-        axios.post("http://localhost:8080/auth/reset", payload).then((res) => {
+        axios.post("https://lazy-ruby-leopard-kilt.cyclic.app/auth/reset", payload).then((res) => {
           if (res.status === 200) {
             setInvalid(false)
             div1.style.display = "none";
@@ -194,6 +196,7 @@ const ResetPass = () => {
                 m="20px"
                 bg={"#4358F6"}
                 color="white"
+                onClick={()=>navigate("/signin")}
               >
                 SIGN IN
               </Button>
