@@ -203,39 +203,28 @@ const SidebarContent = ({ onClose, ...rest }) => {
 	);
 };
 const NavItem = ({ icon, children, ...rest }) => {
-    return (
-        <Link
-            href="#"
-            style={{ textDecoration: "none" }}
-            _focus={{ boxShadow: "none" }}
-        >
-            <Flex
-                align="center"
-                p="4"
-                mx="4"
-                borderRadius="lg"
-                role="group"
-                cursor="pointer"
-                _hover={{
-                    bg: "cyan.400",
-                    color: "white",
-                }}
-                {...rest}
-            >
-                {icon && (
-                    <Icon
-                        mr="4"
-                        fontSize="16"
-                        _groupHover={{
-                            color: "white",
-                        }}
-                        as={icon}
-                    />
-                )}
-                {children}
-            </Flex>
-        </Link>
-    );
+	return (
+		<Link
+			href="#"
+			style={{ textDecoration: "none" }}
+			_focus={{ boxShadow: "none" }}
+		>
+			<Flex
+				align="center"
+				p="4"
+				
+				mx="4"
+				borderRadius="lg"
+				role="group"
+				cursor="pointer"
+				color={"black"}
+				{...rest}
+			>
+				{icon && <Icon mr="2" fontSize="16" as={icon} />}
+				{children}
+			</Flex>
+		</Link>
+	);
 };
 
 const MobileNav = ({ onOpen, ...rest }) => {

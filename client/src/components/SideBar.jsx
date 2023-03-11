@@ -70,11 +70,12 @@ useEffect(()=>{
 	return (
 		<Box minH="100vh">
 			<SidebarContent
-				width={"264px"}
+				width={"270px"}
 				height={"760px"}
+			
 				onClose={() => onClose}
-            
 				display={{ base: "none", md: "block" }}
+				
 			/>
 			<Drawer
 				autoFocus={false}
@@ -84,6 +85,7 @@ useEffect(()=>{
 				returnFocusOnClose={false}
 				onOverlayClick={onClose}
 				size="full"
+				
 			>
 				<DrawerContent>
 					<SidebarContent onClose={onClose} />
@@ -100,9 +102,7 @@ useEffect(()=>{
 				>
 					Masai School Courses
 				</Heading>
-				
-				<Cards/>
-				
+				<Cards />
 			</Box>
 		</Box>
 	);
@@ -239,6 +239,7 @@ const NavItem = ({ icon, children, ...rest }) => {
 			<Flex
 				align="center"
 				p="4"
+				
 				mx="4"
 				borderRadius="lg"
 				role="group"
@@ -246,7 +247,7 @@ const NavItem = ({ icon, children, ...rest }) => {
 				color={"black"}
 				{...rest}
 			>
-				{icon && <Icon mr="4" fontSize="16" as={icon} />}
+				{icon && <Icon mr="2" fontSize="16" as={icon} />}
 				{children}
 			</Flex>
 		</Link>

@@ -261,7 +261,7 @@ setPass(passCourseArr)
 							{/* {failCourseArr.indexOf(item._id) !== -1? <><h2>{item._id}</h2></>:<>{item._id}</>} */}
 							<GridItem
 								border={"1px solid #D9D9D9"}
-								w={"350px"}
+								w={"100%"}
 								h={"510"}
 								bg={"white"}
 								rounded={"md"}

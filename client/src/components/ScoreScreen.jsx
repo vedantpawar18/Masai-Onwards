@@ -158,7 +158,7 @@ export default function ScoreScreen() {
 							<Box borderRadius={"10px"} height={"42px"} width={"140px"} border="2px solid #d1cfd0" >
 
 
-								<Input border={"transparent"} textAlign="center" placeholder="-/10" _placeholder={{ color: 'black', fontSize: "24px", textAlign: "center" }} onChange={(e) => setCognitive(e.target.value)} />
+								<Input fontSize="24px" border={"transparent"} textAlign="center"  placeholder="-/10" _placeholder={{ color: 'black', fontSize: "24px", textAlign: "center" }} onChange={(e) => setCognitive(e.target.value)} />
 							</Box>
 						</HStack>
 						<HStack marginTop={"20px"} gap={"100px"}>
@@ -168,7 +168,7 @@ export default function ScoreScreen() {
 								fontSize={"24px"}>Mettl Text Score</Text>{" "}
 							<Box borderRadius={"10px"} height={"42px"} marginLeft={"22px"} width={"140px"} border="2px solid #d1cfd0 " >
 
-								<Input border={"transparent"} textAlign="center" placeholder="-/10" _placeholder={{ color: 'black', fontSize: "24px", textAlign: "center" }} onChange={(e) => setMettl(e.target.value)} />
+								<Input fontSize="24px"  border={"transparent"} textAlign="center" placeholder="-/10" _placeholder={{ color: 'black', fontSize: "24px", textAlign: "center" }} onChange={(e) => setMettl(e.target.value)} />
 							</Box>
 						</HStack>
 						<HStack marginTop={"20px"} gap={"41px"}>
@@ -177,7 +177,7 @@ export default function ScoreScreen() {
 								fontWeight={"600"}
 								fontSize={"24px"}>Communication Skills</Text>{" "}
 							<Box borderRadius={"10px"} width={"140px"} height={"42px"} border="2px solid #d1cfd0 ">
-								<Input border={"transparent"} textAlign="center" placeholder="-/10" _placeholder={{ color: 'black', fontSize: "24px", textAlign: "center" }} onChange={(e) => setCommunication(e.target.value)} />
+								<Input fontSize="24px" border={"transparent"} textAlign="center" placeholder="-/10" _placeholder={{ color: 'black', fontSize: "24px", textAlign: "center" }} onChange={(e) => setCommunication(e.target.value)} />
 
 							</Box>
 						</HStack>
