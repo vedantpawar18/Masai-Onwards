@@ -58,7 +58,7 @@ export default function SideBar() {
 	
 
 useEffect(()=>{
-	console.log("working")
+
 	dispatch(getData(token))
 
 },[dispatch,token])
@@ -66,7 +66,7 @@ useEffect(()=>{
 
 	
    
-    console.log("status",status)
+  
 	return (
 		<Box minH="100vh">
 			<SidebarContent

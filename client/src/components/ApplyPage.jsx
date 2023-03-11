@@ -81,7 +81,7 @@ export default function ApplyPage() {
 		}
 		},[data])
 
-		console.log("data apply page",dataArray)
+		
 	// const data = useSelector((store) => store.data.data.courses)||[];
 	// const { id } = useParams();
 	// const filter = data.filter((item) => {
@@ -224,7 +224,6 @@ const handleNext = ()=>{
 
 
 
-console.log("check",courseStartsOn,workingStatus,referral,gender,graduationYear,passOutYear,permission,dateOfBirth,number)
 
 	return (
 		<ChakraProvider theme={Theme}>

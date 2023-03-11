@@ -41,7 +41,7 @@ export default function Cards({status}) {
     
 	const data = useSelector((store) => store.data.data) || [];
 
-	console.log("data check",data)
+
 
 
 
@@ -105,9 +105,8 @@ setPass(passCourseArr)
 
 
 	},[dataArray])
-	console.log("flaggggg",flag)
-// console.log("pass",pass)
-	// console.log("disable check222",dataArray.filter(item => !fail.includes(item._id)))
+
+
 
 	const handleApply = (id) => {
 		localStorage.setItem("courseId", id);
