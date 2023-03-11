@@ -1,12 +1,18 @@
 # Project Name
-### Team 8
+### Masai Onwards
 
 # Step to cloneing repo
+### Frontend
 - Open terminal
 - git clone <paste the Link>
 - cd Team8
 - npm install
 - npm start
+
+### Backend
+-cd server
+-npm install
+-npm start
 
 
 # About Project:
