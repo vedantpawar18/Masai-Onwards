@@ -1,23 +1,26 @@
-# Project Name
-### Masai Onwards
-
-# Step to cloneing repo
-### Frontend
-- Open terminal
-- git clone <paste the Link>
-- cd Team8
-- npm install
-- npm start
-
-### Backend
- -cd server
- -npm install
- -npm start
-
-
-# About Project:
-
+# Masai Onwards
 Masai is a coding school, where thousands of student enrolling every month. This platform is a clone of Masai Course Platform, we build full fledged website where a student can enroll, give MSAT Test and apply for different-different course provided by masai.
+
+![home](https://user-images.githubusercontent.com/97525465/224216381-6d4ac7b8-625c-4ec1-b581-22f51f057985.png) 
+# Step to cloneing repo
+
+```bash
+# Clone repository
+$ git clone https://github.com/masai-builds/Team8.git
+```
+Install dependencies via NPM 
+
+```bash
+# Install dependencies for frontend
+$ cd client
+$ npm install
+$ cd ..
+
+# Install dependencies for backend
+$ cd client
+$ npm install
+$ cd ..
+```
 
 # Authors: 
 
