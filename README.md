@@ -110,15 +110,10 @@ Pratik Dutta (EM/Project Guide)
 ### User's Details Form: 
 ![Login](https://user-images.githubusercontent.com/97525465/224216438-cf12bbef-bf3f-4f31-85ee-2feaeab07fa1.png) 
 
-### Result's Page: 
-![payment](N/A) 
-
 
 ## Deployment Link: 
-N/A
+https://team8-masai-prepleaf.netlify.app/
 
-## Video Presentation Link: 
-N/A
 
 ## Feedback: 
 If you have any feedback, any suggestion please reach out to us at 
