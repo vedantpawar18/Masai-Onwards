@@ -112,7 +112,7 @@ Pratik Dutta (EM/Project Guide)
 
 
 ## Deployment Link: 
-https://team8-masai-prepleaf.netlify.app/
+https://team8-prepleaf-project.netlify.app/
 
 
 ## Feedback: 
