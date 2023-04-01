@@ -117,7 +117,8 @@ https://team8-prepleaf-project.netlify.app/
 
 ## Feedback: 
 If you have any feedback, any suggestion please reach out to us at 
-surajguptabnp14c@gmail.com
+vedantpawar18@gmail.com
+
 
 
 
